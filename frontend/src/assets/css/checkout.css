@@ -4,8 +4,35 @@ div.checkout {
   flex-direction: row;
   justify-content: center;
   transform: translate3d(0, 0, 0);
-  min-height: 100vh;
-  margin: 80px 0 200px 0;
+  margin: clamp(22px, 5vw, 64px) 14px 80px;
+}
+
+div.checkout .checkout-form {
+  width: min(100%, 1120px);
+  min-width: 0;
+  padding: clamp(14px, 3vw, 36px);
+  border: 1px solid #dce6dc;
+  border-radius: 22px;
+  box-shadow: 0 12px 40px rgb(26 54 39 / 8%);
+}
+
+.checkout-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.6fr) minmax(0, 1fr);
+  align-items: start;
+  gap: 16px;
+}
+
+.checkout-layout > * { grid-column: 1 / -1; min-width: 0; }
+.checkout-layout > .checkout-vehicle { grid-column: 1; }
+.checkout-layout > .checkout-summary { grid-column: 2; }
+.checkout-vehicle .car-list { padding-bottom: 0; }
+.checkout-vehicle .checkout-options-container { width: 100%; margin-bottom: 0; }
+.checkout-vehicle .map { border-radius: 14px; overflow: hidden; }
+.checkout-summary div.booking-price { font-weight: 800; color: #193329 !important; }
+
+@media only screen and (width >=961px) {
+  .checkout-layout > .checkout-summary { position: sticky; top: 92px; }
 }
 
 div.checkout .map {
@@ -26,9 +53,11 @@ div.checkout .payment-radio-disabled span.payment-info {
 
 div.checkout .checkout-form-title {
   text-align: center;
-  text-transform: capitalize;
-  color: #232323;
-  margin-bottom: 30px;
+  color: #193329;
+  font-family: Georgia, 'Songti SC', serif;
+  font-weight: 400;
+  font-size: clamp(1.9rem, 3.5vw, 2.7rem);
+  margin: 12px 0 26px;
 }
 
 div.checkout div.checkout-info {
@@ -41,7 +70,7 @@ div.checkout div.checkout-info {
 }
 
 div.checkout div.checkout-info span {
-  color: #1a1a1a;
+  color: #193329;
   display: inline-block;
   font-size: 17px;
   font-weight: 700;
@@ -50,11 +79,12 @@ div.checkout div.checkout-info span {
 
 div.checkout div.checkout-details-container,
 div.checkout div.payment-options-container {
-  background: #fbfbfb;
-  border: 1px solid #d9d8d9;
-  border-radius: 5px;
-  padding: 25px;
+  background: #fbfcf9;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 26px);
   margin-bottom: 15px;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
 }
 
 div.checkout div.payment-options {
@@ -64,7 +94,7 @@ div.checkout div.payment-options {
 
 div.checkout div.payment-options span.payment-info {
   margin-left: 10px;
-  color: rgb(0 0 0 / 55%);
+  color: #5d7268;
   font-size: 13px;
 }
 
@@ -81,7 +111,7 @@ div.checkout div.payment-options span.payment-info {
 
 div.checkout div.checkout-details {
   display: table;
-  color: #333;
+  color: #193329;
   font-size: 15px;
 }
 
@@ -95,13 +125,13 @@ div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value 
 }
 
 div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value {
-  color: rgb(0 0 0 / 55%);
+  color: #4d6057;
   word-break: break-word;
 }
 
 div.checkout div.checkout-details div.checkout-detail span.checkout-detail-title {
   font-weight: 700;
-  width: 250px;
+  padding-right: 12px;
 }
 
 div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value div.car-supplier {
@@ -110,7 +140,7 @@ div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value 
 }
 
 div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value span.car-supplier-name {
-  color: rgb(0 0 0 / 60%);
+  color: #5d7268;
   font-size: 0.9em;
   /* line-height: 1em; */
   white-space: nowrap;
@@ -124,22 +154,24 @@ div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value 
 div.checkout div.checkout-details div.checkout-detail div.checkout-price {
   font-size: 17px;
   font-weight: 700;
-  color: #333;
+  color: #193329;
 }
 
 div.checkout div.checkout-details div.checkout-detail .checklist-content {
-  color: #272727 !important;
+  color: #4d6057 !important;
   padding-bottom: 20px;
 }
 
 div.checkout div.driver-details {
-  background: #fbfbfb;
-  border: 1px solid #d9d8d9;
-  padding: 25px;
+  background: #fbfcf9;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  padding: clamp(16px, 3vw, 26px);
   margin-bottom: 15px;
   display: flex;
   flex-direction: column;
   align-items: center;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
 }
 
 div.checkout div.checkout-tos {
@@ -157,34 +189,35 @@ div.checkout div.checkout-buttons a {
 }
 
 div.checkout div.payment-info {
-  border: 1px solid #d9d8d9;
-  background: #fbfbfb;
-  padding: 20px;
+  border: 1px solid #e2e9df;
+  background: #fbfcf9;
+  padding: clamp(14px, 3vw, 20px);
   margin-bottom: 20px;
-  border-radius: 5px;
+  border-radius: 14px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  color: #1a1a1a;
+  color: #193329;
 }
 
 div.checkout div.payment-info div.payment-info-title {
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 700;
 }
 
 div.checkout div.payment-info div.payment-info-price {
   font-size: 18px;
-  font-weight: 500;
+  font-weight: 800;
+  color: #193329;
 }
 
 div.checkout .btn-checkout {
   font-size: 18px;
   line-height: 24px;
   border: 0;
-  border-radius: 5px;
+  border-radius: 10px;
   color: #fff;
-  height: 42px;
+  height: 46px;
   min-width: 164px;
   margin: 0;
   white-space: nowrap;
@@ -193,9 +226,11 @@ div.checkout .btn-checkout {
   font-weight: 400;
 }
 
-div.checkout .btn-checkout {
-  background-color: #232323;
+div.checkout .btn-checkout:not(:disabled) {
+  background-color: #214c3c;
 }
+
+div.checkout .btn-checkout:not(:disabled):hover { background-color: #173d30; }
 
 div.checkout .btn-cancel {
   height: 42px;
@@ -215,18 +250,18 @@ div.checkout .btn-cancel {
   }
 }
 
-/* Device width is less than or equal to 960px */
+div.checkout div.driver-details-form { width: min(100%, 520px); }
 
-@media only screen and (width <=960px) {
-  div.checkout .checkout-form {
-    padding: 5px;
-    margin: 10px;
-    max-width: 720px;
-  }
+@media (max-width: 960px) {
+  .checkout-layout { grid-template-columns: minmax(0, 1fr); }
+  .checkout-layout > .checkout-summary { grid-column: 1; }
+}
 
+@media (max-width: 560px) {
   div.checkout .btn-checkout,
   div.checkout .btn-cancel {
     width: 100%;
+    margin-inline: 0 !important;
   }
 
   div.checkout div.checkout-details div.checkout-detail span.checkout-detail-title,
@@ -236,24 +271,5 @@ div.checkout .btn-cancel {
 
   div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value {
     line-height: 25px;
-  }
-}
-
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-  div.checkout .checkout-form {
-    width: 860px;
-    padding: 30px;
-  }
-
-  div.checkout form,
-  div.checkout div.checkout-details-container,
-  div.checkout div.payment-options-container {
-    width: 800px;
-  }
-
-  div.checkout div.driver-details-form {
-    width: 390px;
   }
 }

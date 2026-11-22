@@ -2,34 +2,44 @@ section.car-list {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding-bottom: 80px;
+  padding-bottom: 64px;
 }
 
 section.car-list .empty-list {
-  margin-top: 15px;
+  margin-top: 18px;
   text-align: center;
-  width: 250px;
+  width: min(100%, 320px);
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  padding: 28px 22px;
+  color: #5d7268;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
 }
 
 section.car-list div.title {
   text-align: left;
   width: 100%;
-  margin-bottom: 5px;
+  margin-bottom: 10px;
   font-weight: 400;
 }
 
 section.car-list div.title div.bookcars {
-  font-size: 22px;
+  font-size: 1.35rem;
+  line-height: 1.25;
+  letter-spacing: -.02em;
+  color: #193329;
 }
 
 section.car-list div.title div.bookcars span.title-bookcars {
-  color: #212121;
-  font-weight: 500;
+  color: #214c3c;
+  font-weight: 800;
 }
 
 section.car-list div.title div.car-count {
-  color: #717171;
-  font-size: 14px;
+  color: #5d7268;
+  font-size: .9rem;
+  font-weight: 600;
 }
 
 @media only screen and (width <=960px) {

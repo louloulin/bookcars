@@ -4,26 +4,44 @@ div.signin {
   flex-direction: row;
   flex: 1 0 auto;
   justify-content: center;
-  margin: 120px 0;
+  align-items: flex-start;
   transform: translate3d(0, 0, 0);
-  min-height: 100vh;
+  background: #f8f8f3;
+  padding: clamp(40px, 8vh, 96px) 16px clamp(56px, 10vh, 120px);
 }
 
 div.signin .signin-form {
   height: fit-content;
+  width: min(100%, 420px);
+  border: 1px solid #e2e9df;
+  border-radius: 20px;
+  box-shadow: 0 18px 55px rgb(26 54 39 / 10%);
+  padding: 30px 28px 24px;
+  background: #fff;
 }
 
 div.signin .signin-form-title {
   text-align: center;
   text-transform: capitalize;
-  margin-top: 35px;
-  color: #232323;
+  margin: 0 0 22px;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: 1.85rem;
+  letter-spacing: -.03em;
+  color: #193329;
 }
+
+div.signin .signin-form .MuiInputLabel-root { color: #5d7268; }
+div.signin .signin-form .MuiOutlinedInput-root { border-radius: 10px; }
 
 div.signin div.signin-buttons {
   float: right;
   margin-top: 20px;
+  display: flex;
+  gap: 10px;
 }
+
+div.signin div.signin-buttons button { border-radius: 10px; min-height: 42px; }
 
 div.signin .form-error {
   clear: both;
@@ -44,30 +62,39 @@ div.signin div.stay-connected input[type='checkbox'] {
 
 div.signin div.stay-connected label {
   cursor: pointer;
-  color: rgb(0 0 0 / 60%);
+  color: #55695e;
   user-select: none;
+  font-size: .92rem;
 }
 
 div.signin div.forgot-password-wrapper {
-  margin-top: 15px;
+  margin-top: 12px;
+  text-align: right;
+}
+
+div.signin div.forgot-password-wrapper .btn-lnk {
+  color: #2f6b4f !important;
+  font-weight: 600 !important;
+  font-size: .9rem !important;
 }
 
 /* Device width is less than or equal to 960px */
 
 @media only screen and (width <=960px) {
+  div.signin {
+    padding: 34px 16px 56px;
+  }
+
   div.signin .signin-form {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    width: 350px;
-    border: 1px solid rgb(0 0 0 / 12%);
-    padding: 15px;
+    width: min(100%, 380px);
+    padding: 26px 20px 20px;
   }
 
   div.signin div.signin-buttons {
-    margin-top: 15px;
-    margin-bottom: 5px;
+    margin-top: 18px;
+    margin-bottom: 0;
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     width: 100%;
   }
 
@@ -76,15 +103,10 @@ div.signin div.forgot-password-wrapper {
   }
 }
 
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-  div.signin .signin-form {
-    align-items: center;
-    justify-content: center;
-    display: flex;
-    width: 380px;
-    border: 1px solid rgb(0 0 0 / 12%);
-    padding: 15px;
-  }
+div.signin .signin-form-subtitle {
+  text-align: center;
+  color: #5d7268;
+  font-size: .93rem;
+  line-height: 1.55;
+  margin: -12px 0 22px;
 }

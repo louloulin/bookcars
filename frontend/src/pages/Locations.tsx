@@ -9,6 +9,7 @@ import Layout from '@/components/Layout'
 import Map from '@/components/Map'
 import SearchForm from '@/components/SearchForm'
 import Footer from '@/components/Footer'
+import { strings as pageStrings } from '@/lang/page'
 
 import '@/assets/css/locations.css'
 
@@ -22,18 +23,41 @@ const Locations = () => {
     setLocations(_locations)
   }
 
+  const selectLocation = (locationId: string) => {
+    setPickupLocation(locationId)
+    setOpenSearchFormDialog(true)
+  }
+
   return (
     <Layout onLoad={onLoad} strict={false}>
       <div className="locations">
-        <Map
-          position={new L.LatLng(env.MAP_LATITUDE, env.MAP_LONGITUDE)}
-          initialZoom={env.MAP_ZOOM}
-          locations={locations}
-          onSelelectPickUpLocation={async (locationId) => {
-            setPickupLocation(locationId)
-            setOpenSearchFormDialog(true)
-          }}
-        />
+        <div className="locations-map-wrap">
+          <Map
+            position={new L.LatLng(env.MAP_LATITUDE, env.MAP_LONGITUDE)}
+            initialZoom={env.MAP_ZOOM}
+            locations={locations}
+            onSelelectPickUpLocation={selectLocation}
+          />
+        </div>
+
+        <aside className="locations-panel">
+          <span className="page-eyebrow">{pageStrings.LOCATIONS_EYEBROW}</span>
+          <h1 className="page-title locations-panel-title">{pageStrings.LOCATIONS_PANEL_TITLE}</h1>
+          <p className="locations-panel-subtitle">{pageStrings.LOCATIONS_PANEL_SUBTITLE}</p>
+
+          <ul className="locations-list">
+            {locations.map((location) => (
+              <li key={location._id}>
+                <button type="button" className="locations-list-item" onClick={() => selectLocation(location._id)}>
+                  <span className="locations-list-name">{location.name}</span>
+                  <span className="locations-list-cta">{pageStrings.SELECT_LOCATION}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          {locations.length === 0 && <p className="locations-list-empty">{pageStrings.LOCATIONS_PANEL_SUBTITLE}</p>}
+        </aside>
       </div>
 
       <Dialog

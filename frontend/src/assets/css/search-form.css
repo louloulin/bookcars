@@ -1,115 +1,30 @@
-form.home-search-form .btn-search,
-form.home-search-form .btn-cancel {
-  font-size: 18px;
-  font-weight: 400;
-  height: 52px;
-  min-width: 190px;
+form.home-search-form {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) repeat(2, minmax(0, 1fr)) auto;
+  align-items: start;
+  gap: 10px 12px;
+  width: 100%;
 }
 
-form.home-search-form .btn-search {
-  color: #fff;
-  border: 0;
-  border-radius: 5px;
-  margin: 0;
-  white-space: nowrap;
-  background: #212121;
-}
+form.home-search-form > * { min-width: 0; }
+form.home-search-form .MuiOutlinedInput-root,
+form.home-search-form .MuiPickersOutlinedInput-root { background-color: #fafbf8; }
+form.home-search-form .btn-search { min-height: 56px; padding-inline: 26px; white-space: nowrap; }
+form.home-search-form .drop-off-location { grid-column: 1 / -1; max-width: 420px; }
+form.home-search-form .chk-same-location { grid-column: 1 / -2; justify-self: start; }
+form.home-search-form .chk-same-location label { margin-left: -6px; margin-right: 0; }
+form.home-search-form .chk-same-location .MuiFormControlLabel-label { font-size: .875rem; color: #42564c; }
+form.home-search-form .btn-cancel { grid-column: -2; justify-self: end; }
 
-form.home-search-form .btn-search:hover,
-form.home-search-form .btn-cancel:hover {
-  opacity: 0.95;
-}
-
-form.home-search-form .chk-same-location {
-  display: table-row;
-  color: rgb(0 0 0 / 70%);
-  font-weight: 400;
-  line-height: 1.4em;
-  font-size: 0.9em;
-  user-select: none;
-}
-
-form.home-search-form .chk-same-location label {
-  cursor: pointer;
-  padding: 2px;
-  vertical-align: top;
-}
-
-form.home-search-form .chk-same-location input[type='checkbox'] {
-  cursor: pointer;
-}
-
-@media only screen and (width <=960px) {
-  form.home-search-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 100%;
-    max-width: 480px;
-  }
-
+@media (max-width: 1010px) {
+  form.home-search-form { grid-template-columns: repeat(2, minmax(0, 1fr)); }
   form.home-search-form .pickup-location,
-  form.home-search-form .drop-off-location,
-  form.home-search-form .from,
-  form.home-search-form .to {
-    width: 100%;
-    padding: 10px;
-  }
-
-  form.home-search-form .chk-same-location {
-    align-self: flex-start;
-    margin-left: 10px;
-  }
-
   form.home-search-form .btn-search,
-  form.home-search-form .btn-cancel {
-    width: calc(100% - 20px);
-  }
-
-  form.home-search-form .btn-search {
-    margin: 4px 0;
-  }
-
-  form.home-search-form .btn-cancel {
-    margin: 5px 0;
-  }
+  form.home-search-form .drop-off-location { grid-column: 1 / -1; max-width: none; }
 }
 
-@media only screen and (width >=960px) {
-  form.home-search-form {
-    display: table;
-    width: 100%;
-  }
-
-  form.home-search-form .pickup-location {
-    display: table-cell;
-    width: 350px;
-    padding-right: 2px;
-    padding-bottom: 10px;
-  }
-
-  form.home-search-form .drop-off-location {
-    display: table-row;
-    width: 350px;
-    height: 66px;
-  }
-
-  form.home-search-form .drop-off-location>.multiple-select {
-    width: 348px;
-  }
-
-  form.home-search-form .from,
-  form.home-search-form .to {
-    display: table-cell;
-    width: 235px;
-    padding: 0 2px;
-  }
-
-  form.home-search-form .btn-search {
-    margin: 0 4px;
-  }
-
-  form.home-search-form .btn-cancel {
-    margin: 0 2px;
-  }
+@media (max-width: 560px) {
+  form.home-search-form { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  form.home-search-form .chk-same-location { grid-column: 1; }
+  form.home-search-form .btn-cancel { grid-column: 1; }
 }

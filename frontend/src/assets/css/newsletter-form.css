@@ -9,6 +9,18 @@ form.newsletter-form div.form .input {
   max-width: 240px;
 }
 
+form.newsletter-form h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  margin: 0 0 4px;
+}
+
+form.newsletter-form p {
+  margin: 0 0 12px;
+  line-height: 1.55;
+}
+
 form.newsletter-form div.form .btn {
   height: 40px;
   padding: 0 30px;

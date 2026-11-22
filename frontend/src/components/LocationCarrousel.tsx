@@ -13,6 +13,7 @@ import { strings } from '@/lang/location-carrousel'
 import { strings as commonStrings } from '@/lang/common'
 import Badge from '@/components/Badge'
 import Slick from '@/components/Slick'
+import SafeImage from '@/components/SafeImage'
 
 import '@/assets/css/location-carrousel.css'
 
@@ -64,7 +65,7 @@ const LocationCarrousel = ({
             <div className="location-image">
               {
                 location.image ? (
-                  <img alt="" src={bookcarsHelper.joinURL(env.CDN_LOCATIONS, location.image)} />
+                  <SafeImage alt="" src={bookcarsHelper.joinURL(env.CDN_LOCATIONS, location.image)} fallback={<LocationIcon className="location-icon" />} />
                 )
                   : <LocationIcon className="location-icon" />
               }

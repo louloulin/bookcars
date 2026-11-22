@@ -62,7 +62,7 @@ const NewsletterForm = () => {
 
   return (
     <form className="newsletter-form" onSubmit={handleSubmit(onSubmit)}>
-      <h1>{strings.TITLE}</h1>
+      <h2>{strings.TITLE}</h2>
       <p>{strings.SUB_TITLE}</p>
 
       <div className="form">

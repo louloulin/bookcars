@@ -1,40 +1,86 @@
 div.footer {
   width: 100%;
-  min-height: 300px;
   flex-shrink: 0;
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
-  background: #f2f2f2;
-  color: #1a1a1a;
-  border-top: 1px solid #ebebeb;
+  background: #193b30;
+  color: #e7efe4;
   font-size: 13px;
-  padding: 12px;
   transform: translate3d(0, 0, 0);
+}
+
+div.footer div.footer-inner {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1.5fr) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  padding: clamp(34px, 5vw, 60px) clamp(18px, 4vw, 58px) clamp(26px, 4vw, 44px);
+}
+
+div.footer div.footer-brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 4px;
+}
+
+div.footer div.footer-brand-row {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+
+div.footer span.footer-brand-mark {
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 11px;
+  background: #2f6b4f;
+  color: #fff;
+  font-size: 1.15rem;
+  font-weight: 800;
+  letter-spacing: -.04em;
 }
 
 div.footer div.header {
   text-decoration: none;
-  font-size: 18px;
-  font-weight: 500;
+  font-size: 1.35rem;
+  font-weight: 800;
+  letter-spacing: -.035em;
+  color: #fff;
+  min-height: 0;
+}
+
+div.footer p.footer-brand-text {
+  margin: 12px 0 0;
+  color: #a9c3ae;
+  font-size: .85rem;
+  line-height: 1.6;
+  max-width: 30ch;
 }
 
 div.footer section.main {
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  margin-bottom: 15px;
-  padding-bottom: 80px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 34px);
 }
 
 div.footer div.main-section {
-  flex: 1 1 0%;
+  min-width: 0;
 }
 
 div.footer div.main-section div.title {
   text-align: left;
-  margin-bottom: 10px;
-  font-weight: bold;
+  margin-bottom: 12px;
+  font-weight: 700;
+  color: #fff;
+  font-size: .78rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
 }
 
 div.footer ul.links {
@@ -45,13 +91,16 @@ div.footer ul.links {
 div.footer ul.links li {
   list-style: none;
   cursor: pointer;
-  margin: 10px 0;
+  margin: 9px 0;
   width: fit-content;
+  color: #b9cdb9;
+  transition: color .16s ease;
 }
 
 div.footer ul.links li:hover {
-  /* opacity: 0.85; */
+  color: #fff;
   text-decoration: underline;
+  text-underline-offset: 4px;
 }
 
 div.footer div.footer-contact {
@@ -62,40 +111,104 @@ div.footer div.footer-contact {
 }
 
 div.footer div.footer-contact .icon {
-  color: #525252;
-  margin-right: 5px;
+  color: #8fb397;
+  margin-right: 8px;
 }
 
 div.footer div.footer-contact a {
   text-decoration: none;
-  color: #1a1a1a;
+  color: #d5e5d4;
 }
 
 div.footer div.footer-contact a:hover {
-  /* opacity: 0.85; */
+  color: #fff;
   text-decoration: underline;
 }
 
-div.footer div.footer-contact .social-icon {
-  color: #525252;
-  /* margin-right: 12px; */
+div.footer div.footer-social {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+  margin-top: 6px;
 }
 
-div.footer div.footer-contact .social-icon:hover{
-  color: #1a1a1a;
+div.footer div.footer-social .social-icon {
+  color: #9dbc9f;
+}
+
+div.footer div.footer-social .social-icon:hover {
+  color: #fff;
 }
 
 div.footer div.newsletter {
-  margin-top: 80px;
+  margin-top: 0;
+}
+
+div.footer form.newsletter-form {
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 18px;
+  padding: 20px;
+}
+
+div.footer form.newsletter-form h2 {
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -.02em;
+  color: #fff;
+  margin: 0 0 4px;
+}
+
+div.footer form.newsletter-form p {
+  margin: 0 0 14px;
+  color: #a9c3ae;
+  font-size: .82rem;
+  line-height: 1.55;
+}
+
+div.footer form.newsletter-form div.form {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+div.footer form.newsletter-form div.form .input {
+  margin-right: 0;
+  max-width: none;
+}
+
+div.footer form.newsletter-form div.form .input .MuiInputLabel-root {
+  color: #b9cdb9;
+}
+
+div.footer form.newsletter-form div.form .input .MuiOutlinedInput-root {
+  background: rgba(255, 255, 255, .06);
+  border-radius: 10px;
+}
+
+div.footer form.newsletter-form div.form .input .MuiOutlinedInput-notchedOutline {
+  border-color: rgba(255, 255, 255, .18);
+}
+
+div.footer form.newsletter-form div.form .btn {
+  height: 42px;
+  padding: 0 24px;
+  min-width: 0;
+  border-radius: 10px;
 }
 
 div.footer section.payment {
   width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  border-top: 1px solid #dbdbdb;
-  padding: 10px 0;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .12);
+  padding: 16px clamp(18px, 4vw, 58px);
 }
 
 div.footer section.payment div.payment-text {
@@ -103,25 +216,42 @@ div.footer section.payment div.payment-text {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  color: #9dbc9f;
+  font-size: .78rem;
+}
+
+div.footer section.copyright {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding: 14px clamp(18px, 4vw, 58px) 22px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  gap: 12px;
+  border-top: 1px solid rgba(255, 255, 255, .08);
+  color: #8fb397;
+  font-size: .78rem;
 }
 
 @media only screen and (width <=960px) {
-  div.footer section.main {
-    flex-direction: column;
+  div.footer div.footer-inner {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 26px;
   }
 
-  div.footer div.main-section {
-    margin: 10px;
+  div.footer section.main {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   div.footer section.payment {
-    display: flex;
     flex-direction: column;
+    align-items: flex-start;
   }
 
   div.footer section.payment div.payment-text {
-    margin: 5px 0;
-    padding-left: 8px;
+    margin: 0;
+    padding-left: 0;
     align-items: flex-start;
   }
 
@@ -130,17 +260,8 @@ div.footer section.payment div.payment-text {
   }
 }
 
-div.footer section.copyright {
-  width: 100%;
-  padding: 15px 0 15px;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  border-top: 1px solid #dbdbdb;
-}
-
-@media only screen and (width >=960px) {
-  div.footer {
-    padding: 12px 10%;
+@media only screen and (width <=560px) {
+  div.footer section.main {
+    grid-template-columns: minmax(0, 1fr);
   }
 }

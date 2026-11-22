@@ -14,6 +14,7 @@ import * as bookcarsTypes from ':bookcars-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as suStrings } from '@/lang/sign-up'
 import { strings } from '@/lang/sign-in'
+import { strings as pageStrings } from '@/lang/page'
 import * as UserService from '@/services/UserService'
 import { useUserContext, UserContextType } from '@/context/UserContext'
 import Error from '@/components/Error'
@@ -110,6 +111,7 @@ const SignIn = () => {
         <Paper className={`signin-form ${visible ? '' : 'hidden'}`} elevation={10}>
           <form onSubmit={handleSubmit(onSubmit)}>
             <h1 className="signin-form-title">{strings.SIGN_IN_HEADING}</h1>
+            <p className="signin-form-subtitle">{pageStrings.SIGN_IN_SUBTITLE}</p>
             <FormControl fullWidth margin="dense" error={!!errors.email}>
               <InputLabel>{commonStrings.EMAIL}</InputLabel>
               <Input

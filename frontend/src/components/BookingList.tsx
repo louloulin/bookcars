@@ -33,6 +33,7 @@ import { strings } from '@/lang/booking-list'
 import { strings as commonStrings } from '@/lang/common'
 import env from '@/config/env.config'
 import BookingStatus from '@/components/BookingStatus'
+import SupplierAvatar from '@/components/SupplierAvatar'
 import Extras from '@/components/Extras'
 
 import '@/assets/css/booking-list.css'
@@ -299,7 +300,7 @@ const BookingList = ({
         flex: 1,
         renderCell: ({ row, value }: GridRenderCellParams<bookcarsTypes.Booking, string>) => (
           <div className="cell-supplier">
-            <img src={bookcarsHelper.joinURL(env.CDN_USERS, (row.supplier as bookcarsTypes.User).avatar)} alt={value} />
+            <SupplierAvatar avatar={(row.supplier as bookcarsTypes.User).avatar} name={(row.supplier as bookcarsTypes.User).fullName} />
           </div>
         ),
         valueGetter: (value: bookcarsTypes.User) => value?.fullName,
@@ -431,7 +432,7 @@ const BookingList = ({
                     <span className="booking-detail-title">{commonStrings.SUPPLIER}</span>
                     <div className="booking-detail-value">
                       <div className="car-supplier">
-                        <img src={bookcarsHelper.joinURL(env.CDN_USERS, bookingSupplier.avatar)} alt={bookingSupplier.fullName} />
+                        <SupplierAvatar avatar={bookingSupplier.avatar} name={bookingSupplier.fullName} />
                         <span className="car-supplier-name">{bookingSupplier.fullName}</span>
                       </div>
                     </div>

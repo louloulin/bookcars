@@ -1,30 +1,34 @@
 div.extras {
-  margin-bottom: 10px;
+  margin-bottom: 12px;
 }
 
 div.extras span.extras-title {
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  color: #7b8d84;
 }
 
 div.extras div.extra {
   display: flex;
   align-items: center;
-  margin: 3px;
+  margin: 4px 0;
 }
 
 div.extras div.extra .extra-icon {
-  color: #1f9201;
+  color: #2f6b4f;
   height: 20px;
 }
 
 div.extras div.extra span.extra-title {
   font-size: 13px;
   font-weight: 700;
+  color: #193329;
   margin-right: 5px;
 }
 
 div.extras div.extra span.extra-text {
   font-size: 12px;
-  color: rgb(0 0 0 / 47%);
+  color: #5d7268;
 }

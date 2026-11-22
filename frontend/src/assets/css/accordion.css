@@ -1,45 +1,45 @@
 div.accordion-container {
   background: #fff;
-  margin: 10px 0;
-  border: 1px solid #dadada;
-  border-radius: 5px;
+  margin: 0 0 10px;
+  border: 1px solid #e4ebe1;
+  border-radius: 12px;
   font-size: 13px;
   user-select: none;
+  overflow: hidden;
 }
 
 div.accordion-container span.accordion {
   cursor: pointer;
-  padding: 2px;
-  transition: 0.4s;
-  display: inline-block;
+  padding: 11px 14px;
+  transition: background-color .18s ease;
+  display: block;
   width: 100%;
-  text-align: center;
-  color: rgb(0 0 0 / 60%);
-  font-weight: 400;
-  font-size: 13px;
-  line-height: 2em;
+  text-align: left;
+  color: #193329;
+  font-weight: 700;
+  font-size: .8125rem;
+  letter-spacing: .01em;
   background: #fff;
-  border-radius: 5px;
+  position: relative;
+}
+
+div.accordion-container span.accordion:hover {
+  background: #f7faf5;
 }
 
 div.accordion-container span.accordion-active {
-  border-bottom: 1px solid #dadada;
-  border-radius: 5px 5px 0 0;
-}
-
-div.accordion-container span.accordion-active,
-div.accordion-container span.accordion:hover {
-  background: #fff;
+  border-bottom: 1px solid #eef2ec;
+  background: #f7faf5;
 }
 
 div.accordion-container span.accordion::after {
   content: '';
   border-top: 5px solid transparent;
-  border-left: 5px solid #000;
+  border-left: 5px solid #5d7268;
   border-bottom: 5px solid transparent;
-  transition: transform 0.1s ease;
+  transition: transform 0.18s ease;
   float: right;
-  margin: 7px 7px 0;
+  margin: 5px 2px 0 0;
 }
 
 div.accordion-container span.accordion-active::after {
@@ -49,9 +49,10 @@ div.accordion-container span.accordion-active::after {
 div.accordion-container div.panel {
   max-height: 0;
   overflow: hidden;
-  transition: max-height 0.18s ease-out;
+  transition: max-height 0.22s ease-out;
 }
 
 div.accordion-container div.panel-collapse {
   overflow: hidden;
+  padding: 12px;
 }

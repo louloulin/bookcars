@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useSearchParams } from 'react-router-dom'
 import { Button } from '@mui/material'
 import { Tune as FiltersIcon } from '@mui/icons-material'
 import * as bookcarsTypes from ':bookcars-types'
@@ -9,7 +9,7 @@ import * as helper from '@/utils/helper'
 import env from '@/config/env.config'
 import * as LocationService from '@/services/LocationService'
 import * as SupplierService from '@/services/SupplierService'
-// import * as UserService from '@/services/UserService'
+import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import NoMatch from './NoMatch'
 import CarFilter from '@/components/CarFilter'
@@ -34,6 +34,7 @@ import '@/assets/css/search.css'
 
 const Search = () => {
   const location = useLocation()
+  const [searchParams] = useSearchParams()
 
   const [visible, setVisible] = useState(false)
   const [noMatch, setNoMatch] = useState(false)
@@ -161,17 +162,17 @@ const Search = () => {
 
   const onLoad = async (user?: bookcarsTypes.User) => {
     const { state } = location
-    if (!state) {
-      setNoMatch(true)
-      return
-    }
 
-    const { pickupLocationId } = state
-    const { dropOffLocationId } = state
-    const { from: _from } = state
-    const { to: _to } = state
+    // Search parameters are kept in the URL so a result page can be shared, bookmarked or reloaded.
+    const state_ = state ?? {}
+    const pickupLocationId = (state_ as any).pickupLocationId ?? searchParams.get('pickupLocation') ?? ''
+    const dropOffLocationId = (state_ as any).dropOffLocationId ?? searchParams.get('dropOffLocation') ?? pickupLocationId
+    const rawFrom = (state_ as any).from ?? searchParams.get('from')
+    const rawTo = (state_ as any).to ?? searchParams.get('to')
+    const _from = rawFrom ? new Date(rawFrom) : undefined
+    const _to = rawTo ? new Date(rawTo) : undefined
 
-    if (!pickupLocationId || !dropOffLocationId || !_from || !_to) {
+    if (!pickupLocationId || !dropOffLocationId || !_from || !_to || Number.isNaN(_from.getTime()) || Number.isNaN(_to.getTime())) {
       setLoading(false)
       setNoMatch(true)
       return
@@ -225,9 +226,12 @@ const Search = () => {
       setSuppliers(_suppliers)
       setSupplierIds(_supplierIds)
 
-      const { ranges: _ranges } = state
+      const { ranges: _ranges } = state_ as any
+      const queryRanges = searchParams.get('ranges')
       if (_ranges) {
         setRanges(_ranges)
+      } else if (queryRanges) {
+        setRanges(queryRanges.split(',').filter(Boolean) as bookcarsTypes.CarRange[])
       }
 
       // if (_pickupLocation.latitude && _pickupLocation.longitude) {
@@ -247,12 +251,18 @@ const Search = () => {
     }
   }
 
+  const dateFormat = new Intl.DateTimeFormat(UserService.getLanguage(), { dateStyle: 'medium' })
+
   return (
     <>
       <Layout onLoad={onLoad} strict={false}>
         {visible && supplierIds && pickupLocation && dropOffLocation && from && to && (
-          <div className="search">
-            <div className="col-1">
+          <main className="search">
+            <header className="search-heading">
+              <h1>{pickupLocation.name}</h1>
+              <p>{dateFormat.format(from)} – {dateFormat.format(to)}</p>
+            </header>
+            <aside className="search-sidebar">
               {!loading && (
                 <>
                   {((pickupLocation.latitude && pickupLocation.longitude)
@@ -309,8 +319,8 @@ const Search = () => {
                   }
                 </>
               )}
-            </div>
-            <div className="col-2">
+            </aside>
+            <div className="search-results">
               <CarList
                 carSpecs={carSpecs}
                 suppliers={supplierIds}
@@ -332,11 +342,12 @@ const Search = () => {
                 // distance={distance}
                 // onLoad={() => setLoadingPage(false)}
                 hideSupplier={env.HIDE_SUPPLIERS}
+                showResultCountOnly
                 // includeAlreadyBookedCars
                 includeComingSoonCars
               />
             </div>
-          </div>
+          </main>
         )}
 
         <MapDialog

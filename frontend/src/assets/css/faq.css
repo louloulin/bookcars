@@ -2,14 +2,30 @@ div.faq {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
+  background: #f8f8f3;
+}
+
+div.faq div.page-section { width: 100%; }
+
+div.faq .faq-list {
+  width: 100%;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  transform: translate3d(0, 0, 0);
-  padding: 50px 10%;
-  min-height: 100vh;
+}
+
+div.faq .faq-list h2 {
+  width: fit-content;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: clamp(1.5rem, 2.6vw, 2rem);
+  color: #193329;
+  margin: 0 0 4px;
 }
 
 @media only screen and (width <=960px) {
   div.faq {
-    padding: 50px 0;
+    padding: 0;
   }
 }

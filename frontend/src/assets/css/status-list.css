@@ -1,64 +1,65 @@
 li.bs-s {
   padding: 7px;
   text-align: center;
-  font-weight: 200;
+  font-weight: 700;
   color: #fff;
   margin: 1px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border-radius: 99px;
 }
 
 .bs-s:hover {
-  opacity: 0.93;
+  opacity: .93;
 }
 
 .bs-s-void,
 .bs-s-void:hover {
-  background: #D9D9D9 !important;
-  color: #6E7C86 !important;
+  background: #e6eae4 !important;
+  color: #4d6057 !important;
 }
 
 .bs-s-pending,
 .bs-s-pending:hover {
-  background: #FBDCC2 !important;
-  color: #EF6C00 !important;
+  background: #fbe6cc !important;
+  color: #8a4b00 !important;
 }
 
 .bs-s-deposit,
 .bs-s-deposit:hover {
-  background: #CDECDA !important;
-  color: #3CB371 !important;
+  background: #d7ecdf !important;
+  color: #1f6b45 !important;
 }
 
 .bs-s-paid,
 .bs-s-paid:hover {
-  background: #D1F9D1 !important;
-  color: #77BC23 !important;
+  background: #d9efdd !important;
+  color: #1f6b45 !important;
 }
 
 .bs-s-paidinfull,
 .bs-s-paidinfull:hover {
-  background: #77BC23 !important;
-  color: #FFF !important;
+  background: #214c3c !important;
+  color: #fff !important;
 }
 
 .bs-s-reserved,
 .bs-s-reserved:hover {
-  background: #D9E7F4 !important;
-  color: #1E88E5 !important;
+  background: #d9e7f4 !important;
+  color: #1d5f8f !important;
 }
 
 .bs-s-cancelled,
 .bs-s-cancelled:hover {
-  background: #FBDFDE !important;
-  color: #E53935 !important;
+  background: #f7dedc !important;
+  color: #a32721 !important;
 }
 
 .bs-s-sv {
   display: inherit;
   text-align: center;
-  font-weight: 200;
+  font-weight: 600;
   padding: 3px;
-  opacity: 0.93;
+  opacity: .93;
 }

@@ -295,7 +295,18 @@ const SearchForm = ({
       return
     }
 
-    setTimeout(navigate, 0, '/search', {
+    const params = new URLSearchParams({
+      pickupLocation: pickupLocationId,
+      dropOffLocation: dropOffLocationId,
+      from: new Date(data.from as Date).toISOString(),
+      to: new Date(data.to as Date).toISOString(),
+    })
+
+    if (ranges.length > 0) {
+      params.set('ranges', ranges.join(','))
+    }
+
+    setTimeout(navigate, 0, `/search?${params.toString()}`, {
       state: {
         pickupLocationId: pickupLocationId,
         dropOffLocationId: dropOffLocationId,
@@ -342,7 +353,7 @@ const SearchForm = ({
             />
           )}
         />
-        <FormHelperText error={!!errors.from}>{errors.from?.message}</FormHelperText>
+        {errors.from && <FormHelperText error>{errors.from.message}</FormHelperText>}
       </FormControl>
       <FormControl fullWidth className="to">
         <Controller
@@ -364,23 +375,11 @@ const SearchForm = ({
             />
           )}
         />
-        <FormHelperText error={!!errors.to}>{errors.to?.message}</FormHelperText>
+        {errors.to && <FormHelperText error>{errors.to.message}</FormHelperText>}
       </FormControl>
       <Button type="submit" variant="contained" className="btn-search" disabled={isSubmitting}>
         {commonStrings.SEARCH}
       </Button>
-      {onCancel && (
-        <Button
-          variant="outlined"
-          color="inherit"
-          className="btn-cancel"
-          onClick={() => {
-            onCancel()
-          }}
-        >
-          {commonStrings.CANCEL}
-        </Button>
-      )}
       {!sameLocation && (
         <FormControl className="drop-off-location">
           <LocationSelectList
@@ -398,8 +397,13 @@ const SearchForm = ({
         </FormControl>
       )}
       <FormControl className="chk-same-location">
-        <FormControlLabel control={<Checkbox checked={sameLocation} onChange={handleSameLocationChange} />} label={strings.DROP_OFF} />
+        <FormControlLabel control={<Checkbox size="small" checked={sameLocation} onChange={handleSameLocationChange} />} label={strings.DROP_OFF} />
       </FormControl>
+      {onCancel && (
+        <Button variant="text" className="btn-cancel" onClick={onCancel}>
+          {commonStrings.CANCEL}
+        </Button>
+      )}
     </form>
   )
 }

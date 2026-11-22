@@ -4,6 +4,7 @@ import * as bookcarsHelper from ':bookcars-helper'
 import env from '@/config/env.config'
 import { strings as commonStrings } from '@/lang/common'
 import Accordion from './Accordion'
+import SupplierAvatar from '@/components/SupplierAvatar'
 
 import '@/assets/css/supplier-filter.css'
 
@@ -134,10 +135,9 @@ const SupplierFilter = ({
                   onClick={handleSupplierClick}
                   className="supplier"
                 >
-                  <img
-                    src={bookcarsHelper.joinURL(env.CDN_USERS, supplier.avatar)}
-                    alt={supplier.fullName}
-                    title={supplier.fullName}
+                  <SupplierAvatar
+                    avatar={supplier.avatar}
+                    name={supplier.fullName}
                   />
                 </span>
                 {!!supplier.carCount && <span className="car-count">{`(${supplier.carCount})`}</span>}

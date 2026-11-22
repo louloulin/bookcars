@@ -18,6 +18,7 @@ import * as helper from '@/utils/helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/sign-up'
 import { strings as signinStrings } from '@/lang/sign-in'
+import { strings as pageStrings } from '@/lang/page'
 import * as UserService from '@/services/UserService'
 import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
 import Layout from '@/components/Layout'
@@ -119,6 +120,7 @@ const SignUp = () => {
         {visible && !success && (
           <Paper className="signup-form" elevation={10}>
             <h1 className="signup-form-title">{strings.SIGN_UP_HEADING}</h1>
+            <p className="signup-form-subtitle">{pageStrings.SIGN_UP_SUBTITLE}</p>
             <form onSubmit={handleSubmit(onSubmit)}>
               <div>
                 <FormControl fullWidth margin="dense" error={!!errors.fullName}>

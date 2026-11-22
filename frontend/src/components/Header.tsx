@@ -1,5 +1,5 @@
 import React, { useState, useEffect, memo } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Link, NavLink, useNavigate } from 'react-router-dom'
 import {
   AppBar,
   Toolbar,
@@ -17,6 +17,7 @@ import {
 } from '@mui/material'
 import {
   Menu as MenuIcon,
+  RouteOutlined,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
   More as MoreIcon,
@@ -335,8 +336,8 @@ const Header = ({
 
   return (
     (!hidden && (
-      <div style={classes.grow} className="header">
-        <AppBar position="relative" sx={{ bgcolor: '#fff', boxShadow: 'none', borderBottom: '1px solid #ddd' }}>
+      <div style={classes.grow} className="header site-header">
+        <AppBar position="relative" color="transparent" elevation={0}>
           <Toolbar className="toolbar">
             {isLoaded && (
               <>
@@ -344,9 +345,19 @@ const Header = ({
                   <MenuIcon />
                 </IconButton>
 
-                <Button onClick={() => navigate('/')} className="logo">{env.WEBSITE_NAME}</Button>
+                <Button component={Link} to="/" className="logo">
+                  <span className="site-brand-icon"><RouteOutlined fontSize="small" /></span>
+                  {env.WEBSITE_NAME}
+                </Button>
 
                 {!env.isMobile && headerTitle && <div className="header-title">{headerTitle}</div>}
+                {!headerTitle && (
+                  <nav className="site-nav" aria-label={strings.HOME}>
+                    <NavLink to="/locations">{strings.LOCATIONS}</NavLink>
+                    <NavLink to="/faq">{strings.FAQ}</NavLink>
+                    <NavLink to="/contact">{strings.CONTACT}</NavLink>
+                  </nav>
+                )}
               </>
             )}
 

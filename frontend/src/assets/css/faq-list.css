@@ -1,31 +1,62 @@
 div.faq-list {
   width: 100%;
-  padding: 50px 30px;
+  padding: 0;
   display: flex;
   flex-direction: column;
   align-items: center;
+  gap: 26px;
 }
 
-div.faq-list h2 {
-  width: fit-content;
+div.faq-list div.faq-list-questions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
 }
 
-div.faq-list div.questions {
-  margin: 20px 120px 70px 120px;
-  max-width: 1068px;
+div.faq-list div.faq-list-questions .MuiAccordion-root {
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 16px !important;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
+  overflow: hidden;
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
 
-div.faq-list div.questions .accordion-title {
-  font-weight: 500;
+div.faq-list div.faq-list-questions .MuiAccordion-root::before { display: none; }
+
+div.faq-list div.faq-list-questions .MuiAccordion-root.Mui-expanded {
+  border-color: #cfdcc9;
+  box-shadow: 0 14px 34px rgb(26 54 39 / 9%);
 }
 
-
-div.faq-list div.questions .accordion-details {
-  color: #1a1a1a;
+div.faq-list div.faq-list-questions .MuiAccordion-summary-root {
+  padding: 18px 20px;
+  min-height: 0;
 }
 
-@media only screen and (width <=960px) {
-  div.faq-list div.questions {
-    margin: 20px 0 70px 0;
-  }
+div.faq-list div.faq-list-questions .accordion-title {
+  font-weight: 650;
+  font-size: 1rem;
+  color: #193329;
+  line-height: 1.45;
+  padding-right: 12px;
+}
+
+div.faq-list div.faq-list-questions .accordion-details {
+  color: #55695e;
+  font-size: .96rem;
+  line-height: 1.7;
+  padding: 0 20px 20px;
+}
+
+div.faq-list div.faq-list-questions .MuiAccordionSummary-expandIconWrapper {
+  color: #5d7268;
+}
+
+div.faq-list button.btn-home {
+  align-self: center;
+  padding-inline: 26px;
+  height: 44px;
+  border-radius: 10px;
 }

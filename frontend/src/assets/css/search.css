@@ -1,68 +1,58 @@
-div.search {
-  display: flex;
-  flex: 1 0 auto;
-  transform: translate3d(0, 0, 0);
+main.search {
+  width: min(1240px, calc(100% - 48px));
+  margin: 34px auto 64px;
+  display: grid;
+  grid-template-columns: minmax(236px, 278px) minmax(0, 1fr);
+  align-items: start;
+  gap: clamp(16px, 3vw, 36px);
 }
 
-div.search div.col-1 {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding-top: 5px;
+.search-heading {
+  grid-column: 1 / -1;
+  padding: clamp(22px, 4vw, 44px);
+  border-radius: 20px;
+  background: #193b30;
+  color: #f8fbf2;
 }
 
-div.search div.col-1 .map {
-  margin-top: 20px;
-  min-height: 0;
-  height: 180px;
-  margin-bottom: 3px;
+.search-heading h1 {
+  margin: 0;
+  font: 400 clamp(1.7rem, 4vw, 3.2rem)/1.1 Georgia, 'Songti SC', serif;
+  letter-spacing: -.025em;
+  overflow-wrap: anywhere;
 }
 
-div.search div.col-1 .filter {
-  margin: 5px 0;
-  width: 100%;
-  max-width: 480px;
+.search-heading p { margin: 12px 0 0; color: #d9e8dc; font-size: .92rem; }
+
+.search-sidebar {
+  display: grid;
+  align-items: start;
+  gap: 10px;
+  min-width: 0;
+  padding: 12px;
+  border: 1px solid #dce6dc;
+  border-radius: 18px;
+  background: #fff;
 }
 
-div.search .btn-filters {
-  max-width: 480px;
-  margin-top: 5px;
+.search-sidebar .map { min-height: 0; height: 170px; border-radius: 10px; overflow: hidden; }
+.search-sidebar .filter { margin: 0; width: 100%; }
+.search-results { min-width: 0; }
+.search-results .car-list { align-items: stretch; padding-bottom: 24px; }
+.search-results .car-list .empty-list { align-self: center; }
+.search-results .car-list .title { min-width: 0; max-width: none; padding: 0 0 10px; }
+.search-results .car-list .result-count { color: #4d6057; font-size: .9375rem; font-weight: 700; }
+.search-results div.car-container article { width: 100%; max-width: none; }
+
+@media (max-width: 1050px) {
+  main.search { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Device width is less than or equal to 960px */
-
-@media only screen and (width <=960px) {
-  div.search {
-    flex: 0 1 auto;
-    flex-direction: column;
-  }
-
-  div.search div.col-1 {
-    padding: 5px;
-    margin-bottom: 5px;
-  }
-
-  div.search div.col-2 {
-    padding: 1px;
-  }
+@media (max-width: 900px) {
+  .search-results div.car-container article { grid-template-columns: minmax(0, 1fr); }
 }
 
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-  div.search {
-    flex-direction: row;
-  }
-
-  div.search div.col-1 {
-    width: 300px;
-    margin-left: 20px;
-  }
-
-  div.search div.col-2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex: 1 0 auto;
-  }
+@media (max-width: 600px) {
+  main.search { width: calc(100% - 28px); margin-top: 16px; }
+  .search-heading { border-radius: 16px; }
 }

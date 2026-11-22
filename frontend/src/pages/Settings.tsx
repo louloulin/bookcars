@@ -15,6 +15,8 @@ import { zodResolver } from '@hookform/resolvers/zod'
 import * as bookcarsTypes from ':bookcars-types'
 import * as bookcarsHelper from ':bookcars-helper'
 import Layout from '@/components/Layout'
+import PageHero from '@/components/PageHero'
+import { strings as pageStrings } from '@/lang/page'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/settings'
 import * as UserService from '@/services/UserService'
@@ -127,18 +129,25 @@ const Settings = () => {
         <>
           <div className="settings">
 
-            <Paper className="settings-form settings-form-wrapper" elevation={10}>
-              <form onSubmit={handleSubmit(onSubmit)}>
-                <Avatar
-                  loggedUser={user}
-                  user={user}
-                  size="large"
-                  readonly={false}
-                  onBeforeUpload={onBeforeUpload}
-                  onChange={onAvatarChange}
-                  color="disabled"
-                  className="avatar-ctn"
-                />
+            <PageHero eyebrow={pageStrings.SETTINGS_EYEBROW} title={pageStrings.SETTINGS_TITLE} subtitle={pageStrings.SETTINGS_SUBTITLE} />
+
+            <div className="page-section settings-section">
+              <div className="settings-grid">
+                <Paper className="settings-card settings-profile-card" elevation={0}>
+                  <h2 className="settings-card-title">{pageStrings.PROFILE_TITLE}</h2>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="settings-avatar-row">
+                      <Avatar
+                        loggedUser={user}
+                        user={user}
+                        size="large"
+                        readonly={false}
+                        onBeforeUpload={onBeforeUpload}
+                        onChange={onAvatarChange}
+                        color="disabled"
+                        className="avatar-ctn"
+                      />
+                    </div>
                 <FormControl fullWidth margin="dense">
                   <InputLabel className="required">{commonStrings.FULL_NAME}</InputLabel>
                   <Input {...register('fullName')} type="text" required autoComplete="off" />
@@ -215,20 +224,24 @@ const Settings = () => {
                     {commonStrings.CANCEL}
                   </Button>
                 </div>
-              </form>
-            </Paper>
+                  </form>
+                </Paper>
 
-            <Paper className="settings-form settings-form-wrapper" elevation={10}>
-              <h1 className="settings-form-title">{commonStrings.DRIVER_LICENSE}</h1>
-              <DriverLicense user={user} />
-            </Paper>
+                <div className="settings-side">
+                  <Paper className="settings-card" elevation={0}>
+                    <h2 className="settings-card-title">{pageStrings.DOCUMENTS_TITLE}</h2>
+                    <DriverLicense user={user} />
+                  </Paper>
 
-            <Paper className="settings-net settings-net-wrapper" elevation={10}>
-              <h1 className="settings-form-title">{strings.NETWORK_SETTINGS}</h1>
-              <FormControl component="fieldset">
-                <FormControlLabel control={<Switch checked={enableEmailNotifications} onChange={handleEmailNotificationsChange} />} label={strings.SETTINGS_EMAIL_NOTIFICATIONS} />
-              </FormControl>
-            </Paper>
+                  <Paper className="settings-card" elevation={0}>
+                    <h2 className="settings-card-title">{pageStrings.PREFERENCES_TITLE}</h2>
+                    <FormControl component="fieldset">
+                      <FormControlLabel control={<Switch checked={enableEmailNotifications} onChange={handleEmailNotificationsChange} />} label={strings.SETTINGS_EMAIL_NOTIFICATIONS} />
+                    </FormControl>
+                  </Paper>
+                </div>
+              </div>
+            </div>
 
           </div>
 

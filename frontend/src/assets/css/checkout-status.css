@@ -13,7 +13,7 @@ div.checkout-status div.details {
 div.checkout-status div.details div.status-details-container {
   display: flex;
   flex-direction: column;
-  padding: 20px;
+  padding: clamp(20px, 3vw, 32px);
 }
 
 div.checkout-status div.details div.status-info {
@@ -25,16 +25,17 @@ div.checkout-status div.details div.status-info {
 }
 
 div.checkout-status div.details div.status-info span {
-  color: #444;
+  color: #193329;
   display: inline-block;
-  font-size: 17px;
-  font-weight: 700;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: -.02em;
   margin-left: 5px;
 }
 
 div.checkout-status div.details div.status-details {
   display: table;
-  color: #333;
+  color: #193329;
   font-size: 15px;
   padding: 0 40px 20px 0;
 }
@@ -58,17 +59,24 @@ div.checkout-status div.details div.status-details div.status-detail span.status
 div.checkout-status div.details div.status-details div.status-detail div.status-price {
   font-size: 17px;
   font-weight: 700;
-  color: #333;
+  color: #193329;
 }
 
 div.checkout-status div.details div.side-panel {
   width: 100%;
   display: flex;
   flex-direction: column;
-  /* background-color: #1a1a1a; */
-  background-color: #121212;
+  background-color: #193b30;
+  color: #eaf3e7;
+  padding: clamp(24px, 3vw, 40px);
+}
+
+div.checkout-status div.details div.side-panel h1,
+div.checkout-status div.details div.side-panel h2 {
   color: #fff;
-  padding: 40px;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  letter-spacing: -.02em;
 }
 
 

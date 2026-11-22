@@ -60,6 +60,7 @@ import Progress from '@/components/Progress'
 import CheckoutStatus from '@/components/CheckoutStatus'
 import NoMatch from './NoMatch'
 import CheckoutOptions from '@/components/CheckoutOptions'
+import SupplierAvatar from '@/components/SupplierAvatar'
 import Footer from '@/components/Footer'
 import ViewOnMapButton from '@/components/ViewOnMapButton'
 import MapDialog from '@/components/MapDialog'
@@ -441,10 +442,11 @@ const Checkout = () => {
         {!user?.blacklisted && visible && car && from && to && pickupLocation && dropOffLocation && (
           <>
             <div className="checkout">
-              <Paper className="checkout-form" elevation={10}>
+              <Paper component="main" className="checkout-form" elevation={0}>
                 <h1 className="checkout-form-title">{strings.BOOKING_HEADING}</h1>
                 <form onSubmit={handleSubmit(onSubmit, onError)}>
-                  <div>
+                  <div className="checkout-layout">
+                    <div className="checkout-vehicle">
                     {(
                       (pickupLocation.latitude && pickupLocation.longitude)
                       || (pickupLocation.parkingSpots && pickupLocation.parkingSpots.length > 0)
@@ -486,8 +488,9 @@ const Checkout = () => {
                       onFullInsuranceChange={(value) => setValue('fullInsurance', value)}
                       onAdditionalDriverChange={(value) => setValue('additionalDriver', value)}
                     />
+                    </div>
 
-                    <div className="checkout-details-container">
+                    <div className="checkout-details-container checkout-summary">
                       <div className="checkout-info">
                         <CarIcon />
                         <span>{strings.BOOKING_DETAILS}</span>
@@ -516,7 +519,7 @@ const Checkout = () => {
                             <span className="checkout-detail-title">{commonStrings.SUPPLIER}</span>
                             <div className="checkout-detail-value">
                               <div className="car-supplier">
-                                <img src={bookcarsHelper.joinURL(env.CDN_USERS, car.supplier.avatar)} alt={car.supplier.fullName} style={{ height: env.SUPPLIER_IMAGE_HEIGHT }} />
+                                <SupplierAvatar avatar={car.supplier.avatar} name={car.supplier.fullName} style={{ height: env.SUPPLIER_IMAGE_HEIGHT }} />
                                 <span className="car-supplier-name">{car.supplier.fullName}</span>
                               </div>
                             </div>

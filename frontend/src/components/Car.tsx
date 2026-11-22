@@ -18,6 +18,7 @@ import {
   Info as InfoIcon,
   LocationOn as LocationIcon,
   ExpandMore as ExpandMoreIcon,
+  DirectionsCar as CarIcon,
 } from '@mui/icons-material'
 import * as bookcarsTypes from ':bookcars-types'
 import * as bookcarsHelper from ':bookcars-helper'
@@ -26,6 +27,8 @@ import * as helper from '@/utils/helper'
 import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/cars'
 import Badge from '@/components/Badge'
+import SupplierAvatar from '@/components/SupplierAvatar'
+import SafeImage from '@/components/SafeImage'
 import * as UserService from '@/services/UserService'
 import * as PaymentService from '@/services/PaymentService'
 
@@ -190,12 +193,12 @@ const Car = ({
       )}
       <article>
         <div className="car">
-          <img src={bookcarsHelper.joinURL(env.CDN_CARS, car.image)} alt={car.name} className="car-img" />
+          <SafeImage src={bookcarsHelper.joinURL(env.CDN_CARS, car.image)} alt={car.name} className="car-img" fallback={<CarIcon />} />
           <div className="car-row">
             {!hideSupplier && (
               <div className="car-supplier" style={sizeAuto ? { bottom: 10 } : {}} title={car.supplier.fullName}>
                 <span className="car-supplier-logo">
-                  <img src={bookcarsHelper.joinURL(env.CDN_USERS, car.supplier.avatar)} alt={car.supplier.fullName} />
+                  <SupplierAvatar avatar={car.supplier.avatar} name={car.supplier.fullName} />
                 </span>
                 <span className="car-supplier-info">{car.supplier.fullName}</span>
               </div>

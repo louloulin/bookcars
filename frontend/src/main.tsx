@@ -186,11 +186,13 @@ const theme = createTheme(
   {
     palette: {
       primary: {
-        main: '#1a1a1a',
-        // contrastText: '#003B95',
-        // dark: '#003B95',
+        main: '#214c3c',
+        dark: '#173d30',
       },
+      background: { default: '#f8f8f3', paper: '#ffffff' },
+      text: { primary: '#193329', secondary: '#4d6057' },
     },
+    shape: { borderRadius: 12 },
     typography: {
       fontFamily: [
         '-apple-system',
@@ -204,12 +206,17 @@ const theme = createTheme(
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
+      button: { textTransform: 'none', fontWeight: 700 },
     },
     components: {
+      MuiButton: {
+        defaultProps: { disableElevation: true },
+        styleOverrides: { root: { borderRadius: 10 } },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: '#FAFAFA',
+            backgroundColor: '#f8f8f3',
           },
         },
       },
@@ -256,7 +263,7 @@ const theme = createTheme(
             // Selected
             '&[aria-selected="true"]': {
               // backgroundColor: '#faad43 !important',
-              backgroundColor: '#F7B644 !important',
+              backgroundColor: '#dceade !important',
             },
           },
         },

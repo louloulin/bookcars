@@ -1,20 +1,40 @@
 div.checkout-session {
-  background-color: #F5F5F5;
+  background-color: #f8f8f3;
   display: flex;
   flex: 1 0 auto;
   flex-direction: column;
+  align-items: center;
   justify-content: flex-start;
   width: 100%;
-  min-height: calc(100vh - 65px);
+  min-height: calc(100vh - 72px);
+  padding: clamp(32px, 6vh, 72px) 16px;
   transform: translate3d(0, 0, 0);
 }
 
 div.checkout-session .status {
-  margin: 40px 0 0 30px;
+  width: min(100%, 620px);
+  margin: 0;
+}
+
+div.checkout-session .status div.checkout-status div.details {
+  border: 1px solid #e2e9df;
+  border-radius: 18px;
+  box-shadow: 0 14px 40px rgb(26 54 39 / 7%);
+  overflow: hidden;
+}
+
+div.checkout-session .status div.checkout-status div.details div.side-panel {
+  background-color: #193b30;
+  color: #eaf3e7;
+  padding: 32px;
 }
 
 @media only screen and (width <=960px) {
+  div.checkout-session {
+    padding: 26px 14px 44px;
+  }
+
   div.checkout-session .status {
-    margin: 40px 10px 0 10px;
+    width: 100%;
   }
 }

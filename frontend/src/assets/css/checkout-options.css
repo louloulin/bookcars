@@ -1,9 +1,10 @@
 div.checkout-options-container {
-  background: #fbfbfb;
-  border: 1px solid #d9d8d9;
-  border-radius: 5px;
-  padding: 25px;
-  margin-bottom: 15px;
+  background: #fbfcf9;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  padding: 22px 24px;
+  margin-bottom: 16px;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
 }
 
 div.checkout-info {
@@ -12,51 +13,46 @@ div.checkout-info {
   justify-content: center;
   text-align: center;
   width: 100%;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid #eef2ec;
 }
 
 div.checkout-info span {
-  color: #1a1a1a;
+  color: #193329;
   display: inline-block;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 700;
+  letter-spacing: -.01em;
   margin-left: 5px;
 }
 
 div.checkout-options,
 div.payment-options {
-  color: #333;
+  color: #4d6057;
   user-select: none;
+  font-size: .9375rem;
 }
 
 div.checkout-options span.checkout-option-label {
   font-weight: 700;
+  color: #193329;
 }
 
-div.checkout-options span.checkout-option-label::after {
-  content: ' ';
+div.payment-options .payment-option {
+  border: 1px solid #e4ebe1;
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin-bottom: 10px;
+  background: #fff;
+  transition: border-color .18s ease, box-shadow .18s ease;
 }
 
-div.checkout-options span.checkout-option-value {
-  color: rgb(0 0 0 / 55%);
+div.payment-options .payment-option:hover {
+  border-color: #b9cdb2;
+  box-shadow: 0 8px 20px rgb(26 54 39 / 6%);
 }
 
-/* Device width is less than or equal to 960px */
-
-@media only screen and (width <=960px) {
-
-  div.checkout-options span.checkout-option-value {
-    display: table-row;
-  }
-
-}
-
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-
-  div.checkout-options-container {
-    width: 800px;
-  }
-
+div.payment-options .payment-option:last-child {
+  margin-bottom: 0;
 }

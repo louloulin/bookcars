@@ -2,7 +2,13 @@ div.suppliers {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  align-items: center;
-  transform: translate3d(0, 0, 0);
-  min-height: 100vh;
+  background: #f8f8f3;
+}
+
+div.suppliers .page-section { width: 100%; }
+
+@media only screen and (width <=960px) {
+  div.suppliers {
+    padding: 0;
+  }
 }

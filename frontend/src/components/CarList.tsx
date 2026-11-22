@@ -35,6 +35,7 @@ interface CarListProps {
   className?: string
   hidePrice?: boolean
   hideSupplier?: boolean
+  showResultCountOnly?: boolean
   loading?: boolean
   sizeAuto?: boolean
   ranges?: string[]
@@ -66,6 +67,7 @@ const CarList = ({
   className,
   hidePrice,
   hideSupplier,
+  showResultCountOnly = false,
   loading: carListLoading,
   sizeAuto,
   ranges,
@@ -232,13 +234,15 @@ const CarList = ({
             <>
               {totalRecords > 0 && (
                 <div className="title">
-                  <div className="bookcars">
-                    <span>{strings.TITLE_1}</span>
-                    <span className="title-bookcars">{env.WEBSITE_NAME}</span>
-                    <span>{strings.TITLE_2}</span>
-                  </div>
-                  <div className="car-count">
-                    {`(${totalRecords} ${totalRecords === 1 ? strings.TITLE_CAR_AVAILABLE : strings.TITLE_CARS_AVAILABLE})`}
+                  {!showResultCountOnly && (
+                    <div className="bookcars">
+                      <span>{strings.TITLE_1}</span>
+                      <span className="title-bookcars">{env.WEBSITE_NAME}</span>
+                      <span>{strings.TITLE_2}</span>
+                    </div>
+                  )}
+                  <div className={showResultCountOnly ? 'result-count' : 'car-count'}>
+                    {`${totalRecords} ${totalRecords === 1 ? strings.TITLE_CAR_AVAILABLE : strings.TITLE_CARS_AVAILABLE}`}
                   </div>
                 </div>
               )}

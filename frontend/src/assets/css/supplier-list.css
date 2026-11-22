@@ -1,46 +1,57 @@
 div.supplier-list {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
+  gap: 16px;
+  width: 100%;
 }
 
-@media only screen and (width >=960px) {
-  div.supplier-list {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-start;
-  }
-}
-
-@media only screen and (width <=960px) {
-  div.supplier-list {
-    justify-content: center;
-  }
-}
+div.supplier-list.supplier-list-empty { display: none; }
 
 div.supplier-list div.supplier {
-  width: 120px;
-  height: 120px;
-  margin: 20px;
-  padding: 5px;
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  padding: 20px 16px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-start;
+  gap: 12px;
+  min-height: 150px;
+  box-sizing: border-box;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
 }
 
+div.supplier-list div.supplier:hover {
+  transform: translateY(-3px);
+  border-color: #cfdcc9;
+  box-shadow: 0 14px 32px rgb(26 54 39 / 9%);
+}
 
 div.supplier-list div.supplier div.img {
-  width: 72px;
-  height: 52px;
+  width: 88px;
+  height: 56px;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
+  border-radius: 12px;
+  background: #f4f8f1;
+  padding: 8px;
+  box-sizing: border-box;
 }
 
 div.supplier-list div.supplier div.img img {
   max-width: 100%;
   max-height: 100%;
+  object-fit: contain;
+}
+
+div.supplier-list div.supplier div.img span.supplier-avatar-fallback {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  font-size: 1.1rem;
 }
 
 div.supplier-list div.supplier div.name {
@@ -51,7 +62,16 @@ div.supplier-list div.supplier div.name {
   overflow: hidden;
   text-overflow: ellipsis;
   height: 42px;
-  font-size: 14px;
+  font-size: .92rem;
+  font-weight: 650;
   text-align: center;
-  margin-top: 10px;
+  color: #193329;
+  margin-top: 0;
+}
+
+@media only screen and (width <=960px) {
+  div.supplier-list {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 12px;
+  }
 }

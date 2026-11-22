@@ -1,8 +1,10 @@
 div.booking-filter {
   background: #fff;
-  margin: 10px 10px 0 0;
-  border: 1px solid #dadada;
+  margin: 0 0 10px;
+  border: 1px solid #e4ebe1;
+  border-radius: 12px;
   font-size: 13px;
+  overflow: hidden;
 }
 
 div.booking-filter .bf-search {

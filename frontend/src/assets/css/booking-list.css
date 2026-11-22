@@ -44,11 +44,13 @@ div.bs-list div.booking-details {
   color: #333;
   font-size: 15px;
   background-color: #fff;
-  margin: 10px;
-  padding: 10px;
-  border: 1px solid #d9d8d9;
-  border-radius: 5px;
-  width: calc(100% - 20px);
+  margin: 0 0 12px;
+  padding: 16px 18px;
+  border: 1px solid #e2e9df;
+  border-radius: 14px;
+  box-shadow: 0 6px 18px rgb(26 54 39 / 4%);
+  width: 100%;
+  box-sizing: border-box;
 }
 
 div.bs-list div.booking-details div.booking-detail {
@@ -169,9 +171,8 @@ div.bs-list div.bs-buttons button {
 
 @media only screen and (width >=960px) {
   div.bs-list {
-    position: absolute;
-    inset: 0;
-    overflow-y: auto;
+    width: 100%;
+    min-width: 0;
   }
 
   div.bs-list .empty-list {

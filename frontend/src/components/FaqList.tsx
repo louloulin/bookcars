@@ -11,21 +11,20 @@ const Faq = () => {
 
   return (
     <div className="faq-list">
-      <h2>{strings.FAQ_TITLE}</h2>
-      <div className="questions">
-        <Accordion>
+      <div className="faq-list-questions">
+        <Accordion disableGutters>
           <AccordionSummary expandIcon={<ExpandMore />}><Typography component="span" className="accordion-title">{strings.FAQ_DOCUMENTS_TITLE}</Typography></AccordionSummary>
           <AccordionDetails className="accordion-details">{strings.FAQ_DOCUMENTS_TEXT}</AccordionDetails>
         </Accordion>
-        <Accordion>
+        <Accordion disableGutters>
           <AccordionSummary expandIcon={<ExpandMore />}><Typography component="span" className="accordion-title">{strings.FAQ_SERVICES_TITLE}</Typography></AccordionSummary>
           <AccordionDetails className="accordion-details">{strings.FAQ_SERVICES_TEXT}</AccordionDetails>
         </Accordion>
-        <Accordion>
+        <Accordion disableGutters>
           <AccordionSummary expandIcon={<ExpandMore />}><Typography component="span" className="accordion-title">{strings.FAQ_AGE_TITLE}</Typography></AccordionSummary>
           <AccordionDetails className="accordion-details">{strings.FAQ_AGE_TEXT}</AccordionDetails>
         </Accordion>
-        <Accordion>
+        <Accordion disableGutters>
           <AccordionSummary expandIcon={<ExpandMore />}><Typography component="span" className="accordion-title">{strings.FAQ_CANCEL_TITLE}</Typography></AccordionSummary>
           <AccordionDetails className="accordion-details">{strings.FAQ_CANCEL_TEXT}</AccordionDetails>
         </Accordion>

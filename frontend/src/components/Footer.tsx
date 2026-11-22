@@ -24,45 +24,56 @@ const Footer = () => {
 
   return (
     <div className="footer">
-      <div className="header">{env.WEBSITE_NAME}</div>
-      <section className="main">
-        <div className="main-section">
-          <div className="title">{strings.CORPORATE}</div>
-          <ul className="links">
-            <li onClick={() => navigate('/about')}>{strings.ABOUT}</li>
-            <li onClick={() => navigate('/cookie-policy')}>{strings.COOKIE_POLICY}</li>
-            <li onClick={() => navigate('/privacy')}>{strings.PRIVACY_POLICY}</li>
-            <li onClick={() => navigate('/tos')}>{strings.TOS}</li>
-          </ul>
-        </div>
-        <div className="main-section">
-          <div className="title">{strings.RENT}</div>
-          <ul className="links">
-            {!env.HIDE_SUPPLIERS && <li onClick={() => navigate('/suppliers')}>{strings.SUPPLIERS}</li>}
-            <li onClick={() => navigate('/locations')}>{strings.LOCATIONS}</li>
-          </ul>
-        </div>
-        <div className="main-section">
-          <div className="title">{strings.SUPPORT}</div>
-          <ul className="links">
-            <li onClick={() => navigate('/contact')}>{strings.CONTACT}</li>
-            <li onClick={() => navigate('/faq')}>{strings.FAQ}</li>
-          </ul>
+      <div className="footer-inner">
+        <div className="footer-brand">
+          <div className="footer-brand-row">
+            <span className="footer-brand-mark">{env.WEBSITE_NAME.charAt(0)}</span>
+            <div className="footer-header">{env.WEBSITE_NAME}</div>
+          </div>
+          <p className="footer-brand-text">{strings.CORPORATE}</p>
           <div className="footer-contact">
             <MailOutline className="icon" />
             <a href={`mailto:${env.CONTACT_EMAIL}`}>{env.CONTACT_EMAIL}</a>
           </div>
-          <div className="footer-contact">
+          <div className="footer-social">
             <IconButton href="https://www.facebook.com/" target="_blank" aria-label="Facebook" className="social-icon"><FacebookIcon /></IconButton>
             <IconButton href="https://x.com/" target="_blank" aria-label="X" className="social-icon"><X /></IconButton>
             <IconButton href="https://www.linkedin.com/" target="_blank" aria-label="LinkedIn" className="social-icon"><LinkedIn /></IconButton>
             <IconButton href="https://www.instagram.com/" target="_blank" aria-label="Instagram" className="social-icon"><Instagram /></IconButton>
           </div>
-          <div className="newsletter">
-            <NewsletterForm />
-          </div>
         </div>
-      </section>
+
+        <section className="main">
+          <div className="main-section">
+            <div className="title">{strings.CORPORATE}</div>
+            <ul className="links">
+              <li onClick={() => navigate('/about')}>{strings.ABOUT}</li>
+              <li onClick={() => navigate('/cookie-policy')}>{strings.COOKIE_POLICY}</li>
+              <li onClick={() => navigate('/privacy')}>{strings.PRIVACY_POLICY}</li>
+              <li onClick={() => navigate('/tos')}>{strings.TOS}</li>
+            </ul>
+          </div>
+          <div className="main-section">
+            <div className="title">{strings.RENT}</div>
+            <ul className="links">
+              {!env.HIDE_SUPPLIERS && <li onClick={() => navigate('/suppliers')}>{strings.SUPPLIERS}</li>}
+              <li onClick={() => navigate('/locations')}>{strings.LOCATIONS}</li>
+            </ul>
+          </div>
+          <div className="main-section">
+            <div className="title">{strings.SUPPORT}</div>
+            <ul className="links">
+              <li onClick={() => navigate('/contact')}>{strings.CONTACT}</li>
+              <li onClick={() => navigate('/faq')}>{strings.FAQ}</li>
+            </ul>
+          </div>
+        </section>
+
+        <div className="newsletter">
+          <NewsletterForm />
+        </div>
+      </div>
+
       <section className="payment">
         <div
           className="payment-text"
