@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { StyleSheet, ScrollView, View, TextInputInstance } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, TextInputInstance } from 'react-native'
 import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router'
 import validator from 'validator'
 import * as bookcarsTypes from ':bookcars-types'
@@ -14,6 +14,7 @@ import * as helper from '@/utils/helper'
 import Switch from '@/components/Switch'
 import Header from '@/components/Header'
 import SocialLogin from '@/components/SocialLogin'
+import { colors, radii, shadow } from '@/theme'
 
 const SignInScreen = () => {
   const isFocused = useIsFocused()
@@ -176,6 +177,10 @@ const SignInScreen = () => {
         keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
       >
         <View style={styles.contentContainer}>
+          <View style={styles.card}>
+          <Text style={styles.heading}>{i18n.t('SIGN_IN_TITLE')}</Text>
+          <Text style={styles.subheading}>{i18n.t('SIGN_IN_SUBTITLE')}</Text>
+
           <TextInput
             ref={emailRef}
             style={styles.component}
@@ -209,6 +214,7 @@ const SignInScreen = () => {
           <Link style={styles.link} label={i18n.t('FORGOT_PASSWORD')} onPress={onPressForgotPassword} />
 
           {blacklisted && <Error style={styles.error} message={i18n.t('IS_BLACKLISTED')} />}
+          </View>
         </View>
       </ScrollView>
     </View>
@@ -218,17 +224,43 @@ const SignInScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
+    backgroundColor: colors.canvas,
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.canvas,
+    paddingVertical: 24,
   },
   contentContainer: {
     width: '100%',
     maxWidth: 480,
     alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: 26,
+    paddingHorizontal: 20,
+    ...shadow.card,
+  },
+  heading: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: colors.ink,
+    letterSpacing: -0.5,
+    marginBottom: 6,
+  },
+  subheading: {
+    fontSize: 14,
+    color: colors.inkMuted,
+    lineHeight: 20,
+    marginBottom: 12,
   },
   component: {
     alignSelf: 'stretch',

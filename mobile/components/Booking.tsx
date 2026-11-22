@@ -11,6 +11,7 @@ import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
 import * as StripeService from '@/services/StripeService'
+import { colors, radii, shadow } from '@/theme'
 
 interface BookingProps {
   booking: bookcarsTypes.Booking
@@ -19,9 +20,9 @@ interface BookingProps {
   onCancel: () => void
 }
 
-const iconSize = 24
-const iconColor = '#000'
-const extraIconColor = '#1f9201'
+const iconSize = 20
+const iconColor = colors.inkSoft
+const extraIconColor = colors.success
 const extraIconSize = 16
 
 const Booking = ({
@@ -192,9 +193,9 @@ const Booking = ({
 
 const styles = StyleSheet.create({
   bookingContainer: {
-    marginRight: 7,
-    marginLeft: 7,
-    marginBottom: 10,
+    marginRight: 10,
+    marginLeft: 10,
+    marginBottom: 14,
     justifyContent: 'center',
     alignItems: 'center',
     alignSelf: 'stretch',
@@ -202,39 +203,46 @@ const styles = StyleSheet.create({
   booking: {
     width: '100%',
     maxWidth: 480,
-    backgroundColor: '#fff',
-    paddingTop: 20,
-    paddingRight: 10,
-    paddingBottom: 20,
-    paddingLeft: 10,
+    backgroundColor: colors.surface,
+    paddingTop: 18,
+    paddingRight: 16,
+    paddingBottom: 18,
+    paddingLeft: 16,
     borderWidth: 1,
-    borderColor: '#d9d8d9',
-    borderRadius: 5,
+    borderColor: colors.line,
+    borderRadius: radii.lg,
+    ...shadow.soft,
   },
   header: {
     flexDirection: 'row',
     alignSelf: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 12,
   },
   headerText: {
-    color: '#444',
-    fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 5,
+    color: colors.ink,
+    fontSize: 17,
+    fontWeight: '800',
+    marginLeft: 8,
+    letterSpacing: -0.2,
   },
   detailTitle: {
     alignSelf: 'stretch',
     alignItems: 'center',
-    fontSize: 13,
-    fontWeight: '600',
-    marginBottom: 3,
+    fontSize: 11,
+    fontWeight: '700',
+    letterSpacing: 0.5,
+    textTransform: 'uppercase',
+    color: colors.inkMuted,
+    marginTop: 10,
+    marginBottom: 4,
   },
   detailText: {
-    color: 'rgba(0, 0, 0, 0.35)',
-    fontSize: 12,
-    marginBottom: 10,
+    color: colors.ink,
+    fontSize: 14,
+    fontWeight: '600',
+    marginBottom: 2,
     flex: 1,
     flexWrap: 'wrap',
   },
@@ -243,26 +251,32 @@ const styles = StyleSheet.create({
     fontWeight: '700',
   },
   status: {
-    marginBottom: 10,
+    marginBottom: 6,
+    alignSelf: 'flex-start',
   },
   extras: {
     marginBottom: 10,
+    marginTop: 4,
+    paddingTop: 10,
+    borderTopWidth: 1,
+    borderTopColor: colors.lineSoft,
   },
   extra: {
     flexDirection: 'row',
-    justifyContent: 'center',
-    marginBottom: 3,
+    justifyContent: 'flex-start',
+    marginBottom: 6,
   },
   extraIcon: {
-    marginRight: 4,
+    marginRight: 6,
   },
   extraTitle: {
-    fontWeight: '600',
+    fontWeight: '700',
     fontSize: 12,
-    marginRight: 5,
+    marginRight: 6,
+    color: colors.inkSoft,
   },
   extraText: {
-    color: 'rgba(0, 0, 0, 0.35)',
+    color: colors.inkMuted,
     fontSize: 11,
     flex: 1,
     flexWrap: 'wrap',
@@ -277,9 +291,10 @@ const styles = StyleSheet.create({
     height: env.SUPPLIER_IMAGE_HEIGHT,
   },
   supplierText: {
-    color: '#a1a1a1',
-    fontSize: 10,
-    marginLeft: 5,
+    color: colors.inkMuted,
+    fontSize: 11,
+    fontWeight: '600',
+    marginLeft: 6,
   },
   button: {
     marginTop: 15,

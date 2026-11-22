@@ -11,6 +11,7 @@ import { useGlobalContext, GlobalContextType } from '@/context/GlobalContext'
 import * as NotificationService from '@/services/NotificationService'
 import CurrencyMenu from '@/components/CurrencyMenu'
 import { useDrawer } from '@/context/DrawerContext'
+import { colors, radii } from '@/theme'
 
 interface HeaderProps {
   title?: string
@@ -113,21 +114,28 @@ const Header = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#f37022',
+    backgroundColor: colors.brand,
     zIndex: 40,
-    elevation: 40,
-    height: 52,
+    height: 56,
     flexDirection: 'row',
-    paddingHorizontal: 15,
+    paddingHorizontal: 14,
     alignItems: 'center',
     justifyContent: 'space-between',
+    shadowColor: '#10241b',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.18,
+    shadowRadius: 10,
+    elevation: 8,
   },
   text: {
     color: '#fff',
-    fontWeight: '600',
+    fontWeight: '700',
+    fontSize: 17,
+    letterSpacing: 0.1,
   },
   menu: {
-    padding: 5,
+    padding: 6,
+    borderRadius: radii.sm,
   },
   actions: {
     flexDirection: 'row',
@@ -137,7 +145,7 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   notifications: {
-    paddingVertical: 5,
+    paddingVertical: 6,
     paddingRight: 10,
     paddingLeft: 5,
   },
@@ -146,7 +154,7 @@ const styles = StyleSheet.create({
     padding: 5,
   },
   badge: {
-    backgroundColor: '#1976d2',
+    backgroundColor: colors.accent,
     color: '#ffffff',
     position: 'absolute',
     top: -2,

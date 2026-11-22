@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { colors, radii } from '@/theme'
+
 interface AccordionProps {
   style?: object
   title: string
@@ -31,22 +33,20 @@ const Accordion = ({
   const styles = StyleSheet.create({
     container: {
       flex: 1,
-      borderTopWidth: 1,
-      borderRightWidth: 1,
-      borderBottomWidth: open ? 1 : 0,
-      borderLeftWidth: 1,
-      borderColor: '#d9d8d9',
-      // borderRadius: 5,
-      backgroundColor: '#fff',
+      borderWidth: 1,
+      borderColor: colors.line,
+      borderRadius: radii.md,
+      backgroundColor: colors.surface,
+      overflow: 'hidden',
     },
     title: {
       flex: 1,
-      backgroundColor: '#fff',
+      backgroundColor: colors.surface,
     },
     titleTouchable: {
       flex: 1,
       alignSelf: 'stretch',
-      backgroundColor: 'red',
+      backgroundColor: colors.surface,
       zIndex: 10,
       elevation: 10,
     },
@@ -56,37 +56,31 @@ const Accordion = ({
       justifyContent: 'space-between',
       alignItems: 'center',
       alignSelf: 'stretch',
-      paddingRight: 5,
-
-      borderColor: '#d9d8d9',
-      borderBottomWidth: 1,
-      // borderTopWidth: 1,
-      // borderRightWidth: 1,
-      // borderLeftWidth: 1,
-      // borderRadius: open ? 0 : 4,
-
-      paddingTop: 5,
-      paddingBottom: 5,
+      paddingRight: 12,
+      paddingLeft: 14,
+      paddingTop: 12,
+      paddingBottom: 12,
     },
     titleTextContainer: {
       flex: 1,
       alignSelf: 'stretch',
-      alignItems: 'center',
+      alignItems: 'flex-start',
       justifyContent: 'center',
     },
     titleText: {
-      color: 'rgba(0, 0, 0, .6)',
-      fontWeight: '400',
+      color: colors.ink,
+      fontWeight: '700',
       fontSize: 13,
+      letterSpacing: 0.2,
+      textTransform: 'uppercase',
     },
     bodyContainer: {
       flex: 1,
       alignItems: 'center',
       justifyContent: 'center',
-      paddingTop: open ? 7 : 0,
-      paddingBottom: open ? 7 : 0,
-      // opacity: open ? 1 : 0,
-      // display: open ? 'flex' : 'none',
+      paddingTop: open ? 10 : 0,
+      paddingBottom: open ? 12 : 0,
+      paddingHorizontal: 12,
       height: open ? 'auto' : 0,
       width: open ? 'auto' : 0,
     },
@@ -121,7 +115,7 @@ const Accordion = ({
               <Text style={styles.titleText}>{title}</Text>
             </View>
             <Animated.View style={{ transform: [{ rotateZ: arrowAngle }] }}>
-              <MaterialIcons name="keyboard-arrow-down" size={22} color="rgba(0, 0, 0, 0.7)" />
+              <MaterialIcons name="keyboard-arrow-down" size={22} color={colors.inkSoft} />
             </Animated.View>
           </View>
         </TouchableWithoutFeedback>

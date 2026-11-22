@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, View } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { useIsFocused, useLocalSearchParams } from 'expo-router'
 import * as bookcarsTypes from ':bookcars-types'
 import * as bookcarsHelper from ':bookcars-helper'
@@ -15,6 +15,7 @@ import StatusFilter from '@/components/StatusFilter'
 import * as BookingService from '@/services/BookingService'
 import BookingFilter from '@/components/BookingFilter'
 import Indicator from '@/components/Indicator'
+import { colors, radii, shadow } from '@/theme'
 
 
 const BookingsScreen = () => {
@@ -114,6 +115,10 @@ const BookingsScreen = () => {
           filter={filter}
           header={(
             <View>
+              <View style={styles.pageHeader}>
+                <Text style={styles.pageTitle}>{i18n.t('BOOKINGS')}</Text>
+                <Text style={styles.pageSubtitle}>{i18n.t('BOOKINGS_SUBTITLE')}</Text>
+              </View>
               <SupplierFilter
                 style={styles.filter}
                 visible={hasBookings}
@@ -148,6 +153,27 @@ const styles = StyleSheet.create({
     marginRight: 7,
     marginBottom: 10,
     marginLeft: 7,
+  },
+  pageHeader: {
+    marginHorizontal: 14,
+    marginTop: 6,
+    marginBottom: 14,
+    padding: 18,
+    borderRadius: radii.lg,
+    backgroundColor: colors.brand,
+    ...shadow.card,
+  },
+  pageTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -.3,
+  },
+  pageSubtitle: {
+    color: '#dbe7d8',
+    fontSize: 13,
+    fontWeight: '500',
+    marginTop: 4,
   },
 })
 

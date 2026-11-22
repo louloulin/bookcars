@@ -3,6 +3,7 @@ import { StyleSheet, Text, View } from 'react-native'
 import * as bookcarsTypes from ':bookcars-types'
 
 import * as helper from '@/utils/helper'
+import { colors, radii } from '@/theme'
 
 interface BookingStatusProps {
   style: object
@@ -15,29 +16,30 @@ const BookingStatus = ({
 }: BookingStatusProps) => {
   const styles = StyleSheet.create({
     container: {
-      height: 28,
+      height: 26,
       justifyContent: 'center',
       alignItems: 'center',
-      borderRadius: 18,
+      borderRadius: radii.pill,
+      paddingHorizontal: 12,
     },
     text: {
       color: status === bookcarsTypes.BookingStatus.Void
-        ? '#6E7C86'
+        ? '#4d6057'
         : status === bookcarsTypes.BookingStatus.Pending
-          ? '#EF6C00'
+          ? '#8a4b00'
           : status === bookcarsTypes.BookingStatus.Deposit
-            ? '#3CB371'
+            ? '#1f6b45'
             : status === bookcarsTypes.BookingStatus.Paid
-              ? '#77BC23'
+              ? '#1f6b45'
               : status === bookcarsTypes.BookingStatus.PaidInFull
-                ? '#FFF'
+                ? '#fff'
                 : status === bookcarsTypes.BookingStatus.Reserved
-                  ? '#1E88E5'
+                  ? '#1d5f8f'
                   : status === bookcarsTypes.BookingStatus.Cancelled
-                    ? '#E53935'
-                    : 'transparent',
-      fontSize: 13,
-      fontWeight: '400',
+                    ? '#a32721'
+                    : colors.inkSoft,
+      fontSize: 12,
+      fontWeight: '700',
     },
   })
 
@@ -48,19 +50,19 @@ const BookingStatus = ({
         ...style,
         backgroundColor:
           status === bookcarsTypes.BookingStatus.Void
-            ? '#D9D9D9'
+            ? '#e6eae4'
             : status === bookcarsTypes.BookingStatus.Pending
-              ? '#FBDCC2'
+              ? '#fbe6cc'
               : status === bookcarsTypes.BookingStatus.Deposit
-                ? '#CDECDA'
+                ? '#d7ecdf'
                 : status === bookcarsTypes.BookingStatus.Paid
-                  ? '#D1F9D1'
+                  ? '#d9efdd'
                   : status === bookcarsTypes.BookingStatus.PaidInFull
-                    ? '#77BC23'
+                    ? colors.brand
                     : status === bookcarsTypes.BookingStatus.Reserved
-                      ? '#D9E7F4'
+                      ? '#d9e7f4'
                       : status === bookcarsTypes.BookingStatus.Cancelled
-                        ? '#FBDFDE'
+                        ? '#f7dedc'
                         : 'transparent',
       }}
     >

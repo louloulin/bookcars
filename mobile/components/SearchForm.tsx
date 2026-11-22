@@ -12,6 +12,7 @@ import Button from '@/components/Button'
 import LocationSelectList from '@/components/LocationSelectList'
 import DateTimePicker from '@/components/DateTimePicker'
 import { useSetting } from '@/context/SettingContext'
+import { colors } from '@/theme'
 
 export interface SearchFormProps {
   pickupLocation?: string
@@ -36,7 +37,7 @@ const SearchForm = (
     fromTime: __fromTime,
     toDate: __toDate,
     toTime: __toTime,
-    backgroundColor = '#F5F5F5',
+    backgroundColor = colors.surface,
     size,
   }:
     SearchFormProps

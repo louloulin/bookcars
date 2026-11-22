@@ -1,5 +1,6 @@
 import React from 'react'
 import { StyleSheet, View, Text } from 'react-native'
+import { colors } from '@/theme'
 
 interface ErrorProps {
   style?: object
@@ -17,7 +18,9 @@ const Error = ({
 
 const styles = StyleSheet.create({
   text: {
-    color: '#d32f2f',
+    color: colors.danger,
+    fontSize: 13,
+    fontWeight: '600',
   },
 })
 

@@ -1,12 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, ScrollView, View, Text } from 'react-native'
+import { StyleSheet, ScrollView, View, Text, Pressable } from 'react-native'
 import { useIsFocused, useLocalSearchParams } from 'expo-router'
+import { MaterialIcons } from '@expo/vector-icons'
 
 import i18n from '@/lang/i18n'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import SearchForm from '@/components/SearchForm'
+import { colors, radii, spacing, shadow } from '@/theme'
 
 const HomeScreen = () => {
   const isFocused = useIsFocused()
@@ -43,14 +45,44 @@ const HomeScreen = () => {
         <ScrollView
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
+          showsVerticalScrollIndicator={false}
         >
 
           <View style={styles.contentContainer}>
-            <View style={styles.logo}>
-              <Text style={styles.logoMain}>BookCars</Text>
-              <Text style={styles.logoRegistered}>®</Text>
+            <View style={styles.hero}>
+              <View style={styles.heroBadge}>
+                <MaterialIcons name="verified" size={14} color={colors.brand} />
+                <Text style={styles.heroBadgeText}>{i18n.t('CAR_AVAILABLE')}</Text>
+              </View>
+
+              <Text style={styles.logo}>{i18n.t('BOOKCARS')}</Text>
+
+              <Text style={styles.tagline}>{i18n.t('SEARCH_TITLE_1')}{i18n.t('SEARCH_TITLE_2')}</Text>
+
+              <View style={styles.heroTrust}>
+                <View style={styles.trustItem}>
+                  <MaterialIcons name="verified-user" size={16} color="#dbe7d8" />
+                  <Text style={styles.trustText}>{i18n.t('PICKUP_LOCATION')}</Text>
+                </View>
+                <View style={styles.trustItem}>
+                  <MaterialIcons name="shield" size={16} color="#dbe7d8" />
+                  <Text style={styles.trustText}>{i18n.t('DEPOSIT')}</Text>
+                </View>
+                <View style={styles.trustItem}>
+                  <MaterialIcons name="support-agent" size={16} color="#dbe7d8" />
+                  <Text style={styles.trustText}>{i18n.t('CONTACT')}</Text>
+                </View>
+              </View>
             </View>
-            <SearchForm />
+
+            <View style={styles.searchCard}>
+              <SearchForm backgroundColor={colors.surface} />
+            </View>
+
+            <Pressable style={styles.helpRow}>
+              <MaterialIcons name="help-outline" size={18} color={colors.inkSoft} />
+              <Text style={styles.helpText}>{i18n.t('FAQ')}</Text>
+            </Pressable>
           </View>
 
         </ScrollView>
@@ -62,65 +94,102 @@ const HomeScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
+    backgroundColor: colors.canvas,
   },
   container: {
     flexGrow: 1,
     alignItems: 'center',
-    justifyContent: 'center',
-    paddingBottom: 10,
+    justifyContent: 'flex-start',
+    paddingBottom: 28,
+    backgroundColor: colors.canvas,
   },
   contentContainer: {
     width: '100%',
     maxWidth: 480,
     alignItems: 'center',
   },
-  logo: {
+  hero: {
+    width: '100%',
     alignSelf: 'stretch',
-    flexDirection: 'row',
-    display: 'flex',
-    justifyContent: 'center',
-    marginBottom: 10,
-    maxWidth: 480,
-  },
-  logoMain: {
-    color: '#f37022',
-    fontSize: 70,
-    fontWeight: '700',
-    lineHeight: 125,
-  },
-  logoRegistered: {
-    color: '#f37022',
-    fontSize: 15,
-    fontWeight: '600',
-    marginTop: 40,
-  },
-  component: {
-    alignSelf: 'stretch',
-    margin: 10,
-  },
-  footer: {
-    position: 'absolute',
-    bottom: 0,
-    right: 0,
-    left: 0,
-    height: 50,
-    justifyContent: 'center',
+    backgroundColor: colors.brand,
+    borderBottomLeftRadius: radii.xl,
+    borderBottomRightRadius: radii.xl,
+    paddingTop: spacing.xl,
+    paddingBottom: spacing.xl + 8,
+    paddingHorizontal: spacing.lg,
     alignItems: 'center',
-    backgroundColor: '#f2f2f2',
-    borderTopWidth: 1,
-    borderTopColor: '#ebebeb',
-    alignSelf: 'stretch',
+    ...shadow.card,
+  },
+  heroBadge: {
     flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+    backgroundColor: 'rgba(255, 255, 255, .16)',
+    borderRadius: radii.pill,
+    paddingHorizontal: 12,
+    paddingVertical: 6,
+    marginBottom: spacing.md,
   },
-  copyright: {
+  heroBadgeText: {
+    color: '#eaf3e7',
     fontSize: 12,
-    color: '#70757a',
+    fontWeight: '700',
+    letterSpacing: 0.4,
+    textTransform: 'uppercase',
   },
-  copyrightRegistered: {
-    fontSize: 6,
-    color: '#70757a',
-    position: 'relative',
-    top: -5,
+  logo: {
+    color: '#fff',
+    fontSize: 40,
+    fontWeight: '800',
+    letterSpacing: -1,
+    marginBottom: 4,
+  },
+  tagline: {
+    color: '#cfe0cb',
+    fontSize: 16,
+    fontWeight: '500',
+    textAlign: 'center',
+    marginBottom: spacing.lg,
+  },
+  heroTrust: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    justifyContent: 'center',
+    gap: 16,
+    marginTop: spacing.xs,
+  },
+  trustItem: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 6,
+  },
+  trustText: {
+    color: '#dbe7d8',
+    fontSize: 12,
+    fontWeight: '600',
+  },
+  searchCard: {
+    width: '100%',
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    marginTop: -18,
+    paddingVertical: spacing.sm,
+    paddingHorizontal: spacing.xs,
+    ...shadow.card,
+  },
+  helpRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 8,
+    marginTop: spacing.lg,
+    paddingHorizontal: spacing.sm,
+  },
+  helpText: {
+    color: colors.inkSoft,
+    fontSize: 13,
+    fontWeight: '600',
   },
 })
 

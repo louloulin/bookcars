@@ -65,7 +65,7 @@ const CurrencyMenu = ({
       backgroundColor: '#feeee4',
     },
     textSelected: {
-      color: '#f37022',
+      color: '#214c3c',
     }
   })
 

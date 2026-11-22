@@ -5,6 +5,7 @@ import * as env from '@/config/env.config'
 import * as LocationService from '@/services/LocationService'
 import * as helper from '@/utils/helper'
 import { AutocompleteDropdown, AutocompleteDropdownItem } from './AutocompleteDropdown-v4.3.1'
+import { colors } from '@/theme'
 
 interface LocationSelectListProps {
   selectedItem?: string
@@ -100,7 +101,7 @@ const LocationSelectList = ({
       <Text
         style={{
           display: selectedItem ? 'flex' : 'none',
-          backgroundColor: backgroundColor ?? '#F5F5F5',
+          backgroundColor: backgroundColor ?? colors.surface,
           color: 'rgba(0, 0, 0, 0.6)',
           fontSize: 12,
           fontWeight: '400',
@@ -156,7 +157,7 @@ const LocationSelectList = ({
           alignSelf: 'center',
         }}
         inputContainerStyle={{
-          backgroundColor: backgroundColor ?? '#F5F5F5',
+          backgroundColor: backgroundColor ?? colors.surface,
           // color: 'rgba(0, 0, 0, 0.87)',
           borderColor: 'rgba(0, 0, 0, 0.23)',
           borderWidth: 1,

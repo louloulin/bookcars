@@ -15,6 +15,7 @@ import * as env from '@/config/env.config'
 import * as helper from '@/utils/helper'
 import Checkbox from '@/components/Checkbox'
 import { useGlobalContext, GlobalContextType } from '@/context/GlobalContext'
+import { colors, radii, shadow } from '@/theme'
 
 interface NotificationListProps {
   user?: bookcarsTypes.User
@@ -186,7 +187,7 @@ const NotificationList = ({ user, locale }: NotificationListProps) => {
             contentContainerStyle={styles.list}
             keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
           >
-            {loading && <ActivityIndicator size="large" color="#f37022" />}
+            {loading && <ActivityIndicator size="large" color="#214c3c" />}
             {rows.map((row) => (
               <View key={row._id} style={styles.notificationContainer}>
                 <View style={styles.notificationCheckbox}>
@@ -415,13 +416,13 @@ const styles = StyleSheet.create({
     top: 0,
     right: 0,
     left: 0,
-    height: 50,
+    minHeight: 54,
     flexDirection: 'column',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
     borderBottomWidth: 1,
-    borderBottomColor: '#ddd',
+    borderBottomColor: colors.line,
   },
   header: {
     flexDirection: 'row',
@@ -458,21 +459,24 @@ const styles = StyleSheet.create({
   },
   notification: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: '#ddd',
-    borderRadius: 5,
-    color: '#333',
+    borderColor: colors.line,
+    borderRadius: radii.md,
+    color: colors.ink,
     marginBottom: 10,
     minHeight: 75,
-    padding: 10,
+    padding: 14,
     fontSize: 15,
     flexDirection: 'column',
     marginLeft: 10,
+    ...shadow.soft,
   },
   date: {
-    color: '#878787',
+    color: colors.inkMuted,
     marginBottom: 5,
+    fontSize: 12,
+    fontWeight: '600',
   },
   messageContainer: {
     flexDirection: 'column',
@@ -503,15 +507,16 @@ const styles = StyleSheet.create({
     right: 0,
     bottom: 0,
     left: 0,
-    height: 54,
+    minHeight: 56,
     flexDirection: 'row',
     justifyContent: 'flex-end',
     alignItems: 'center',
     borderTopWidth: 1,
-    borderTopColor: '#ddd',
-    paddingTop: 5,
+    borderTopColor: colors.line,
+    backgroundColor: colors.surface,
+    paddingTop: 6,
     paddingRight: 10,
-    paddingBottom: 5,
+    paddingBottom: 6,
   },
   rowCount: {
     marginRight: 5,

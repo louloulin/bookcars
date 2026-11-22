@@ -12,6 +12,7 @@ import * as helper from '@/utils/helper'
 import Link from '@/components/Link'
 import Header from '@/components/Header'
 import SocialLogin from '@/components/SocialLogin'
+import { colors, radii, shadow } from '@/theme'
 
 const ForgotPasswordScreen = () => {
   const isFocused = useIsFocused()
@@ -91,13 +92,17 @@ const ForgotPasswordScreen = () => {
       >
         {sent && (
           <View style={styles.contentContainer}>
+            <View style={styles.card}>
             <Text style={styles.text}>{i18n.t('RESET_EMAIL_SENT')}</Text>
             <Link label={i18n.t('GO_TO_HOME')} onPress={() => router.push('/')} />
+            </View>
           </View>
         )}
         {!sent && (
           <View style={styles.contentContainer}>
-            <Text style={styles.text}>{i18n.t('RESET_PASSWORD')}</Text>
+            <View style={styles.card}>
+            <Text style={styles.heading}>{i18n.t('RESET_PASSWORD')}</Text>
+            <Text style={styles.subheading}>{i18n.t('RESET_PASSWORD_SUBTITLE')}</Text>
 
             <TextInput
               ref={ref}
@@ -112,6 +117,7 @@ const ForgotPasswordScreen = () => {
             <SocialLogin />
 
             <Button style={styles.component} label={i18n.t('RESET')} onPress={onPressReset} />
+            </View>
           </View>
         )}
       </ScrollView>
@@ -122,26 +128,54 @@ const ForgotPasswordScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
+    backgroundColor: colors.canvas,
   },
   text: {
-    color: 'rgba(0, 0, 0, 0.6)',
+    color: colors.inkSoft,
     fontSize: 15,
-    fontWeight: '400',
+    fontWeight: '600',
     alignSelf: 'stretch',
     margin: 10,
     padding: 5,
     textAlign: 'center',
   },
+  heading: {
+    color: colors.ink,
+    fontSize: 24,
+    fontWeight: '800',
+    letterSpacing: -0.5,
+    alignSelf: 'stretch',
+    marginBottom: 6,
+  },
+  subheading: {
+    color: colors.inkMuted,
+    fontSize: 13,
+    lineHeight: 19,
+    alignSelf: 'stretch',
+    marginBottom: 10,
+  },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.canvas,
+    paddingVertical: 24,
   },
   contentContainer: {
     width: '100%',
     maxWidth: 480,
     alignItems: 'center',
+    paddingHorizontal: 16,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: 26,
+    paddingHorizontal: 20,
+    ...shadow.card,
   },
   component: {
     alignSelf: 'stretch',

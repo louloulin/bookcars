@@ -9,6 +9,8 @@ import {
 } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 
+import { colors, radii } from '@/theme'
+
 interface TextInputProps {
   size?: 'small' | 'large'
   value?: string
@@ -56,10 +58,12 @@ const TextInputComponent = (
       maxWidth: 480,
     },
     label: {
-      backgroundColor: props.backgroundColor ?? '#F5F5F5',
-      color: 'rgba(0, 0, 0, 0.6)',
-      fontSize: 12,
-      fontWeight: '400',
+      backgroundColor: props.backgroundColor ?? colors.canvas,
+      color: colors.inkMuted,
+      fontSize: 11,
+      fontWeight: '700',
+      letterSpacing: 0.4,
+      textTransform: 'uppercase',
       paddingRight: props.label ? 5 : 0,
       paddingLeft: props.label ? 5 : 0,
       marginLeft: props.label ? 15 : 0,
@@ -73,20 +77,22 @@ const TextInputComponent = (
     },
     input: {
       flex: 1,
-      height: small ? 37 : 55,
+      height: small ? 38 : 50,
       borderWidth: 1,
-      borderRadius: 10,
-      borderColor: props.error ? '#d32f2f' : 'rgba(0, 0, 0, 0.23)',
-      fontSize: small ? 14 : 16,
-      paddingTop: small ? 8 : 15,
+      borderRadius: radii.md,
+      borderColor: props.error ? colors.danger : colors.line,
+      backgroundColor: props.backgroundColor ?? colors.surface,
+      color: colors.ink,
+      fontSize: small ? 14 : 15,
+      paddingTop: small ? 8 : 13,
       paddingRight: 40,
-      paddingBottom: small ? 8 : 15,
+      paddingBottom: small ? 8 : 13,
       paddingLeft: 15,
     },
     helperText: {
-      color: props.error ? '#d32f2f' : 'rgba(0, 0, 0, 0.45)',
+      color: props.error ? colors.danger : colors.inkMuted,
       fontSize: 11,
-      fontWeight: '400',
+      fontWeight: '500',
       paddingLeft: 5,
     },
     clear: {

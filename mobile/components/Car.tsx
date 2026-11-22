@@ -11,6 +11,7 @@ import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 import i18n from '@/lang/i18n'
 import * as StripeService from '@/services/StripeService'
+import { colors, radii, spacing, shadow } from '@/theme'
 
 interface CarProps {
   language: string
@@ -24,8 +25,8 @@ interface CarProps {
   hidePrice?: boolean
 }
 
-const iconSize = 24
-const iconColor = '#000'
+const iconSize = 20
+const iconColor = colors.inkSoft
 
 const getExtraIcon = (extra: number) => (extra === -1 ? 'clear' : extra === 0 ? 'check' : 'info')
 
@@ -80,9 +81,9 @@ const Car = ({
 
   const styles = StyleSheet.create({
     carContainer: {
-      marginRight: 7,
-      marginLeft: 7,
-      marginBottom: 10,
+      marginRight: 10,
+      marginLeft: 10,
+      marginBottom: 14,
       justifyContent: 'center',
       alignItems: 'center',
       alignSelf: 'stretch',
@@ -99,8 +100,9 @@ const Car = ({
       marginRight: 3,
     },
     locationText: {
-      fontSize: 18,
-      color: '#212121',
+      fontSize: 15,
+      color: colors.inkSoft,
+      fontWeight: '600',
     },
     distance: {
       display: 'flex',
@@ -119,24 +121,32 @@ const Car = ({
     car: {
       width: '100%',
       maxWidth: 480,
-      backgroundColor: '#fff',
-      paddingTop: 20,
-      paddingRight: 10,
-      paddingBottom: 20,
-      paddingLeft: 10,
+      backgroundColor: colors.surface,
+      paddingTop: 18,
+      paddingRight: 16,
+      paddingBottom: 18,
+      paddingLeft: 16,
       borderWidth: 1,
-      borderColor: '#d9d8d9',
-      borderRadius: 5,
+      borderColor: colors.line,
+      borderRadius: radii.lg,
+      ...shadow.soft,
     },
     name: {
-      fontSize: 20,
-      fontWeight: '700',
-      textAlign: 'center',
+      fontSize: 19,
+      fontWeight: '800',
+      color: colors.ink,
+      textAlign: 'left',
+      letterSpacing: -0.2,
     },
     imgView: {
       width: '100%',
       height: env.CAR_IMAGE_HEIGHT,
       alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: colors.accentSoft,
+      borderRadius: radii.md,
+      marginTop: 12,
+      overflow: 'hidden',
     },
     img: {
       width: env.CAR_IMAGE_WIDTH,
@@ -147,40 +157,51 @@ const Car = ({
     infos: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 10,
+      flexWrap: 'wrap',
+      gap: 8,
+      marginTop: 14,
+      marginBottom: 4,
     },
     info: {
       flexDirection: 'row',
       alignItems: 'center',
       justifyContent: 'center',
+      backgroundColor: colors.accentSoft,
       borderWidth: 1,
-      borderColor: '#ddd',
-      borderRadius: 4,
-      width: 60,
-      padding: 2,
-      marginLeft: 5,
+      borderColor: colors.line,
+      borderRadius: radii.sm,
+      paddingVertical: 6,
+      paddingHorizontal: 10,
     },
     infoIcon: {
-      marginRight: 4,
+      marginRight: 5,
     },
     text: {
-      color: '#333',
+      color: colors.inkSoft,
       fontSize: 12,
+      fontWeight: '600',
     },
     extras: {
       alignSelf: 'stretch',
-      marginTop: 10,
+      marginTop: 12,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.lineSoft,
+      gap: 10,
     },
     extra: {
       flexDirection: 'row',
       alignItems: 'center',
-      marginBottom: 10,
     },
     footer: {
       flexDirection: 'row',
       alignSelf: 'stretch',
       alignItems: 'flex-end',
-      marginBottom: 10,
+      justifyContent: 'space-between',
+      marginTop: 14,
+      paddingTop: 12,
+      borderTopWidth: 1,
+      borderTopColor: colors.lineSoft,
     },
     detailsContainer: {
       flexDirection: 'column',
@@ -197,7 +218,7 @@ const Car = ({
       resizeMode: 'contain',
     },
     supplierText: {
-      color: '#a1a1a1',
+      color: colors.inkMuted,
       fontSize: 12,
       marginLeft: 5,
       width: hidePrice ? 200 : 120,
@@ -217,7 +238,8 @@ const Car = ({
       justifyContent: 'flex-start',
     },
     ratingText: {
-      fontWeight: '600',
+      fontWeight: '700',
+      color: colors.ink,
     },
     ratingImage: {
       width: 16,
@@ -227,7 +249,7 @@ const Car = ({
     },
     tripsText: {
       fontSize: 11,
-      color: '#A2A2A2',
+      color: colors.inkMuted,
     },
     co2: {
       display: 'flex',
@@ -238,6 +260,7 @@ const Car = ({
     co2Text: {
       fontSize: 11,
       fontWeight: '600',
+      color: colors.inkSoft,
     },
     co2Image: {
       width: 17,
@@ -249,22 +272,23 @@ const Car = ({
       flex: 0.5,
       alignSelf: 'stretch',
       alignItems: 'flex-end',
-      marginTop: 20,
+      marginTop: 0,
     },
     pricePrimary: {
-      fontSize: 22,
-      fontWeight: '700',
-      color: '#383838',
-      lineHeight: 28,
+      fontSize: 24,
+      fontWeight: '800',
+      color: colors.ink,
+      lineHeight: 30,
+      letterSpacing: -0.5,
     },
     priceSecondary: {
-      fontSize: 13,
-      color: '#a1a1a1',
+      fontSize: 12,
+      color: colors.inkMuted,
     },
     carInfo: {
       fontSize: 13,
       fontWeight: 'bold',
-      color: '#FD3446',
+      color: colors.danger,
     },
     buttonContainer: {
       alignItems: 'center',
@@ -272,7 +296,7 @@ const Car = ({
     },
     button: {
       width: '100%',
-      marginTop: 10,
+      marginTop: 14,
     },
   })
 

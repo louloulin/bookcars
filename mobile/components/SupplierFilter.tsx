@@ -8,6 +8,7 @@ import i18n from '@/lang/i18n'
 import Link from './Link'
 import Switch from './Switch'
 import Accordion from './Accordion'
+import { colors } from '@/theme'
 
 interface SupplierFilterProps {
   suppliers: bookcarsTypes.User[]
@@ -147,7 +148,7 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: 12,
-    color: '#a3a3a3',
+    color: colors.inkMuted,
   },
   link: {
     marginTop: 10,

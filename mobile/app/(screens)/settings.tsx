@@ -20,6 +20,7 @@ import Button from '@/components/Button'
 import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
 import DriverLicense from '@/components/DriverLicense'
+import { colors, radii, shadow } from '@/theme'
 
 const SettingsScreen = () => {
   const isFocused = useIsFocused()
@@ -464,7 +465,7 @@ const styles = StyleSheet.create({
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#ddd',
+    backgroundColor: colors.accentSoft,
   },
   component: {
     alignSelf: 'stretch',

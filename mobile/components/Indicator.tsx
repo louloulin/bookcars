@@ -6,7 +6,7 @@ interface IndicatorProps {
 }
 
 const Indicator = ({ style }: IndicatorProps) => (
-  <ActivityIndicator size="large" color="#f37022" style={style} />
+  <ActivityIndicator size="large" color="#214c3c" style={style} />
 )
 
 export default Indicator

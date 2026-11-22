@@ -26,6 +26,7 @@ import CarSpecsFilter from '@/components/CarSpecsFilter'
 import SearchFormFilter from '@/components/SearchFormFilter'
 import CarRatingFilter from '@/components/CarRatingFilter'
 import Indicator from '@/components/Indicator'
+import { colors, radii } from '@/theme'
 
 
 const SearchScreen = () => {
@@ -264,14 +265,18 @@ const SearchScreen = () => {
 
               {loaded && (
                 <View style={styles.title}>
-                  <View style={styles.bookcars}>
-                    <Text style={styles.titleText}>{i18n.t('SEARCH_TITLE_1')}</Text>
-                    <Text style={styles.titleBookCars}>{i18n.t('BOOKCARS')}</Text>
-                    <Text style={styles.titleText}>{i18n.t('SEARCH_TITLE_2')}</Text>
+                  <View style={styles.titleRow}>
+                    <View style={styles.bookcars}>
+                      <Text style={styles.titleText}>{i18n.t('SEARCH_TITLE_1')}</Text>
+                      <Text style={styles.titleBookCars}>{i18n.t('BOOKCARS')}</Text>
+                      <Text style={styles.titleText}>{i18n.t('SEARCH_TITLE_2')}</Text>
+                    </View>
+                    {carCount > 0 && (
+                      <View style={styles.carCountPill}>
+                        <Text style={styles.carCount}>{`${carCount} ${carCount === 1 ? i18n.t('CAR_AVAILABLE') : i18n.t('CARS_AVAILABLE')}`}</Text>
+                      </View>
+                    )}
                   </View>
-                  {carCount > 0 && (
-                    <Text style={styles.carCount}>{`(${carCount} ${carCount === 1 ? i18n.t('CAR_AVAILABLE') : i18n.t('CARS_AVAILABLE')})`}</Text>
-                  )}
                 </View>
               )}
             </View>
@@ -295,44 +300,66 @@ const styles = StyleSheet.create({
     width: '100%',
     maxWidth: 480,
     alignSelf: 'center',
-    padding: 10,
+    paddingHorizontal: 12,
+    paddingTop: 4,
+    paddingBottom: 12,
+  },
+  titleRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    gap: 10,
   },
   bookcars: {
     display: 'flex',
     flexDirection: 'row',
+    alignItems: 'baseline',
+    flexShrink: 1,
   },
   titleText: {
     fontSize: 18,
+    color: colors.ink,
   },
   titleBookCars: {
-    color: '#212121',
-    fontSize: 18,
-    fontWeight: '600',
+    color: colors.brand,
+    fontSize: 20,
+    fontWeight: '800',
+    letterSpacing: -0.3,
+  },
+  carCountPill: {
+    backgroundColor: colors.brandTint,
+    borderRadius: radii.pill,
+    paddingHorizontal: 11,
+    paddingVertical: 5,
+    borderWidth: 1,
+    borderColor: colors.line,
   },
   carCount: {
-    color: '#717171',
-    marginTop: 3,
+    color: colors.brand,
+    fontWeight: '700',
+    fontSize: 12,
   },
   shwoFiltersBtn: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#f37022',
-    // borderColor: '#d9d8d9',
-    borderColor: '#f37022',
-    borderRadius: 4,
+    backgroundColor: colors.brand,
+    borderColor: colors.brand,
+    borderRadius: radii.md,
     borderWidth: 1,
-    marginRight: 7,
+    marginRight: 10,
     marginBottom: 10,
-    marginLeft: 7,
-    paddingVertical: 5,
+    marginLeft: 10,
+    paddingVertical: 10,
   },
   shwoFiltersIcon: {
     color: '#fff',
-    marginRight: 5,
+    marginRight: 6,
   },
   shwoFiltersTxt: {
     color: '#fff',
+    fontWeight: '700',
+    fontSize: 14,
   }
 })
 

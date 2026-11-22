@@ -17,6 +17,7 @@ import Error from '@/components/Error'
 import Backdrop from '@/components/Backdrop'
 import Header from '@/components/Header'
 import SocialLogin from '@/components/SocialLogin'
+import { colors, radii, shadow } from '@/theme'
 
 const SignUpScreen = () => {
   const isFocused = useIsFocused()
@@ -303,6 +304,10 @@ const SignUpScreen = () => {
           keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
         >
           <View style={styles.contentContainer}>
+            <View style={styles.card}>
+            <Text style={styles.heading}>{i18n.t('SIGN_UP_TITLE')}</Text>
+            <Text style={styles.subheading}>{i18n.t('SIGN_UP_SUBTITLE')}</Text>
+
             <TextInput
               ref={fullNameRef}
               style={styles.component}
@@ -373,6 +378,7 @@ const SignUpScreen = () => {
             {tosError && <Error message={i18n.t('TOS_ERROR')} />}
 
             <Button style={styles.component} label={i18n.t('SIGN_UP')} onPress={onPressSignUp} />
+            </View>
           </View>
         </ScrollView>
       )}
@@ -399,18 +405,43 @@ const SignUpScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.canvas,
   },
   container: {
     justifyContent: 'center',
     alignItems: 'center',
     flexGrow: 1,
+    backgroundColor: colors.canvas,
+    paddingVertical: 24,
   },
   contentContainer: {
     width: '100%',
     maxWidth: 480,
     alignItems: 'center',
-    padding: 10,
+    paddingHorizontal: 16,
+  },
+  card: {
+    width: '100%',
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    paddingVertical: 26,
+    paddingHorizontal: 20,
+    ...shadow.card,
+  },
+  heading: {
+    fontSize: 26,
+    fontWeight: '800',
+    color: colors.ink,
+    letterSpacing: -0.5,
+    marginBottom: 6,
+  },
+  subheading: {
+    fontSize: 14,
+    color: colors.inkMuted,
+    lineHeight: 20,
+    marginBottom: 12,
   },
   component: {
     alignSelf: 'stretch',
@@ -434,7 +465,7 @@ const styles = StyleSheet.create({
   },
   successMessage: {
     fontSize: 14,
-    color: '#333',
+    color: colors.inkSoft,
     marginBottom: 20,
     textAlign: 'center',
   },

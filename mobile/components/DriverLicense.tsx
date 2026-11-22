@@ -10,6 +10,7 @@ import i18n from '@/lang/i18n'
 import * as UserService from '@/services/UserService'
 import * as helper from '@/utils/helper'
 import * as env from '@/config/env.config'
+import { colors, radii } from '@/theme'
 
 interface DriverLicenseProps {
   user?: bookcarsTypes.User
@@ -86,10 +87,12 @@ const DriverLicense = ({
       marginRight: 5,
     },
     label: {
-      backgroundColor: '#F5F5F5',
-      color: 'rgba(0, 0, 0, 0.6)',
-      fontSize: 12,
-      fontWeight: '400',
+      backgroundColor: colors.surface,
+      color: colors.inkSoft,
+      fontSize: 11,
+      fontWeight: '700',
+      letterSpacing: 0.3,
+      textTransform: 'uppercase',
       paddingRight: !hideLabel ? 5 : 0,
       paddingLeft: !hideLabel ? 5 : 0,
       marginLeft: !hideLabel ? 15 : 0,
@@ -105,8 +108,8 @@ const DriverLicense = ({
       flex: 1,
       height: 55,
       borderWidth: 1,
-      borderRadius: 10,
-      borderColor: 'rgba(0, 0, 0, 0.23)',
+      borderRadius: radii.md,
+      borderColor: colors.line,
       fontSize: 16,
       paddingTop: 15,
       paddingRight: 40,

@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet, Text, ScrollView } from 'react-native'
+import { StyleSheet, Text, ScrollView, View } from 'react-native'
 import { useIsFocused, useLocalSearchParams } from 'expo-router'
 
 import i18n from '@/lang/i18n'
 import * as UserService from '@/services/UserService'
 import Layout from '@/components/Layout'
 import * as helper from '@/utils/helper'
+import { colors, radii, spacing, shadow } from '@/theme'
 
 const ToSScreen = () => {
   const isFocused = useIsFocused()
@@ -41,7 +42,16 @@ const ToSScreen = () => {
           contentContainerStyle={styles.container}
           keyboardShouldPersistTaps={helper.android() ? 'handled' : 'always'}
         >
-          <Text style={{ fontSize: 16 }}>ToS!</Text>
+          <View style={styles.contentContainer}>
+            <View style={styles.hero}>
+              <Text style={styles.heroEyebrow}>{i18n.t('TOS_MENU')}</Text>
+              <Text style={styles.heroTitle}>{i18n.t('TOS_TITLE')}</Text>
+            </View>
+
+            <View style={styles.card}>
+              <Text style={styles.body}>{i18n.t('TOS_BODY')}</Text>
+            </View>
+          </View>
         </ScrollView>
       )}
     </Layout>
@@ -51,10 +61,53 @@ const ToSScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
+    backgroundColor: colors.canvas,
   },
   container: {
-    flex: 1,
+    flexGrow: 1,
     alignItems: 'center',
+    paddingVertical: spacing.lg,
+  },
+  contentContainer: {
+    width: '100%',
+    maxWidth: 480,
+    alignItems: 'stretch',
+    paddingHorizontal: spacing.md,
+  },
+  hero: {
+    backgroundColor: colors.brand,
+    borderRadius: radii.xl,
+    paddingVertical: spacing.xl,
+    paddingHorizontal: spacing.lg,
+    marginBottom: spacing.md,
+    ...shadow.card,
+  },
+  heroEyebrow: {
+    color: '#cfe0cb',
+    fontSize: 11,
+    fontWeight: '800',
+    letterSpacing: 1.2,
+    textTransform: 'uppercase',
+    marginBottom: spacing.xs,
+  },
+  heroTitle: {
+    color: '#fff',
+    fontSize: 26,
+    fontWeight: '800',
+    letterSpacing: -0.6,
+  },
+  card: {
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    padding: spacing.lg,
+    ...shadow.soft,
+  },
+  body: {
+    color: colors.inkSoft,
+    fontSize: 14,
+    lineHeight: 23,
   },
 })
 

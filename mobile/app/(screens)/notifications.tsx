@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { StyleSheet } from 'react-native'
+import { StyleSheet, View, Text } from 'react-native'
 import { useIsFocused, useLocalSearchParams } from 'expo-router'
 import { fr } from 'date-fns/locale'
 
@@ -10,6 +10,7 @@ import * as UserService from '@/services/UserService'
 import { getDateLocale } from '@/utils/dateLocale'
 import Layout from '@/components/Layout'
 import NotificationList from '@/components/NotificationList'
+import { colors, radii, shadow } from '@/theme'
 
 
 const NotificationsScreen = () => {
@@ -60,7 +61,13 @@ const NotificationsScreen = () => {
   return (
     <Layout style={styles.master} onLoad={onLoad} reload={reload} strict>
       {visible && (
-        <NotificationList user={user} locale={locale} />
+        <View style={styles.wrapper}>
+          <View style={styles.pageHeader}>
+            <Text style={styles.pageTitle}>{i18n.t('NOTIFICATIONS_TITLE')}</Text>
+            <Text style={styles.pageSubtitle}>{i18n.t('NOTIFICATIONS_SUBTITLE')}</Text>
+          </View>
+          <NotificationList user={user} locale={locale} />
+        </View>
       )}
     </Layout>
   )
@@ -69,6 +76,30 @@ const NotificationsScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
+  },
+  wrapper: {
+    flex: 1,
+  },
+  pageHeader: {
+    marginHorizontal: 14,
+    marginTop: 6,
+    marginBottom: 14,
+    padding: 18,
+    borderRadius: radii.lg,
+    backgroundColor: colors.brand,
+    ...shadow.card,
+  },
+  pageTitle: {
+    color: '#fff',
+    fontSize: 22,
+    fontWeight: '800',
+    letterSpacing: -.3,
+  },
+  pageSubtitle: {
+    color: '#dbe7d8',
+    fontSize: 13,
+    fontWeight: '500',
+    marginTop: 4,
   },
 })
 

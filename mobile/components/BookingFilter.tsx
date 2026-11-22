@@ -8,6 +8,7 @@ import Button from './Button'
 import DateTimePicker from './DateTimePicker'
 import LocationSelectList from './LocationSelectList'
 import TextInput from './TextInput'
+import { colors } from '@/theme'
 
 interface BookingFilterProps {
   visible?: boolean
@@ -20,7 +21,7 @@ interface BookingFilterProps {
 const BookingFilter = ({
   visible,
   style,
-  backgroundColor = '#F5F5F5',
+  backgroundColor = colors.surface,
   language,
   onSubmit
 }: BookingFilterProps) => {

@@ -9,6 +9,7 @@ import i18n from '@/lang/i18n'
 import * as helper from '@/utils/helper'
 import Header from './Header'
 import { useAuth } from '@/context/AuthContext'
+import { colors, radii, shadow } from '@/theme'
 
 interface LayoutProps {
   // navigation and route are no longer passed as props in Expo Router
@@ -158,17 +159,24 @@ const Layout = ({
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F5F5F5',
+    backgroundColor: colors.canvas,
     flex: 1, // Added flex: 1 to ensure it fills the screen
   },
   validate: {
-    marginTop: 15,
-    padding: 15,
+    marginTop: 18,
+    marginHorizontal: 14,
+    padding: 22,
+    backgroundColor: colors.surface,
+    borderRadius: radii.lg,
+    borderWidth: 1,
+    borderColor: colors.line,
+    ...shadow.card,
   },
   validateText: {
-    color: 'rgba(0, 0, 0, .7)',
-    fontSize: 14,
-    lineHeight: 20,
+    color: colors.ink,
+    fontSize: 15,
+    lineHeight: 22,
+    fontWeight: '600',
   },
   validateButton: {
     marginTop: 15,

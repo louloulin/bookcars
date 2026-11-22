@@ -98,7 +98,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
             style={[styles.menuItem, pathname === '/' && styles.activeMenuItem]}
             onPress={() => navigateTo('/')}
           >
-            <MaterialIcons name="home" size={24} color={pathname === '/' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+            <MaterialIcons name="home" size={24} color={pathname === '/' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
             <Text style={[styles.text, pathname === '/' && styles.activeText]}>{i18n.t('HOME')}</Text>
           </Pressable>
 
@@ -108,7 +108,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
               style={[styles.menuItem, pathname === '/bookings' && styles.activeMenuItem]}
               onPress={() => navigateTo('/bookings')}
             >
-              <MaterialIcons name="event-seat" size={24} color={pathname === '/bookings' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+              <MaterialIcons name="event-seat" size={24} color={pathname === '/bookings' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
               <Text style={[styles.text, pathname === '/bookings' && styles.activeText]}>{i18n.t('BOOKINGS')}</Text>
             </Pressable>
           )}
@@ -118,7 +118,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
             style={[styles.menuItem, pathname === '/about' && styles.activeMenuItem]}
             onPress={() => navigateTo('/about')}
           >
-            <MaterialIcons name="info" size={24} color={pathname === '/about' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+            <MaterialIcons name="info" size={24} color={pathname === '/about' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
             <Text style={[styles.text, pathname === '/about' && styles.activeText]}>{i18n.t('ABOUT')}</Text>
           </Pressable>
 
@@ -127,7 +127,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
             style={[styles.menuItem, pathname === '/tos' && styles.activeMenuItem]}
             onPress={() => navigateTo('/tos')}
           >
-            <MaterialIcons name="description" size={24} color={pathname === '/tos' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+            <MaterialIcons name="description" size={24} color={pathname === '/tos' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
             <Text style={[styles.text, pathname === '/tos' && styles.activeText]}>{i18n.t('TOS_MENU')}</Text>
           </Pressable>
 
@@ -136,7 +136,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
             style={[styles.menuItem, pathname === '/contact' && styles.activeMenuItem]}
             onPress={() => navigateTo('/contact')}
           >
-            <MaterialIcons name="mail" size={24} color={pathname === '/contact' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+            <MaterialIcons name="mail" size={24} color={pathname === '/contact' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
             <Text style={[styles.text, pathname === '/contact' && styles.activeText]}>{i18n.t('CONTACT')}</Text>
           </Pressable>
 
@@ -146,7 +146,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
               style={[styles.menuItem, pathname === '/settings' && styles.activeMenuItem]}
               onPress={() => navigateTo('/settings')}
             >
-              <MaterialIcons name="settings" size={24} color={pathname === '/settings' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+              <MaterialIcons name="settings" size={24} color={pathname === '/settings' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
               <Text style={[styles.text, pathname === '/settings' && styles.activeText]}>{i18n.t('SETTINGS')}</Text>
             </Pressable>
           )}
@@ -157,7 +157,7 @@ const CustomDrawerContent = ({ closeDrawer }: CustomDrawerContentProps) => {
               style={[styles.menuItem, pathname === '/sign-in' && styles.activeMenuItem]}
               onPress={() => navigateTo('/sign-in')}
             >
-              <MaterialIcons name="login" size={24} color={pathname === '/sign-in' ? '#f37022' : 'rgba(0, 0, 0, 0.54)'} />
+              <MaterialIcons name="login" size={24} color={pathname === '/sign-in' ? '#214c3c' : 'rgba(0, 0, 0, 0.54)'} />
               <Text style={[styles.text, pathname === '/sign-in' && styles.activeText]}>{i18n.t('SIGN_IN_TITLE')}</Text>
             </Pressable>
           )}
@@ -236,8 +236,8 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   activeMenuItem: {
-    backgroundColor: '#feeee4',
-    borderRadius: 8,
+    backgroundColor: '#eaf3e7',
+    borderRadius: 10,
   },
   signout: {
     flexDirection: 'row',
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   activeText: {
-    color: '#f37022',
+    color: '#214c3c',
   },
   languageSection: {
     paddingHorizontal: 15,
@@ -281,14 +281,14 @@ const styles = StyleSheet.create({
   languageMenuSelectedItem: {
     padding: 12,
     paddingLeft: 44,
-    backgroundColor: '#feeee4',
+    backgroundColor: '#eaf3e7',
   },
   languageMenuText: {
     color: 'rgba(0, 0, 0, 0.54)',
     fontWeight: '600',
   },
   languageMenuSelectedText: {
-    color: '#f37022',
+    color: '#214c3c',
     fontWeight: '600',
   },
 })

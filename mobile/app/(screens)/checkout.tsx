@@ -33,6 +33,7 @@ import Backdrop from '@/components/Backdrop'
 import Indicator from '@/components/Indicator'
 import DriverLicense from '@/components/DriverLicense'
 import SocialLogin from '@/components/SocialLogin'
+import { colors, radii, shadow } from '@/theme'
 
 const CheckoutScreen = () => {
   const isFocused = useIsFocused()
@@ -1255,7 +1256,7 @@ const CheckoutScreen = () => {
           </Dialog.Content>
           <Dialog.Actions style={styles.dialogActions}>
             <NativeButton
-              textColor="#f37022"
+              textColor="#214c3c"
               onPress={() => setErrorDialogOpen(false)}
             >
               {i18n.t('CLOSE')}
@@ -1270,23 +1271,24 @@ const CheckoutScreen = () => {
 const styles = StyleSheet.create({
   master: {
     flex: 1,
-    backgroundColor: '#f5f5f5',
+    backgroundColor: colors.canvas,
   },
   header: {
     flex: 1,
     textAlign: 'center',
     textTransform: 'capitalize',
-    fontSize: 27,
-    fontWeight: '600',
-    color: '#333',
-    marginBottom: 15,
+    fontSize: 24,
+    fontWeight: '800',
+    color: colors.ink,
+    marginBottom: 14,
     marginRight: 7,
     marginLeft: 7,
-    padding: 5,
-    backgroundColor: '#ffffff',
+    paddingVertical: 12,
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: '#d9d8d9',
-    borderRadius: 5,
+    borderColor: colors.line,
+    borderRadius: radii.lg,
+    ...shadow.soft,
   },
   container: {
     justifyContent: 'center',
@@ -1300,37 +1302,40 @@ const styles = StyleSheet.create({
   },
   section: {
     alignSelf: 'stretch',
-    backgroundColor: '#fbfbfb',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: '#d9d8d9',
-    borderRadius: 5,
-    marginTop: 15,
+    borderColor: colors.line,
+    borderRadius: radii.lg,
+    marginTop: 14,
     marginRight: 10,
     marginLeft: 10,
-    padding: 25,
+    padding: 20,
+    ...shadow.card,
   },
   sectionHeader: {
     flexDirection: 'row',
     alignSelf: 'stretch',
-    justifyContent: 'center',
+    justifyContent: 'flex-start',
     alignItems: 'center',
-    marginBottom: 15,
+    marginBottom: 14,
   },
   sectionHeaderText: {
-    color: '#444',
-    fontSize: 16,
-    fontWeight: '700',
-    marginLeft: 5,
+    color: colors.ink,
+    fontSize: 15,
+    fontWeight: '800',
+    marginLeft: 8,
+    letterSpacing: -0.2,
   },
   extra: {
     flexDirection: 'column',
   },
   extraSwitch: {
-    fontWeight: '600',
-    fontSize: 13,
+    fontWeight: '700',
+    fontSize: 14,
+    color: colors.ink,
   },
   extraText: {
-    color: 'rgba(0, 0, 0, 0.35)',
+    color: colors.inkMuted,
     fontSize: 12,
     flex: 1,
     flexWrap: 'wrap',
@@ -1341,11 +1346,12 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     alignItems: 'center',
     fontSize: 13,
-    fontWeight: '600',
+    fontWeight: '700',
+    color: colors.inkSoft,
     marginBottom: 2,
   },
   detailText: {
-    color: 'rgba(0, 0, 0, 0.35)',
+    color: colors.inkMuted,
     fontSize: 12,
     marginBottom: 10,
   },
@@ -1382,32 +1388,32 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   paymentInfo: {
-    color: 'rgba(0, 0, 0, 0.35)',
+    color: colors.inkMuted,
     fontSize: 12,
     marginLeft: 25,
   },
   payment: {
     alignSelf: 'stretch',
-    backgroundColor: '#e5efe5',
+    backgroundColor: colors.brandTint,
     borderWidth: 1,
-    borderColor: '#d9d8d9',
-    borderRadius: 5,
-    marginTop: 45,
+    borderColor: colors.line,
+    borderRadius: radii.lg,
+    marginTop: 40,
     marginRight: 10,
     marginLeft: 10,
-    padding: 25,
+    padding: 22,
     justifyContent: 'center',
     alignItems: 'center',
   },
   paymentHeader: {
     alignSelf: 'stretch',
-    backgroundColor: '#fff',
+    backgroundColor: colors.surface,
     borderWidth: 1,
-    borderColor: '#1c8901',
-    borderRadius: 5,
-    marginTop: -58,
-    marginBottom: 15,
-    padding: 5,
+    borderColor: colors.brand,
+    borderRadius: radii.md,
+    marginTop: -56,
+    marginBottom: 14,
+    paddingVertical: 8,
   },
   paymentImage: {
     marginBottom: 15,
@@ -1421,19 +1427,20 @@ const styles = StyleSheet.create({
   },
   securePaymentInfoText: {
     fontSize: 13,
-    color: '#1c8901',
+    color: colors.brand,
+    fontWeight: '600',
     marginLeft: 5,
   },
   totalText: {
-    color: '#1c8901',
-    fontSize: 22,
-    fontWeight: '700',
+    color: colors.ink,
+    fontSize: 24,
+    fontWeight: '800',
     marginRight: 7,
   },
   costText: {
-    color: '#1c8901',
-    fontSize: 22,
-    fontWeight: '700',
+    color: colors.brand,
+    fontSize: 24,
+    fontWeight: '800',
   },
   footer: {
     alignSelf: 'stretch',
