@@ -1,15 +1,21 @@
 section.country-list {
-  margin: 0 10px;
+  margin: 0;
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
   flex: 1 0 auto;
+  gap: 10px;
 }
 
 section.country-list .empty-list {
-  margin-top: 15px;
+  margin-top: 4px;
   text-align: center;
-  width: 250px;
+  width: 100%;
+  background: #f7faf5;
+  border: 1px solid #e2e9df;
+  border-radius: 14px;
+  padding: 24px;
+  color: #5d7268;
 }
 
 @media only screen and (width <=960px) {
@@ -21,26 +27,30 @@ section.country-list .empty-list {
 section.country-list .country-list-item {
   position: relative;
   background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  color: #333;
-  font-size: 12px;
-  margin-bottom: 10px;
-  height: 75px;
+  border: 1px solid #e2e9df;
+  border-radius: 14px;
+  color: #193329;
+  font-size: 13px;
+  padding: 16px 18px;
+  min-height: 68px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 4px;
   word-break: break-word;
+  transition: border-color .18s ease, box-shadow .18s ease;
+}
+
+section.country-list .country-list-item:hover {
+  border-color: #b9cdb2;
+  box-shadow: 0 8px 22px rgb(26 54 39 / 6%);
 }
 
 section.country-list .country-title {
   margin-right: 20px;
+  font-weight: 700;
+  font-size: .95rem;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-}
-
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-  section.country-list .country-list-item {
-    width: 480px;
-  }
 }

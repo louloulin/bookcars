@@ -1,0 +1,185 @@
+/* Shared workspace shell for admin list pages (Bookings, Cars, Locations, Users, Suppliers). */
+
+div.ws-page {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+div.ws-head {
+  display: flex;
+  flex-direction: row;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 18px;
+  flex-wrap: wrap;
+  padding: 26px 28px 18px;
+}
+
+div.ws-head div.ws-head-text {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+
+div.ws-head h1.ws-head-title {
+  margin: 0;
+  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  color: #193329;
+  line-height: 1.2;
+}
+
+div.ws-head p.ws-head-sub {
+  margin: 0;
+  color: #5d7268;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+
+div.ws-head div.ws-head-actions {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+div.ws-head div.ws-head-actions button {
+  min-height: 42px;
+  padding: 0 20px;
+  border-radius: 10px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  box-shadow: none;
+}
+
+div.ws-body {
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 0 28px 32px;
+  width: 100%;
+}
+
+div.ws-body.ws-body-single {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+div.ws-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  min-width: 0;
+}
+
+div.ws-side div.ws-side-panel {
+  background: #f2f7ef;
+  border: 1px solid #e2e9df;
+  border-radius: 16px;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 5%);
+  padding: 14px;
+}
+
+div.ws-main {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+div.ws-main div.ws-main-panel {
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 18px;
+  box-shadow: 0 10px 30px rgb(26 54 39 / 6%);
+  padding: 18px;
+}
+
+div.ws-side div.ws-side-panel > div:first-child {
+  margin-top: 0;
+}
+
+/* Filters inside the sidebar read as compact cards. */
+
+div.ws-side div.accordion-container,
+div.ws-side div.status-filter,
+div.ws-side div.supplier-filter,
+div.ws-side div.user-type-filter,
+div.ws-side div.booking-filter {
+  margin: 0 0 10px !important;
+  background: #fff;
+  border: 1px solid #e4ebe1;
+  border-radius: 12px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+div.ws-side div.accordion-container:last-child,
+div.ws-side div.status-filter:last-child,
+div.ws-side div.supplier-filter:last-child,
+div.ws-side div.user-type-filter:last-child,
+div.ws-side div.booking-filter:last-child {
+  margin-bottom: 0 !important;
+}
+
+div.ws-side div.sc-search {
+  width: 100%;
+}
+
+div.ws-side div.sc-search input {
+  border-radius: 10px;
+  background: #fff;
+}
+
+div.ws-side div.info-box {
+  margin: 0;
+  background: #fff;
+  border: 1px solid #e4ebe1;
+  border-radius: 12px;
+  height: 44px;
+}
+
+div.ws-side div.info-box span.info-box-text {
+  color: #35513f;
+  font-size: 0.95rem;
+}
+
+div.ws-side div.filter-progress-wrapper {
+  width: 100%;
+  height: 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 10px 0;
+}
+
+@media only screen and (width <= 960px) {
+  div.ws-head {
+    padding: 18px 16px 14px;
+  }
+
+  div.ws-head div.ws-head-actions {
+    width: 100%;
+  }
+
+  div.ws-head div.ws-head-actions button {
+    width: 100%;
+  }
+
+  div.ws-body {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
+    padding: 0 16px 28px;
+  }
+
+  div.ws-main div.ws-main-panel {
+    padding: 12px;
+    border-radius: 14px;
+  }
+}

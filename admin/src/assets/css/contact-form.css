@@ -1,15 +1,23 @@
 .contact-form .contact-form-title {
-  text-align: center;
+  text-align: left;
   text-transform: capitalize;
-  color: #232323;
+  color: #193329;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: 1.5rem;
+  letter-spacing: -.03em;
+  margin: 0 0 20px;
 }
+
+.contact-form .MuiInputLabel-root { color: #5d7268; }
+.contact-form .MuiOutlinedInput-root { border-radius: 10px; }
 
 @media only screen and (width <=960px) {
   .contact-form {
-    padding: 30px;
-    max-width: 400px;
-    margin-right: 5px !important;
-    margin-left: 5px !important;
+    padding: 24px 20px;
+    max-width: 100%;
+    margin-right: 0 !important;
+    margin-left: 0 !important;
   }
 
   .contact-form .recaptcha {
@@ -20,8 +28,10 @@
 
 @media only screen and (width >=960px) {
   .contact-form {
-    width: 550px;
-    padding: 30px;
+    width: 100%;
+    padding: 8px 4px;
+    box-shadow: none;
+    border: 0;
   }
 
   .contact-form .recaptcha {
@@ -30,6 +40,6 @@
   }
 
   .contact-form .btn {
-    width: 120px;
+    min-width: 140px;
   }
 }

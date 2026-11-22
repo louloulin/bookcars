@@ -27,8 +27,11 @@ import { useUserContext, UserContextType } from '@/context/UserContext'
 import BankDetailsForm from '@/components/BankDetailsForm'
 import { schema, FormFields } from '@/models/SettingsForm'
 import SettingForm from '@/components/SettingForm'
+import WorkspaceHead from '@/components/WorkspaceHead'
+import { strings as workspaceStrings } from '@/lang/workspace'
 
 import '@/assets/css/settings.css'
+import '@/assets/css/workspace.css'
 
 const Settings = () => {
   const navigate = useNavigate()
@@ -143,8 +146,9 @@ const Settings = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {visible && user && (
-        <div className="settings">
-
+        <div className="settings ws-page">
+          <WorkspaceHead title={workspaceStrings.SETTINGS_TITLE} subtitle={workspaceStrings.SETTINGS_SUBTITLE} />
+          <div className="settings-grid">
           <Paper className="settings-form settings-form-wrapper" elevation={10}>
             <form onSubmit={handleSubmit(onSubmit)}>
               <Avatar
@@ -204,7 +208,7 @@ const Settings = () => {
           </Paper>
 
           <Paper className="settings-net settings-net-wrapper" elevation={10}>
-            <h1 className="settings-form-title">{strings.NETWORK_SETTINGS}</h1>
+            <h1 className="settings-form-title">{workspaceStrings.NETWORK_TITLE}</h1>
             <FormControl component="fieldset">
               <FormControlLabel
                 control={(
@@ -231,6 +235,7 @@ const Settings = () => {
               onSubmit={(data) => setBankDetails(data)}
             />
           )}
+          </div>
         </div>
       )}
 

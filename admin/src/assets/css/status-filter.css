@@ -1,7 +1,7 @@
 div.status-filter {
-  background: #fafafa;
-  margin: 10px 10px 0 0;
-  border: 1px solid #dadada;
+  background: #fff;
+  margin: 0;
+  border: 0;
   font-size: 13px;
   text-align: center;
 }
@@ -9,18 +9,18 @@ div.status-filter {
 div.status-filter ul.status-list {
   list-style-type: none;
   font-size: 13px;
-  margin: 15px 0 0;
+  margin: 4px 0 0;
   padding: 0;
-  display: inline-block;
-  width: 312px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
 }
 
 div.status-filter ul.status-list li {
-  width: 42%;
-  float: left;
-  margin-bottom: 12px;
-  margin-left: 4%;
-  margin-right: 4%;
+  width: auto;
+  float: none;
+  margin: 0;
   clear: none;
 }
 
@@ -35,11 +35,12 @@ div.status-filter ul.status-list li span.bs:hover {
 
 div.status-filter div.filter-actions {
   text-align: center;
-  padding-bottom: 10px;
+  padding: 10px 0 2px;
 }
 
 div.status-filter div.filter-actions span.uncheckall {
   text-decoration: underline;
   cursor: pointer;
-  color: #0064c8;
+  color: #2f6b4f;
+  font-weight: 600;
 }

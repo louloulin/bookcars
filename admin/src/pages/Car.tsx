@@ -32,6 +32,7 @@ import NoMatch from './NoMatch'
 import Error from './Error'
 import Avatar from '@/components/Avatar'
 import BookingList from '@/components/BookingList'
+import SupplierAvatar from '@/components/SupplierAvatar'
 import * as helper from '@/utils/helper'
 
 import DoorsIcon from '@/assets/img/car-door.png'
@@ -195,7 +196,7 @@ const Car = () => {
                 />
                 <div className="car-supplier">
                   <span className="car-supplier-logo">
-                    <img src={bookcarsHelper.joinURL(env.CDN_USERS, car.supplier.avatar)} alt={car.supplier.fullName} />
+                    <SupplierAvatar avatar={car.supplier.avatar} name={car.supplier.fullName} />
                   </span>
                   <span className="car-supplier-info">{car.supplier.fullName}</span>
                 </div>

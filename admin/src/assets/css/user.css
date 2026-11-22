@@ -1,92 +1,96 @@
+/* Admin user detail page (premium workspace layout) */
+
 div.user {
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  left: 0;
+  display: grid;
+  grid-template-columns: 320px minmax(0, 1fr);
+  gap: 20px;
+  align-items: start;
+  padding: 26px 28px 40px;
+  width: 100%;
+  box-sizing: border-box;
+  position: static;
+}
+
+div.user div.col-1 {
+  position: static;
+  width: auto;
+  padding: 20px 18px;
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgb(26 54 39 / 6%);
+  text-align: center;
+}
+
+div.user div.col-1 section.user-avatar-sec {
+  display: flex;
+  justify-content: center;
 }
 
 div.user div.col-1 .user-name {
   text-align: center;
-  font-weight: 600;
-  margin-top: 15px;
+  font-weight: 800;
+  font-size: 1.25rem;
+  color: #193329;
+  margin: 14px 0 0;
 }
 
 div.user div.col-1 .user-info {
   text-align: center;
   font-weight: 400;
-  margin-top: 10px;
-  color: #676767;
+  margin: 6px 0 0;
+  color: #5d7268;
+  font-size: .92rem;
 }
 
-div.user div.col-1 div.license{
+div.user div.col-1 div.license {
   display: flex;
   flex-direction: column;
-  padding: 5px;
+  gap: 4px;
+  margin: 16px 0 0;
+  padding: 10px 12px;
+  background: #f7faf5;
+  border: 1px solid #e7ede3;
+  border-radius: 12px;
+  text-align: left;
 }
 
-div.user div.col-1 div.license span{
-  color: #676767;
+div.user div.col-1 div.license span {
+  color: #7b8d84;
+  font-size: .78rem;
+  text-transform: uppercase;
+  letter-spacing: .08em;
+}
+
+div.user div.col-1 div.license a {
+  color: #214c3c;
+  word-break: break-all;
 }
 
 div.user div.col-1 .user-actions {
   text-align: center;
+  margin-top: 14px;
+  display: flex;
+  justify-content: center;
+  gap: 8px;
 }
 
-/* Device width is less than or equal to 960px */
-
-@media only screen and (width <= 960px) {
-  div.user {
-    top: 56px;
-    overflow: auto;
-  }
-
-  div.user div.col-1 {
-    padding-top: 10px;
-    padding-bottom: 15px;
-    background: #fefefe;
-    border-bottom: #eee solid 1px;
-  }
-
-  div.user div.col-1 section.user-avatar-sec {
-    display: flex;
-    justify-content: center;
-  }
-
-  div.user div.col-2 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
+div.user div.col-2 {
+  position: static;
+  inset: auto;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 18px;
+  box-shadow: 0 12px 34px rgb(26 54 39 / 6%);
+  padding: 16px;
 }
 
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >= 960px) {
+@media only screen and (width <=960px) {
   div.user {
-    top: 64px;
-    overflow: auto;
-  }
-
-  div.user div.col-1 {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    width: 300px;
-    padding-top: 20px;
-    background: #fefefe;
-    border-right: #eee solid 1px;
-  }
-
-  div.user div.col-1 section.user-avatar-sec {
-    position: relative;
-    left: 50%;
-    transform: translateX(-30%);
-  }
-
-  div.user div.col-2 {
-    position: absolute;
-    inset: 0 0 0 300px;
-    overflow: auto;
+    grid-template-columns: minmax(0, 1fr);
+    padding: 18px 16px 32px;
   }
 }

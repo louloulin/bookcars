@@ -237,7 +237,7 @@ const UpdateBooking = () => {
         const _status = await BookingService.deleteBookings([booking._id])
 
         if (_status === 200) {
-          navigate('/')
+          navigate('/bookings')
         } else {
           toastErr(true)
         }
@@ -858,7 +858,7 @@ const UpdateBooking = () => {
                   <Button variant="contained" className="btn-margin-bottom" color="error" size="small" onClick={handleDelete}>
                     {commonStrings.DELETE}
                   </Button>
-                  <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
+                  <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/bookings')}>
                     {commonStrings.CANCEL}
                   </Button>
                 </div>

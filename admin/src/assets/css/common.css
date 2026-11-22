@@ -22,14 +22,18 @@
 }
 
 .btn-primary {
-  background-color: #121212 !important;
+  background-color: #214c3c !important;
   color: #fff !important;
-  opacity: 0.9;
 }
 
 .btn-secondary {
   background-color: #999 !important;
   color: #fff !important;
+}
+
+.btn-primary.Mui-disabled {
+  background-color: #e2e8df !important;
+  color: #52625a !important;
 }
 
 .btn-primary:hover,
@@ -293,4 +297,35 @@ div.content {
     flex-direction: row;
     justify-content: flex-end;
   }
+}
+
+/* Generic image fallback (used by SafeImage) when the CDN asset is missing */
+span.safe-image-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 8px;
+  background: #eef2ec;
+  color: #7b8d84;
+  font-weight: 700;
+  font-size: .8rem;
+  overflow: hidden;
+  vertical-align: middle;
+}
+
+/* Supplier avatar fallback (initials) used when the avatar image is missing */
+span.supplier-avatar-fallback {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  background: #eaf3e7;
+  color: #214c3c;
+  font-weight: 800;
+  font-size: .8rem;
+  text-transform: uppercase;
+  flex: 0 0 auto;
+  overflow: hidden;
 }

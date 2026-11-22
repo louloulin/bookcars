@@ -27,6 +27,7 @@ import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
 import * as CarService from '@/services/CarService'
 import * as LocationService from '@/services/LocationService'
+import SafeImage from './SafeImage'
 
 interface AvatarProps {
   avatar?: string
@@ -518,14 +519,14 @@ const Avatar = ({
       {avatar ? (
         readonly ? (
           type === bookcarsTypes.RecordType.Car ? (
-            <img style={carImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Car).name} />
+            <SafeImage style={carImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Car).name} fallback={<CarIcon style={carImageStyle} color={color || 'inherit'} />} />
           )
             : type === bookcarsTypes.RecordType.Location ? (
-              <img style={locationImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Location).name} />
+              <SafeImage style={locationImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Location).name} fallback={<LocationIcon style={locationImageStyle} color={color || 'inherit'} />} />
             )
               : type === bookcarsTypes.RecordType.Supplier ? (
                 <div className="supplier-avatar-readonly">
-                  <img src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.User).fullName} />
+                  <SafeImage src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.User).fullName} initials={((avatarRecord as bookcarsTypes.User)?.fullName || '?').charAt(0).toUpperCase()} />
                 </div>
               ) : verified && avatarRecord && (avatarRecord as bookcarsTypes.User).verified ? (
                 <Badge
@@ -601,16 +602,16 @@ const Avatar = ({
             >
               {type === bookcarsTypes.RecordType.Car ? (
                 <div className="car-avatar">
-                  <img src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Car).name} />
+                  <SafeImage src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Car).name} fallback={<CarIcon className="avatar" color={color || 'inherit'} />} />
                 </div>
               )
                 : type === bookcarsTypes.RecordType.Location ? (
                   <div className="car-avatar">
-                    <img src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Location).name} />
+                    <SafeImage src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.Location).name} fallback={<LocationIcon className="avatar" color={color || 'inherit'} />} />
                   </div>
                 )
                   : type === bookcarsTypes.RecordType.Supplier ? (
-                    <img style={supplierImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.User).fullName} />
+                    <SafeImage style={supplierImageStyle} src={bookcarsHelper.joinURL(cdn(), avatar)} alt={avatarRecord && (avatarRecord as bookcarsTypes.User).fullName} initials={((avatarRecord as bookcarsTypes.User)?.fullName || '?').charAt(0).toUpperCase()} />
                   ) : (
                     <MaterialAvatar src={userAvatarUrl} className={size ? `avatar-${size}` : 'avatar'} />
                   )}

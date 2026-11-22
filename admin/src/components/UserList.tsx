@@ -31,6 +31,7 @@ import { strings as commonStrings } from '@/lang/common'
 import { strings } from '@/lang/user-list'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
+import SupplierAvatar from './SupplierAvatar'
 
 import '@/assets/css/user-list.css'
 
@@ -147,7 +148,7 @@ const UserList = ({
 
           if (__user.avatar) {
             if (__user.type === bookcarsTypes.RecordType.Supplier) {
-              userAvatar = <img src={bookcarsHelper.joinURL(env.CDN_USERS, row.avatar)} alt={row.fullName} />
+              userAvatar = <SupplierAvatar avatar={row.avatar} name={row.fullName} className="avatar-small" />
             } else {
               const userAvatarUrl = __user.avatar
                 ? ((__user.avatar.startsWith('https://') || __user.avatar.startsWith('http://')) ? __user.avatar : bookcarsHelper.joinURL(env.CDN_USERS, __user.avatar))

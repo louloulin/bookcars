@@ -1,60 +1,68 @@
-/* settings */
+/* Admin settings page (premium card grid) */
+
 div.settings {
   display: flex;
   flex-direction: column;
   flex: 1 0 auto;
-  justify-content: center;
-  align-items: center;
-  margin: 45px 0;
-  transform: translate3d(0, 0, 0);
+  width: 100%;
+  justify-content: flex-start;
+  align-items: stretch;
+  margin: 0;
+  transform: none;
+  background: #f3f6f2;
 }
 
-.settings-form-wrapper {
-  margin: 32px 0;
+div.settings div.settings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 20px;
+  align-items: start;
+  padding: 0 28px 44px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
-.settings-form-title {
-  text-align: center;
-  text-transform: capitalize;
-  color: #121212;
+div.settings .settings-form-wrapper,
+div.settings .settings-net-wrapper {
+  margin: 0 !important;
 }
 
-.settings-net-wrapper {
-  margin: 32px 0;
+div.settings .settings-form,
+div.settings .settings-net {
+  width: 100% !important;
+  max-width: none;
+  box-sizing: border-box;
+  padding: clamp(22px, 3vw, 30px) !important;
+  border-radius: 20px !important;
+  border: 1px solid #e2e9df;
+  box-shadow: 0 14px 40px rgb(26 54 39 / 6%) !important;
+  background: #fff;
 }
 
-/* Device width is less than or equal to 960px */
+div.settings .settings-form-title {
+  text-align: left;
+  text-transform: none;
+  color: #193329;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: 1.35rem;
+  letter-spacing: -.02em;
+  margin: 0 0 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #eef2ec;
+}
+
+div.settings .avatar-ctn {
+  margin: 0 0 20px;
+}
+
+div.settings .settings-ctn {
+  height: 190px;
+}
 
 @media only screen and (width <=960px) {
-  .settings-form {
-    width: 360px;
-    padding: 30px;
-  }
-
-  .settings-ctn {
-    height: 240px;
-  }
-
-  .settings-net {
-    width: 360px;
-    padding: 30px;
-  }
-}
-
-/* Device width is greater than or equal to 960px */
-
-@media only screen and (width >=960px) {
-  .settings-form {
-    width: 550px;
-    padding: 30px;
-  }
-
-  .settings-ctn {
-    height: 190px;
-  }
-
-  .settings-net {
-    width: 550px;
-    padding: 30px;
+  div.settings div.settings-grid {
+    grid-template-columns: minmax(0, 1fr);
+    padding: 0 16px 32px;
   }
 }

@@ -9,8 +9,11 @@ import * as helper from '@/utils/helper'
 import UserTypeFilter from '@/components/UserTypeFilter'
 import Search from '@/components/Search'
 import UserList from '@/components/UserList'
+import WorkspaceHead from '@/components/WorkspaceHead'
+import { strings as workspaceStrings } from '@/lang/workspace'
 
 import '@/assets/css/users.css'
+import '@/assets/css/workspace.css'
 
 const Users = () => {
   const navigate = useNavigate()
@@ -42,32 +45,37 @@ const Users = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {user && (
-        <div className="users">
-          <div className="col-1">
-            <div className="div.col-1-container">
-              <Search onSubmit={handleSearch} className="search" />
+        <div className="users ws-page">
+          <WorkspaceHead title={workspaceStrings.USERS_TITLE} subtitle={workspaceStrings.USERS_SUBTITLE}>
+            <Button variant="contained" className="btn-primary new-user" size="small" onClick={() => navigate('/create-user')}>
+              {strings.NEW_USER}
+            </Button>
+          </WorkspaceHead>
+          <div className="ws-body">
+            <div className="ws-side col-1">
+              <div className="col-1-container ws-side-panel">
+                <Search onSubmit={handleSearch} className="search" />
 
-              {admin
-                && (
-                  <UserTypeFilter
-                    className="user-type-filter"
-                    onChange={handleUserTypeFilterChange}
-                  />
-                )}
-
-              <Button variant="contained" className="btn-primary new-user" size="small" onClick={() => navigate('/create-user')}>
-                {strings.NEW_USER}
-              </Button>
+                {admin
+                  && (
+                    <UserTypeFilter
+                      className="user-type-filter"
+                      onChange={handleUserTypeFilterChange}
+                    />
+                  )}
+              </div>
             </div>
-          </div>
-          <div className="col-2">
-            <UserList
-              user={user}
-              types={types}
-              keyword={keyword}
-              checkboxSelection={!env.isMobile && admin}
-              hideDesktopColumns={env.isMobile}
-            />
+            <div className="ws-main col-2">
+              <div className="ws-main-panel">
+                <UserList
+                  user={user}
+                  types={types}
+                  keyword={keyword}
+                  checkboxSelection={!env.isMobile && admin}
+                  hideDesktopColumns={env.isMobile}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

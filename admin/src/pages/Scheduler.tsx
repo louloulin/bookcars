@@ -11,10 +11,13 @@ import VehicleScheduler from '@/components/VehicleScheduler'
 import SupplierFilter from '@/components/SupplierFilter'
 import StatusFilter from '@/components/StatusFilter'
 import VehicleSchedulerFilter from '@/components/VehicleSchedulerFilter'
+import WorkspaceHead from '@/components/WorkspaceHead'
+import { strings as workspaceStrings } from '@/lang/workspace'
 
 import Layout from '@/components/Layout'
 
 import '@/assets/css/scheduler.css'
+import '@/assets/css/workspace.css'
 
 const Scheduler = () => {
   const navigate = useNavigate()
@@ -57,40 +60,48 @@ const Scheduler = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {user && suppliers && (
-        <div className="scheduler">
-          <div className="col-1">
+        <div className="scheduler ws-page">
+          <WorkspaceHead title={workspaceStrings.SCHEDULER_TITLE} subtitle={workspaceStrings.SCHEDULER_SUBTITLE}>
             {leftPanel && (
-              <>
-                <Button variant="contained" className="btn-primary cl-new-booking" size="small" onClick={() => navigate('/create-booking')}>
-                  {strings.NEW_BOOKING}
-                </Button>
-                {admin
-                  && (
-                    <SupplierFilter
-                      suppliers={allSuppliers}
-                      onChange={handleSupplierFilterChange}
-                      className="cl-supplier-filter"
-                    />
-                  )}
-                <StatusFilter
-                  onChange={handleStatusFilterChange}
-                  className="cl-status-filter"
-                />
-                <VehicleSchedulerFilter
-                  onSubmit={handleVehicleSchedulerFilterSubmit}
-                  className="cl-scheduler-filter"
-                  collapse={!env.isMobile}
-                />
-              </>
+              <Button variant="contained" className="btn-primary cl-new-booking" size="small" onClick={() => navigate('/create-booking')}>
+                {strings.NEW_BOOKING}
+              </Button>
             )}
-          </div>
-          <div className="col-2">
-            <VehicleScheduler
-              suppliers={suppliers}
-              statuses={statuses}
-              filter={filter!}
-              language={user.language!}
-            />
+          </WorkspaceHead>
+          <div className="ws-body">
+            <div className="ws-side col-1">
+              {leftPanel && (
+                <div className="ws-side-panel">
+                  {admin
+                    && (
+                      <SupplierFilter
+                        suppliers={allSuppliers}
+                        onChange={handleSupplierFilterChange}
+                        className="cl-supplier-filter"
+                      />
+                    )}
+                  <StatusFilter
+                    onChange={handleStatusFilterChange}
+                    className="cl-status-filter"
+                  />
+                  <VehicleSchedulerFilter
+                    onSubmit={handleVehicleSchedulerFilterSubmit}
+                    className="cl-scheduler-filter"
+                    collapse={!env.isMobile}
+                  />
+                </div>
+              )}
+            </div>
+            <div className="ws-main col-2">
+              <div className="ws-main-panel">
+                <VehicleScheduler
+                  suppliers={suppliers}
+                  statuses={statuses}
+                  filter={filter!}
+                  language={user.language!}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

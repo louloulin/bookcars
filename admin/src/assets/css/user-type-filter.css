@@ -1,25 +1,26 @@
 div.user-type-filter {
-  background: #fafafa;
-  margin: 10px 10px 0 0;
-  padding: 5px;
-  border: 1px solid #dadada;
+  background: #fff;
+  margin: 0;
+  padding: 0;
+  border: 0;
   font-size: 13px;
 }
 
 div.user-type-filter ul.user-type-list {
   list-style-type: none;
   font-size: 13px;
-  margin: 15px 0 0;
+  margin: 4px 0 0;
   padding: 0;
-  display: inline-block;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px;
+  width: 100%;
 }
 
 div.user-type-filter ul.user-type-list li {
-  width: 42%;
-  float: left;
-  margin-bottom: 12px;
-  margin-left: 4%;
-  margin-right: 4%;
+  width: auto;
+  float: none;
+  margin: 0;
   clear: none;
 }
 
@@ -58,11 +59,12 @@ div.user-type-filter ul.user-type-list li span.bs-user {
 
 div.user-type-filter div.filter-actions {
   text-align: center;
-  padding-bottom: 5px;
+  padding: 10px 0 2px;
 }
 
 div.user-type-filter div.filter-actions span.uncheckall {
   text-decoration: underline;
   cursor: pointer;
-  color: #0064c8;
+  color: #2f6b4f;
+  font-weight: 600;
 }

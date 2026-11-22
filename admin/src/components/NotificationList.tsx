@@ -103,7 +103,7 @@ const NotificationList = ({ user }: NotificationListProps) => {
 
   return (
     <>
-      <div className="notifications">
+      <div className="notification-list-root">
         {totalRecords === 0 && (
           <Card variant="outlined" className="empty-list">
             <CardContent>

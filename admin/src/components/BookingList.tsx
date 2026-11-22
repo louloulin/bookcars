@@ -30,6 +30,7 @@ import * as helper from '@/utils/helper'
 import * as BookingService from '@/services/BookingService'
 import StatusList from './StatusList'
 import BookingStatus from './BookingStatus'
+import SupplierAvatar from './SupplierAvatar'
 
 import '@/assets/css/booking-list.css'
 
@@ -335,7 +336,7 @@ const BookingList = ({
         flex: 1,
         renderCell: ({ row, value }: GridRenderCellParams<bookcarsTypes.Booking, string>) => (
           <Link href={`/supplier?c=${(row.supplier as bookcarsTypes.User)._id}`} className="cell-supplier">
-            <img src={bookcarsHelper.joinURL(env.CDN_USERS, (row.supplier as bookcarsTypes.User).avatar)} alt={value} />
+            <SupplierAvatar avatar={(row.supplier as bookcarsTypes.User).avatar} name={(row.supplier as bookcarsTypes.User).fullName} />
           </Link>
         ),
         valueGetter: (value: bookcarsTypes.User) => value?.fullName,
@@ -371,24 +372,22 @@ const BookingList = ({
 
   useEffect(() => {
     if (env.isMobile) {
-      const element: HTMLDivElement | null = (containerClassName
-        ? document.querySelector(`.${containerClassName}`)
-        : document.querySelector('div.bookings'))
-
-      if (element) {
-        element.onscroll = (event: Event) => {
-          if (fetch && !loading) {
-            const target = event.target as HTMLDivElement
-
-            if (
-              target.scrollTop > 0
-              && target.offsetHeight + target.scrollTop + env.INFINITE_SCROLL_OFFSET >= target.scrollHeight
-            ) {
-              setLoading(true)
-              setPage(page + 1)
-            }
+      const onScroll = () => {
+        if (fetch && !loading) {
+          if (
+            window.scrollY > 0
+            && window.scrollY + window.innerHeight + env.INFINITE_SCROLL_OFFSET >= document.body.scrollHeight
+          ) {
+            setLoading(true)
+            setPage(page + 1)
           }
         }
+      }
+
+      window.onscroll = onScroll
+
+      return () => {
+        window.onscroll = null
       }
     }
   }, [containerClassName, page, fetch, loading, offset])
@@ -535,7 +534,7 @@ const BookingList = ({
                     <span className="booking-detail-title">{commonStrings.SUPPLIER}</span>
                     <div className="booking-detail-value">
                       <div className="car-supplier">
-                        <img src={bookcarsHelper.joinURL(env.CDN_USERS, (booking.supplier as bookcarsTypes.User).avatar)} alt={(booking.supplier as bookcarsTypes.User).fullName} />
+                        <SupplierAvatar avatar={(booking.supplier as bookcarsTypes.User).avatar} name={(booking.supplier as bookcarsTypes.User).fullName} />
                         <span className="car-supplier-name">{(booking.supplier as bookcarsTypes.User).fullName}</span>
                       </div>
                     </div>

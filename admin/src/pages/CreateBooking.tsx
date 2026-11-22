@@ -152,7 +152,7 @@ const CreateBooking = () => {
       })
 
       if (_booking && _booking._id) {
-        navigate('/')
+        navigate('/bookings')
       } else {
         helper.error()
       }
@@ -441,7 +441,7 @@ const CreateBooking = () => {
                 <Button type="submit" variant="contained" className="btn-primary btn-margin-bottom" size="small" disabled={isSubmitting}>
                   {commonStrings.CREATE}
                 </Button>
-                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/')}>
+                <Button variant="contained" className="btn-secondary btn-margin-bottom" size="small" onClick={() => navigate('/bookings')}>
                   {commonStrings.CANCEL}
                 </Button>
               </div>

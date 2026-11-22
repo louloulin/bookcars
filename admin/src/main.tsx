@@ -16,6 +16,7 @@ import App from '@/App'
 
 import '@/assets/css/common.css'
 import '@/assets/css/index.css'
+import '@/assets/css/form-page.css'
 
 if (import.meta.env.VITE_NODE_ENV === 'production') {
   disableDevTools()
@@ -82,11 +83,13 @@ const theme = createTheme(
   {
     palette: {
       primary: {
-        main: '#1a1a1a',
-        // contrastText: '#003B95',
-        // dark: '#003B95',
+        main: '#214c3c',
+        dark: '#173d30',
       },
+      background: { default: '#f3f6f2', paper: '#ffffff' },
+      text: { primary: '#193329', secondary: '#4d6057' },
     },
+    shape: { borderRadius: 10 },
     typography: {
       fontFamily: [
         '-apple-system',
@@ -100,12 +103,16 @@ const theme = createTheme(
         '"Segoe UI Emoji"',
         '"Segoe UI Symbol"',
       ].join(','),
+      button: { textTransform: 'none', fontWeight: 700 },
     },
     components: {
+      MuiButton: {
+        defaultProps: { disableElevation: true },
+      },
       MuiCssBaseline: {
         styleOverrides: {
           body: {
-            backgroundColor: '#fafafa',
+            backgroundColor: '#f3f6f2',
           },
         },
       },

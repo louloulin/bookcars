@@ -17,12 +17,14 @@ import {
 } from '@mui/material'
 import {
   Menu as MenuIcon,
+  RouteOutlined,
   Mail as MailIcon,
   Notifications as NotificationsIcon,
   More as MoreIcon,
   Language as LanguageIcon,
   Settings as SettingsIcon,
   Dashboard as DashboardIcon,
+  EventAvailable as BookingsIcon,
   CorporateFare as SuppliersIcon,
   LocationOn as LocationsIcon,
   DirectionsCar as CarsIcon,
@@ -35,7 +37,7 @@ import {
   AccountBalance as BankDetailsIcon,
   MonetizationOn as PricingIcon,
 } from '@mui/icons-material'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import * as bookcarsTypes from ':bookcars-types'
 import env from '@/config/env.config'
 import { strings } from '@/lang/header'
@@ -291,8 +293,8 @@ const Header = ({
   )
 
   return !hidden && (
-    <div style={classes.grow} className="header">
-      <AppBar position="fixed" sx={{ bgcolor: '#121212' }}>
+    <div style={classes.grow} className="header workspace-header">
+      <AppBar position="fixed" elevation={0} sx={{ bgcolor: '#18382d' }}>
         <Toolbar className="toolbar">
           {isLoaded && isSignedIn && (
             <IconButton edge="start" sx={classes.menuButton} color="inherit" aria-label="open drawer" onClick={handleSideMenuOpen}>
@@ -310,6 +312,15 @@ const Header = ({
                 >
                   <ListItemIcon><DashboardIcon /></ListItemIcon>
                   <ListItemText primary={strings.DASHBOARD} />
+                </ListItem>
+                <ListItem
+                  onClick={() => {
+                    navigate('/bookings')
+                    handleSideMenuClose()
+                  }}
+                >
+                  <ListItemIcon><BookingsIcon /></ListItemIcon>
+                  <ListItemText primary={strings.BOOKINGS} />
                 </ListItem>
                 <ListItem
                   onClick={() => {
@@ -424,6 +435,16 @@ const Header = ({
               </ListItem>
             </Drawer>
           </>
+          <NavLink to="/" className="workspace-brand"><RouteOutlined fontSize="small" />{env.WEBSITE_NAME}</NavLink>
+          {isSignedIn && (
+            <nav className="workspace-nav" aria-label={strings.DASHBOARD}>
+              <NavLink to="/" end>{strings.DASHBOARD}</NavLink>
+              <NavLink to="/bookings">{strings.BOOKINGS}</NavLink>
+              <NavLink to="/scheduler">{strings.SCHEDULER}</NavLink>
+              <NavLink to="/cars">{strings.CARS}</NavLink>
+              <NavLink to="/locations">{strings.LOCATIONS}</NavLink>
+            </nav>
+          )}
           <div style={classes.grow} />
           <div className="header-desktop">
             {isSignedIn && (

@@ -3,3 +3,33 @@
   flex-direction: column;
   flex: 1 0 auto;
 }
+
+.workspace-header .toolbar { gap: 12px; }
+.workspace-brand, .workspace-nav a { color: #fff; text-decoration: none; white-space: nowrap; }
+.workspace-brand { display: inline-flex; align-items: center; gap: 8px; font-weight: 800; font-size: 1.05rem; }
+.workspace-nav { display: flex; gap: 4px; margin-inline-start: 12px; }
+.workspace-nav a { border-radius: 9px; padding: 8px 12px; font-weight: 600; font-size: .875rem; }
+.workspace-nav a:hover, .workspace-nav a.active { background: #315548; }
+.workspace-header .btn-primary { background: #315548 !important; }
+
+.app div.signin { margin: clamp(50px, 11vh, 120px) 16px; }
+.app div.signin .signin-form {
+  width: min(100%, 440px);
+  padding: clamp(22px, 5vw, 40px);
+  border: 1px solid #dce6dc;
+  border-radius: 20px;
+  box-shadow: 0 18px 55px rgb(26 54 39 / 10%);
+}
+.app .signin-form form { width: 100%; }
+.app .signin-form-title { color: #193329; margin-top: 0; }
+.app .signin-form .signin-buttons { float: none; }
+.app .signin-form .signin-buttons button { width: 100%; min-height: 44px; }
+.app .MuiDataGrid-root { background: #fff; border-color: #dce6dc; }
+.app .MuiDataGrid-columnHeaders { background: #edf3eb; }
+.app .MuiDataGrid-row:hover { background: #f4f8f2; }
+
+@media (max-width: 960px) {
+  .workspace-nav { display: none; }
+  .workspace-header .toolbar { gap: 6px; }
+  .workspace-brand { font-size: .95rem; }
+}

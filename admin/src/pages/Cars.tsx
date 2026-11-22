@@ -20,6 +20,8 @@ import FuelPolicyFilter from '@/components/FuelPolicyFilter'
 import DepositFilter from '@/components/DepositFilter'
 import AvailabilityFilter from '@/components/AvailabilityFilter'
 import CarList from '@/components/CarList'
+import WorkspaceHead from '@/components/WorkspaceHead'
+import { strings as workspaceStrings } from '@/lang/workspace'
 
 import CarRangeFilter from '@/components/CarRangeFilter'
 import CarMultimediaFilter from '@/components/CarMultimediaFilter'
@@ -27,6 +29,7 @@ import CarRatingFilter from '@/components/CarRatingFilter'
 import CarSeatsFilter from '@/components/CarSeatsFilter'
 
 import '@/assets/css/cars.css'
+import '@/assets/css/workspace.css'
 
 const Cars = () => {
   const navigate = useNavigate()
@@ -174,45 +177,48 @@ const Cars = () => {
   return (
     <Layout onLoad={onLoad} strict>
       {user && (
-        <div className="cars">
-          <div className="col-1">
-            <div className="col-1-container">
-              <Search onSubmit={handleSearch} className="search" />
+        <div className="cars ws-page">
+          <WorkspaceHead title={workspaceStrings.CARS_TITLE} subtitle={workspaceStrings.CARS_SUBTITLE}>
+            <Button type="submit" variant="contained" className="btn-primary new-car" size="small" onClick={() => navigate('/create-car')}>
+              {strings.NEW_CAR}
+            </Button>
+          </WorkspaceHead>
+          <div className="ws-body">
+            <div className="ws-side col-1">
+              <div className="col-1-container ws-side-panel">
+                <Search onSubmit={handleSearch} className="search" />
 
-              <Button type="submit" variant="contained" className="btn-primary new-car" size="small" onClick={() => navigate('/create-car')}>
-                {strings.NEW_CAR}
-              </Button>
+                {rowCount > 0 && <InfoBox value={`${bookcarsHelper.formatNumber(rowCount, language)} ${rowCount > 1 ? commonStrings.CARS : commonStrings.CAR}`} className="car-count" />}
 
-              {rowCount > 0 && <InfoBox value={`${bookcarsHelper.formatNumber(rowCount, language)} ${rowCount > 1 ? commonStrings.CARS : commonStrings.CAR}`} className="car-count" />}
+                {admin && (
+                  loadingSuppliers ? (
+                    <div className="filter-progress-wrapper">
+                      <CircularProgress className="filter-progress" size="1.3rem" />
+                    </div>
+                  )
+                    : <SupplierFilter suppliers={allSuppliers} onChange={handleSupplierFilterChange} className="filter" />
+                )}
 
-              {admin && (
-                loadingSuppliers ? (
-                  <div className="filter-progress-wrapper">
-                    <CircularProgress className="filter-progress" size="1.3rem" />
-                  </div>
-                )
-                  : <SupplierFilter suppliers={allSuppliers} onChange={handleSupplierFilterChange} className="filter" />
-              )}
-
-              {rowCount > -1 && (
-                <>
-                  <CarRatingFilter className="filter" onChange={handleRatingFilterChange} />
-                  <CarRangeFilter className="filter" onChange={handleRangeFilterChange} />
-                  <CarMultimediaFilter className="filter" onChange={handleMultimediaFilterChange} />
-                  <CarSeatsFilter className="filter" onChange={handleSeatsFilterChange} />
-                  <CarSpecsFilter className="filter" onChange={handleCarSpecsFilterChange} />
-                  <CarTypeFilter className="car-filter" onChange={handleCarTypeFilterChange} />
-                  <GearboxFilter className="car-filter" onChange={handleGearboxFilterChange} />
-                  <MileageFilter className="car-filter" onChange={handleMileageFilterChange} />
-                  <FuelPolicyFilter className="filter" onChange={handleFuelPolicyFilterChange} />
-                  <DepositFilter className="car-filter" onChange={handleDepositFilterChange} />
-                  {admin && <AvailabilityFilter className="car-filter" onChange={handleAvailabilityFilterChange} />}
-                </>
-              )}
+                {rowCount > -1 && (
+                  <>
+                    <CarRatingFilter className="filter" onChange={handleRatingFilterChange} />
+                    <CarRangeFilter className="filter" onChange={handleRangeFilterChange} />
+                    <CarMultimediaFilter className="filter" onChange={handleMultimediaFilterChange} />
+                    <CarSeatsFilter className="filter" onChange={handleSeatsFilterChange} />
+                    <CarSpecsFilter className="filter" onChange={handleCarSpecsFilterChange} />
+                    <CarTypeFilter className="car-filter" onChange={handleCarTypeFilterChange} />
+                    <GearboxFilter className="car-filter" onChange={handleGearboxFilterChange} />
+                    <MileageFilter className="car-filter" onChange={handleMileageFilterChange} />
+                    <FuelPolicyFilter className="filter" onChange={handleFuelPolicyFilterChange} />
+                    <DepositFilter className="car-filter" onChange={handleDepositFilterChange} />
+                    {admin && <AvailabilityFilter className="car-filter" onChange={handleAvailabilityFilterChange} />}
+                  </>
+                )}
+              </div>
             </div>
-          </div>
-          <div className="col-2">
-            <CarList
+            <div className="ws-main col-2">
+              <div className="ws-main-panel">
+                <CarList
               user={user}
               suppliers={suppliers}
               carSpecs={carSpecs}
@@ -229,9 +235,11 @@ const Cars = () => {
               keyword={keyword}
               loading={loading}
               language={language}
-              onLoad={handleCarListLoad}
-              onDelete={handleCarDelete}
-            />
+                  onLoad={handleCarListLoad}
+                  onDelete={handleCarDelete}
+                />
+              </div>
+            </div>
           </div>
         </div>
       )}

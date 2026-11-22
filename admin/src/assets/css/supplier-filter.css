@@ -1,5 +1,5 @@
 div.supplier-filter {
-  margin: 10px 0;
+  margin: 0;
   font-size: 13px;
   text-align: center;
 }
@@ -7,49 +7,59 @@ div.supplier-filter {
 div.supplier-filter ul.supplier-list {
   list-style-type: none;
   font-size: 13px;
-  margin: 15px 0 0;
+  margin: 4px 0 0;
   padding: 0;
   width: 100%;
-  /* display: flex;
-  flex-wrap: wrap; */
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 6px;
 }
 
 div.supplier-filter ul.supplier-list li {
-  margin-bottom: 12px;
-  /* margin-left: 15px;
-  margin-right: 5px; */
-  margin-bottom: 8px;
+  margin-bottom: 0;
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
-  height: 32px;
+  gap: 4px;
+  height: 34px;
+  padding: 0 8px;
+  border-radius: 10px;
+  background: #fff;
+  border: 1px solid #e4ebe1;
 }
 
 div.supplier-filter ul.supplier-list li span.supplier {
-  border-radius: 3px;
-  border: 1px solid #d9d9d9;
+  border-radius: 8px;
+  border: 1px solid #e4ebe1;
   box-shadow: none;
   vertical-align: middle;
   cursor: pointer;
   overflow: hidden;
   margin-bottom: 0;
-  font-weight: 400;
-  margin-left: 5px;
-  width: 62px;
-  height: 32px;
+  font-weight: 600;
+  margin-left: 0;
+  width: 44px;
+  height: 26px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  flex: none;
+  background: #f7faf5;
 }
 
 div.supplier-filter ul.supplier-list li span.supplier img {
   margin: 0;
   max-width: 100%;
   max-height: 100%;
+}
+
+div.supplier-filter ul.supplier-list li span.supplier span.supplier-avatar-fallback {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+  font-size: .7rem;
 }
 
 div.supplier-filter ul.supplier-list li span.car-count {
@@ -65,11 +75,12 @@ div.supplier-filter ul.supplier-list li input[type='checkbox'] {
 
 div.supplier-filter div.filter-actions {
   text-align: center;
-  padding-bottom: 10px;
+  padding: 10px 0 2px;
 }
 
 div.supplier-filter div.filter-actions span.uncheckall {
   text-decoration: underline;
   cursor: pointer;
-  color: #0064c8;
+  color: #2f6b4f;
+  font-weight: 600;
 }

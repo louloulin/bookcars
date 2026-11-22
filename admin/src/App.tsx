@@ -8,6 +8,7 @@ import NProgressIndicator from '@/components/NProgressIndicator'
 import ErrorBoundary from '@/components/ErrorBoundary'
 
 const Header = lazy(() => import('@/components/Header'))
+const Dashboard = lazy(() => import('@/pages/Dashboard'))
 const SignIn = lazy(() => import('@/pages/SignIn'))
 const Activate = lazy(() => import('@/pages/Activate'))
 const ForgotPassword = lazy(() => import('@/pages/ForgotPassword'))
@@ -77,7 +78,8 @@ const router = createBrowserRouter([
     path: '/',
     element: <AppLayout />,
     children: [
-      { index: true, element: <Bookings /> },
+      { index: true, element: <Dashboard /> },
+      { path: 'bookings', element: <Bookings /> },
       { path: 'sign-in', element: <SignIn /> },
       { path: 'activate', element: <Activate /> },
       { path: 'forgot-password', element: <ForgotPassword /> },

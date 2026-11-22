@@ -1,0 +1,144 @@
+/* Shared premium styling for admin create/update form pages */
+
+div.create-car,
+div.update-car,
+div.create-user,
+div.update-user,
+div.create-supplier,
+div.update-supplier,
+div.create-location,
+div.update-location,
+div.create-country,
+div.update-country,
+div.create-booking,
+div.update-booking,
+div.bank-details,
+div.pricing {
+  display: flex;
+  flex-direction: column;
+  flex: 1 0 auto;
+  align-items: center;
+  background: #f3f6f2;
+  transform: translate3d(0, 0, 0);
+  margin: 0;
+  padding: clamp(28px, 4vw, 52px) clamp(16px, 4vw, 48px) clamp(48px, 7vw, 96px);
+}
+
+.car-form-wrapper,
+.user-form-wrapper,
+.location-form-wrapper,
+.country-form-wrapper,
+.booking-form-wrapper,
+.bank-details-form-wrapper,
+.supplier-form-wrapper {
+  margin: 0 !important;
+}
+
+.car-form,
+.user-form,
+.location-form,
+.country-form,
+.booking-form,
+.bank-details-form,
+.supplier-form,
+.supplier-form-update {
+  width: min(100%, 720px) !important;
+  max-width: 720px;
+  box-sizing: border-box;
+  padding: clamp(24px, 3.4vw, 40px) !important;
+  border-radius: 20px !important;
+  border: 1px solid #e2e9df;
+  box-shadow: 0 16px 44px rgb(26 54 39 / 7%) !important;
+  background: #fff;
+}
+
+.car-form-title,
+.user-form-title,
+.location-form-title,
+.country-form-title,
+.booking-form-title,
+.bank-details-form-title,
+.supplier-form-title {
+  text-align: left !important;
+  text-transform: none;
+  color: #193329;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+  letter-spacing: -.03em;
+  margin: 0 0 22px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid #eef2ec;
+}
+
+.car-form .MuiInputLabel-root,
+.user-form .MuiInputLabel-root,
+.location-form .MuiInputLabel-root,
+.country-form .MuiInputLabel-root,
+.booking-form .MuiInputLabel-root,
+.bank-details-form .MuiInputLabel-root,
+.supplier-form .MuiInputLabel-root {
+  color: #5d7268;
+}
+
+.car-form .MuiOutlinedInput-root,
+.user-form .MuiOutlinedInput-root,
+.location-form .MuiOutlinedInput-root,
+.country-form .MuiOutlinedInput-root,
+.booking-form .MuiOutlinedInput-root,
+.bank-details-form .MuiOutlinedInput-root,
+.supplier-form .MuiOutlinedInput-root {
+  border-radius: 10px;
+}
+
+.checkbox-fc {
+  margin: 10px 0 !important;
+}
+
+.checkbox-fc .checkbox-fcl {
+  color: rgb(0 0 0 / 60%);
+  font-size: .9em;
+  line-height: 1.2em;
+}
+
+.car-form div.info,
+.booking-form div.info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f2f7ef;
+  border: 1px solid #e2e9df;
+  border-radius: 12px;
+  padding: 10px 14px;
+  margin: 4px 0 18px;
+  color: #5d7268;
+  font-size: .9rem;
+}
+
+@media only screen and (width <=960px) {
+  div.create-car,
+  div.update-car,
+  div.create-user,
+  div.update-user,
+  div.create-supplier,
+  div.update-supplier,
+  div.create-location,
+  div.update-location,
+  div.create-country,
+  div.update-country,
+  div.create-booking,
+  div.update-booking {
+    padding: 22px 14px 48px;
+  }
+
+  .car-form,
+  .user-form,
+  .location-form,
+  .country-form,
+  .booking-form,
+  .bank-details-form,
+  .supplier-form,
+  .supplier-form-update {
+    padding: 22px 18px !important;
+  }
+}

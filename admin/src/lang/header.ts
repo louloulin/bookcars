@@ -4,6 +4,7 @@ import * as langHelper from '@/utils/langHelper'
 const strings = new LocalizedStrings({
   fr: {
     DASHBOARD: 'Tableau de bord',
+    BOOKINGS: 'Réservations',
     SCHEDULER: 'Planificateur',
     HOME: 'Accueil',
     COMPANIES: 'Fournisseurs',
@@ -22,6 +23,7 @@ const strings = new LocalizedStrings({
   },
   en: {
     DASHBOARD: 'Dashboard',
+    BOOKINGS: 'Bookings',
     SCHEDULER: 'Vehicle Scheduler',
     HOME: 'Home',
     COMPANIES: 'Suppliers',
@@ -40,6 +42,7 @@ const strings = new LocalizedStrings({
   },
   es: {
     DASHBOARD: 'Panel de control',
+    BOOKINGS: 'Reservas',
     SCHEDULER: 'Programador',
     HOME: 'Inicio',
     COMPANIES: 'Proveedores',
@@ -58,6 +61,7 @@ const strings = new LocalizedStrings({
   },
   de: {
     DASHBOARD: 'Dashboard',
+    BOOKINGS: 'Buchungen',
     SCHEDULER: 'Fahrzeugplaner',
     HOME: 'Startseite',
     COMPANIES: 'Anbieter',
@@ -76,6 +80,7 @@ const strings = new LocalizedStrings({
   },
   pt: {
     DASHBOARD: 'Painel de controlo',
+    BOOKINGS: 'Reservas',
     SCHEDULER: 'Planeador de veículos',
     HOME: 'Início',
     COMPANIES: 'Fornecedores',
@@ -94,6 +99,7 @@ const strings = new LocalizedStrings({
   },
   it: {
     DASHBOARD: 'Dashboard',
+    BOOKINGS: 'Prenotazioni',
     SCHEDULER: 'Pianificatore veicoli',
     HOME: 'Home',
     COMPANIES: 'Fornitori',
@@ -112,6 +118,7 @@ const strings = new LocalizedStrings({
   },
   zh: {
     DASHBOARD: '仪表板',
+    BOOKINGS: '预订',
     SCHEDULER: '车辆调度',
     HOME: '首页',
     COMPANIES: '供应商',
@@ -130,6 +137,7 @@ const strings = new LocalizedStrings({
   },
   ja: {
     DASHBOARD: 'ダッシュボード',
+    BOOKINGS: '予約',
     SCHEDULER: '車両スケジューラー',
     HOME: 'ホーム',
     COMPANIES: 'サプライヤー',

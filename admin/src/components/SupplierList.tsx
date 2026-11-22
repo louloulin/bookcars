@@ -27,6 +27,7 @@ import * as SupplierService from '@/services/SupplierService'
 import * as helper from '@/utils/helper'
 import Pager from '@/components/Pager'
 import Progress from '@/components/Progress'
+import SupplierAvatar from '@/components/SupplierAvatar'
 
 import '@/assets/css/supplier-list.css'
 
@@ -201,7 +202,7 @@ const SupplierList = ({
               <article key={supplier._id}>
                 <div className="supplier-item">
                   <div className="supplier-item-avatar">
-                    <img src={bookcarsHelper.joinURL(env.CDN_USERS, supplier.avatar)} alt={supplier.fullName} />
+                    <SupplierAvatar avatar={supplier.avatar} name={supplier.fullName} />
                   </div>
                   <span className="supplier-item-title">{supplier.fullName}</span>
                   {

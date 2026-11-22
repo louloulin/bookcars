@@ -1,140 +1,158 @@
-div.notifications {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+/* Admin notifications (premium, static flow layout) */
+
+div.notification-list-root {
+  position: static;
+  right: auto;
+  bottom: auto;
+  left: auto;
   display: flex;
   flex-direction: column;
-  align-items: center;
-}
-
-div.notifications .empty-list {
+  align-items: stretch;
   width: 100%;
-  max-width: 380px;
-  margin-top: 10px;
-  text-align: center;
 }
 
-div.notifications div.header-container {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  height: 54px;
+div.notification-list-root .empty-list {
+  width: 100%;
+  max-width: none;
+  margin-top: 0;
+  text-align: center;
+  border-radius: 14px;
+}
+
+div.notification-list-root div.header-container {
+  position: static;
+  top: auto;
+  right: auto;
+  left: auto;
+  height: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
-  background-color: #fff;
-  border-bottom: 1px solid #ddd;
-  padding: 5px 0;
+  background-color: #fbfcf9;
+  border: 1px solid #e7ede3;
+  border-radius: 14px;
+  padding: 8px 14px;
+  margin-bottom: 14px;
 }
 
-div.notifications div.header-container div.header {
+div.notification-list-root div.header-container div.header {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
   width: 100%;
   max-width: 680px;
 }
 
-div.notifications div.footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  height: 54px;
+div.notification-list-root div.header-container div.header-actions {
+  display: flex;
+  flex-direction: row;
+  gap: 4px;
+}
+
+div.notification-list-root div.footer {
+  position: static;
+  right: auto;
+  bottom: auto;
+  left: auto;
+  height: auto;
   display: flex;
   flex-direction: row;
   justify-content: flex-end;
-  border-top: 1px solid #ddd;
-  padding: 5px 10px 5px 0;
+  align-items: center;
+  border: 1px solid #e7ede3;
+  border-radius: 14px;
+  background: #fbfcf9;
+  padding: 8px 14px;
+  margin-top: 14px;
 }
 
-div.notifications div.footer div.row-count {
+div.notification-list-root div.footer div.row-count {
   font-size: 14px;
   display: flex;
   flex-direction: row;
   align-items: center;
   margin-right: 7px;
+  color: #5d7268;
 }
 
-div.notifications div.footer div.actions {
+div.notification-list-root div.footer div.actions {
   display: flex;
   flex-direction: row;
 }
 
-div.notifications div.footer div.actions .icon {
+div.notification-list-root div.footer div.actions .icon {
   font-size: 16px;
   width: 24px;
 }
 
-div.notifications div.notifications-list {
-  position: absolute;
-  inset: 55px 0;
+div.notification-list-root div.notification-list-root-list {
+  position: static;
+  inset: auto;
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-  padding-top: 15px;
-  padding-right: 10px;
-  overflow-y: overlay;
+  padding: 0;
+  overflow-y: visible;
 }
 
-div.notifications div.notifications-list div.notification-container {
+div.notification-list-root div.notification-list-root-list div.notification-container {
   display: flex;
   flex-direction: row;
   width: 100%;
   max-width: 680px;
 }
 
-div.notifications div.notifications-list div.notification-container div.notification-checkbox {
+div.notification-list-root div.notification-list-root-list div.notification-container div.notification-checkbox {
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
-div.notifications div.notifications-list div.notification-container div.notification {
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  color: #333;
+div.notification-list-root div.notification-list-root-list div.notification-container div.notification {
+  background: #fbfcf9;
+  border: 1px solid #e7ede3;
+  border-radius: 14px;
+  color: #33473d;
   margin-bottom: 10px;
   min-height: 75px;
   word-break: break-word;
-  padding: 10px;
+  padding: 14px 16px;
   font-size: 15px;
   width: 100%;
+  box-sizing: border-box;
 }
 
-div.notifications div.notifications-list div.notification-container .unread {
-  font-weight: bold;
+div.notification-list-root div.notification-list-root-list div.notification-container .unread {
+  font-weight: 600;
+  background: #f4f8f1;
+  border-color: #cfdcc9;
 }
 
-div.notifications div.notifications-list div.notification-container div.notification div.date {
-  color: #878787;
+div.notification-list-root div.notification-list-root-list div.notification-container div.notification div.date {
+  color: #7b8d84;
   margin-bottom: 5px;
+  font-size: .82rem;
 }
 
-div.notifications div.notifications-list div.notification-container div.notification div.message-container {
+div.notification-list-root div.notification-list-root-list div.notification-container div.notification div.message-container {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
 
-div.notifications div.notifications-list div.notification-container div.notification div.message-container div.actions {
+div.notification-list-root div.notification-list-root-list div.notification-container div.notification div.message-container div.actions {
   display: flex;
   flex-direction: row;
   margin-left: 5px;
 }
 
 @media only screen and (width <= 960px) {
-  div.notifications {
-    top: 56px;
-  }
-}
-
-@media only screen and (width >= 960px) {
-  div.notifications {
-    top: 64px;
+  div.notification-list-root div.notification-list-root-list div.notification-container div.notification div.message-container {
+    flex-direction: column;
+    align-items: flex-start;
   }
 }

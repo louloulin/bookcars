@@ -24,6 +24,7 @@ import Backdrop from '@/components/SimpleBackdrop'
 import Avatar from '@/components/Avatar'
 import CarList from '@/components/CarList'
 import InfoBox from '@/components/InfoBox'
+import SupplierAvatar from '@/components/SupplierAvatar'
 import Error from './Error'
 import NoMatch from './NoMatch'
 
@@ -156,7 +157,7 @@ const Supplier = () => {
               ) : (
                 <div className="car-supplier">
                   <span className="car-supplier-logo">
-                    <img src={bookcarsHelper.joinURL(env.CDN_USERS, supplier.avatar)} alt={supplier.fullName} style={{ width: env.SUPPLIER_IMAGE_WIDTH }} />
+                    <SupplierAvatar avatar={supplier.avatar} name={supplier.fullName} style={{ width: env.SUPPLIER_IMAGE_WIDTH }} />
                   </span>
                   <span className="car-supplier-info">{supplier.fullName}</span>
                 </div>

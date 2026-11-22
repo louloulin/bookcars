@@ -4,16 +4,27 @@ div.signin {
   flex-direction: row;
   flex: 1 0 auto;
   justify-content: center;
-  margin: 45px 0;
+  align-items: flex-start;
+  margin: 0;
   transform: translate3d(0, 0, 0);
+  background: #f3f6f2;
+  padding: clamp(32px, 6vh, 64px) 16px clamp(48px, 8vh, 88px);
 }
 
 .signin-form-title {
-  text-align: center;
+  text-align: left;
   text-transform: capitalize;
-  margin-top: 35px;
-  color: #121212;
+  margin-top: 0;
+  color: #193329;
+  font-family: Georgia, 'Noto Serif CJK SC', 'Songti SC', serif;
+  font-weight: 400;
+  font-size: 1.7rem;
+  letter-spacing: -.03em;
+  margin-bottom: 22px;
 }
+
+.signin-form .MuiInputLabel-root { color: #5d7268; }
+.signin-form .MuiOutlinedInput-root { border-radius: 10px; }
 
 .signin-buttons {
   float: right;
@@ -39,8 +50,9 @@ div.signin div.stay-connected input[type='checkbox'] {
 
 div.signin div.stay-connected label {
   cursor: pointer;
-  color: rgb(0 0 0 / 60%);
+  color: #4d6057;
   user-select: none;
+  font-size: .9rem;
 }
 
 div.signin div.forgot-password {
@@ -54,9 +66,9 @@ div.signin div.forgot-password {
     align-items: center;
     justify-content: center;
     display: flex;
-    width: 350px;
-    border: 1px solid rgb(0 0 0 / 12%);
-    padding: 15px;
+    flex-direction: column;
+    width: min(100%, 400px) !important;
+    padding: 26px 20px !important;
   }
 }
 
@@ -67,8 +79,8 @@ div.signin div.forgot-password {
     align-items: center;
     justify-content: center;
     display: flex;
-    width: 380px;
-    border: 1px solid rgb(0 0 0 / 12%);
-    padding: 15px;
+    flex-direction: column;
+    width: min(100%, 440px) !important;
+    padding: 34px 32px !important;
   }
 }
