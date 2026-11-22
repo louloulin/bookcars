@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>BookCars 9.7.0 — UI 改版预览</title>
+<style>
+  :root{
+    --brand:#214c3c; --brand-dark:#173d30; --brand-tint:#eaf3e7;
+    --ink:#193329; --ink-soft:#4d6057; --ink-muted:#7b8d84;
+    --line:#e2e9df; --canvas:#f8f8f3; --white:#fff;
+    --serif: Georgia,"Noto Serif CJK SC","Songti SC",serif;
+    --sans:-apple-system,BlinkMacSystemFont,"Segoe UI","PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--canvas);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased}
+  header.hero{background:linear-gradient(180deg,#1d4436,#132e25);color:#fff;padding:56px 32px 46px}
+  .hero-inner{max-width:1180px;margin:0 auto}
+  .eyebrow{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.16em;text-transform:uppercase;color:#cfe3d3;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.18);border-radius:999px;padding:6px 14px}
+  h1{font-family:var(--serif);font-size:clamp(2rem,4vw,3rem);font-weight:700;margin:18px 0 10px;letter-spacing:-.01em}
+  .hero p{margin:0;max-width:640px;color:#c3d6c8;line-height:1.65;font-size:15px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+  .chip{font-size:12px;font-weight:600;color:#d8e8dc;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:999px;padding:6px 12px}
+  main{max-width:1180px;margin:0 auto;padding:40px 24px 80px}
+  .section{margin-bottom:46px}
+  .section-head{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:16px}
+  .section-head h2{font-family:var(--serif);font-size:1.45rem;font-weight:700;margin:0}
+  .section-head span{font-size:13px;color:var(--ink-muted)}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:20px}
+  .shot{background:var(--white);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 8px 24px rgb(26 54 39 / 5%)}
+  .shot img{display:block;width:100%;height:auto;background:#eef2ec}
+  .shot figcaption{padding:13px 16px 15px;display:flex;align-items:center;justify-content:space-between;gap:10px}
+  .shot b{font-size:14px;font-weight:700}
+  .shot span{font-size:11px;color:var(--ink-muted);text-transform:uppercase;letter-spacing:.1em;font-weight:700}
+  .note{background:var(--white);border:1px solid var(--line);border-left:3px solid var(--brand);border-radius:14px;padding:18px 20px;font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  .note b{color:var(--ink)}
+  ul.list{margin:0;padding-left:18px;color:var(--ink-soft);font-size:14px;line-height:1.9}
+  footer{border-top:1px solid var(--line);padding:26px 24px;text-align:center;color:var(--ink-muted);font-size:12.5px}
+  code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#eef3ec;border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+  .hero-link{margin-top:20px;font-size:13.5px}
+  .hero-link a{color:#cfe3d3;text-decoration:none;border-bottom:1px solid rgba(207,227,211,.4);padding-bottom:2px}
+  .hero-link a:hover{color:#fff;border-color:#fff}
+  .status{display:inline-flex;align-items:center;gap:8px;font-size:13px;font-weight:700;color:#1f6b45;background:#e8f4ea;border:1px solid #cde5d3;border-radius:999px;padding:6px 14px}
+  .status i{width:8px;height:8px;border-radius:50%;background:#2f8b52;display:inline-block}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">BookCars 9.7.0 · UI 改版</span>
+    <h1>对标顶级租车产品的全新界面</h1>
+    <p>前台（Web / H5）与管理后台（Admin）同步完成视觉重构：统一品牌绿 + 衬线标题体系、卡片化信息层级、网格化工作台布局，并补齐管理后台缺失的 Dashboard 实时数据面板。</p>
+    <div class="chips">
+      <span class="chip">品牌色 #214c3c</span>
+      <span class="chip">衬线大标题 Georgia / Songti SC</span>
+      <span class="chip">卡片圆角 16–20px</span>
+      <span class="chip">桌面 + 390px 移动端适配</span>
+      <span class="chip">MUI 主题统一</span>
+      <span class="chip">30 页自动截图校验 · 全部通过</span>
+    </div>
+    <p class="hero-link"><a href="README.md">查看截图验证说明 →</a>　<a href="verify-report.md">查看最新校验报告 →</a></p>
+  </div>
+</header>
+<main>
+  <section class="section">
+    <div class="section-head"><h2>前台 · 首页与搜索</h2><span>Home / Search / Checkout</span></div>
+    <div class="grid">
+      <figure class="shot"><img src="web-home.webp" alt="Home"><figcaption><b>首页</b><span>Hero + 统计 + 车型</span></figcaption></figure>
+      <figure class="shot"><img src="web-search.webp" alt="Search"><figcaption><b>搜索结果</b><span>侧栏筛选 + 卡片</span></figcaption></figure>
+      <figure class="shot"><img src="web-checkout.webp" alt="Checkout"><figcaption><b>结算页</b><span>双栏表单 + 费用摘要</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>管理后台 · 新增 Dashboard</h2><span>实时统计 / 收入趋势 / 状态分布</span></div>
+    <div class="grid">
+      <figure class="shot"><img src="admin-dashboard.webp" alt="Admin dashboard"><figcaption><b>Dashboard</b><span>KPI + 趋势 + 预订</span></figcaption></figure>
+      <figure class="shot"><img src="admin-bookings.webp" alt="Admin bookings"><figcaption><b>预订管理</b><span>工作台布局</span></figcaption></figure>
+      <figure class="shot"><img src="admin-cars.webp" alt="Admin cars"><figcaption><b>车辆管理</b><span>筛选侧栏 + 列表</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>移动端</h2><span>390 × 844</span></div>
+    <div class="grid">
+      <figure class="shot"><img src="mobile-home.webp" alt="Mobile home"><figcaption><b>移动首页</b><span>搜索卡片浮层</span></figcaption></figure>
+      <figure class="shot"><img src="mobile-search.webp" alt="Mobile search"><figcaption><b>移动搜索结果</b><span>卡片式结果</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>前台 · 更多页面</h2><span>Locations / Suppliers / Account</span></div>
+    <div class="grid">
+      <figure class="shot"><img src="web-locations.webp" alt="Locations"><figcaption><b>取还车地点</b><span>地图 + 网点卡片</span></figcaption></figure>
+      <figure class="shot"><img src="web-suppliers.webp" alt="Suppliers"><figcaption><b>供应商</b><span>列表 + 评分</span></figcaption></figure>
+      <figure class="shot"><img src="web-bookings.webp" alt="Bookings"><figcaption><b>我的预订</b><span>登录态列表</span></figcaption></figure>
+      <figure class="shot"><img src="web-settings.webp" alt="Settings"><figcaption><b>账户设置</b><span>表单分区</span></figcaption></figure>
+      <figure class="shot"><img src="web-notifications.webp" alt="Notifications"><figcaption><b>消息通知</b><span>时间轴</span></figcaption></figure>
+      <figure class="shot"><img src="web-signin.webp" alt="Sign in"><figcaption><b>登录</b><span>品牌卡片</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>管理后台 · 更多页面</h2><span>Users / Suppliers / Locations / Settings</span></div>
+    <div class="grid">
+      <figure class="shot"><img src="admin-users.webp" alt="Admin users"><figcaption><b>用户管理</b><span>头像 + 角色</span></figcaption></figure>
+      <figure class="shot"><img src="admin-suppliers.webp" alt="Admin suppliers"><figcaption><b>供应商管理</b><span>网格列表</span></figcaption></figure>
+      <figure class="shot"><img src="admin-locations.webp" alt="Admin locations"><figcaption><b>网点管理</b><span>侧栏 + 列表</span></figcaption></figure>
+      <figure class="shot"><img src="admin-settings.webp" alt="Admin settings"><figcaption><b>系统设置</b><span>分组表单</span></figcaption></figure>
+      <figure class="shot"><img src="admin-scheduler.webp" alt="Admin scheduler"><figcaption><b>排班表</b><span>车辆调度</span></figcaption></figure>
+      <figure class="shot"><img src="admin-pricing.webp" alt="Admin pricing"><figcaption><b>价格策略</b><span>套餐与附加项</span></figcaption></figure>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>自动校验</h2><span>Playwright · 30 页</span><span class="status"><i></i>HTTP 200 · 0 异常 · 0 破图 · 0 溢出</span></div>
+    <div class="note">
+      <ul class="list">
+        <li>每次改版后运行 <code>python3.14 __scripts/ui-verify.py</code>，逐页截图并断言：HTTP 状态、运行时异常、控制台错误、关键元素、本地破图、横向溢出。</li>
+        <li>产物：<code>docs/ui-preview/*.png</code>、<code>verify-report.md</code>（人读）、<code>verify-report.json</code>（CI 可断言）。</li>
+        <li>详情见 <a href="README.md">截图验证说明</a>。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head"><h2>改动要点</h2><span>Design tokens</span></div>
+    <div class="note">
+      <ul class="list">
+        <li>统一色板：品牌绿 <code>#214c3c</code>，墨色 <code>#193329</code>，描边 <code>#e2e9df</code>，画布 <code>#f8f8f3</code>（后台 <code>#f3f6f2</code>）。</li>
+        <li>标题层级改为衬线体（Georgia + Songti SC），配合 800 字重正文与 12–13px 辅助信息。</li>
+        <li>前台：首页、搜索结果、结算、预订、设置、通知、FAQ/关于/联系/供应商、登录注册、隐私条款全部卡片化重排。</li>
+        <li>后台：新增 Dashboard（KPI、6 个月收入趋势、预订状态分布、最近预订），并把 5 个列表页从绝对定位迁移到 <code>ws-body</code> 栅格工作台。</li>
+        <li>后台表单页统一收敛到 <code>form-page.css</code>（登录/注册/车辆/用户/供应商/地点/国家/预订/银行/价格）。</li>
+        <li>移动端：预订与通知页新增品牌头部卡片，校验提示改为白卡片。</li>
+        <li>健壮性：新增 <code>SafeImage</code> / <code>SupplierAvatar</code> 组件，CDN 资源缺失时自动降级为图标或字母徽标，不再出现裂图。</li>
+      </ul>
+    </div>
+  </section>
+</main>
+<footer>BookCars · UI 改版预览 · 本地截图由 Playwright 自动生成（frontend :33002 / admin :33001）</footer>
+</body>
+</html>

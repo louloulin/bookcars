@@ -1,0 +1,638 @@
+{
+  "generatedAt": "2026-11-22 20:00:03",
+  "frontend": "http://localhost:33002",
+  "admin": "http://localhost:33001",
+  "elapsedSeconds": 124.6,
+  "total": 30,
+  "passed": 30,
+  "failed": 0,
+  "results": [
+    {
+      "url": "http://localhost:33002/",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-home.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Explore China at your own pace.",
+        "textLength": 1748
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/locations",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-locations.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [
+        "https://c.tile.openstreetmap.org/5/14/12.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/5/17/11.png :: net::ERR_CONNECTION_CLOSED",
+        "https://c.tile.openstreetmap.org/5/15/11.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/5/16/12.png :: net::ERR_CONNECTION_CLOSED",
+        "https://a.tile.openstreetmap.org/5/15/12.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/5/17/14.png :: net::ERR_CONNECTION_CLOSED",
+        "https://a.tile.openstreetmap.org/5/14/13.png :: net::ERR_CONNECTION_CLOSED",
+        "https://c.tile.openstreetmap.org/5/18/14.png :: net::ERR_CONNECTION_CLOSED",
+        "https://c.tile.openstreetmap.org/5/18/11.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/5/18/13.png :: net::ERR_CONNECTION_CLOSED"
+      ],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [
+          "https://b.tile.openstreetmap.org/5/16/12.png",
+          "https://a.tile.openstreetmap.org/5/15/12.png",
+          "https://c.tile.openstreetmap.org/5/15/11.png",
+          "https://b.tile.openstreetmap.org/5/17/11.png",
+          "https://b.tile.openstreetmap.org/5/17/14.png",
+          "https://c.tile.openstreetmap.org/5/14/12.png",
+          "https://a.tile.openstreetmap.org/5/14/13.png",
+          "https://b.tile.openstreetmap.org/5/18/13.png",
+          "https://c.tile.openstreetmap.org/5/18/11.png",
+          "https://c.tile.openstreetmap.org/5/18/14.png"
+        ],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Pick-up points",
+        "textLength": 494
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/suppliers",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-suppliers.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "The suppliers who trust us",
+        "textLength": 746
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/faq",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-faq.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Frequently asked questions",
+        "textLength": 938
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/about",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-about.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Rent with confidence",
+        "textLength": 1732
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/contact",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-contact.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "We are here to help",
+        "textLength": 797
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/privacy",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-privacy.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Privacy Policy",
+        "textLength": 3337
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/sign-in",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-signin.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Sign in",
+        "textLength": 506
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/sign-up",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-signup.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Register",
+        "textLength": 663
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/search?pickupLocation=6b00d2ce06845f6e5d13b036&from=2026-12-01T10:00:00.000Z&to=2026-12-05T10:00:00.000Z",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-search.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "San Francisco Airport (SFO)",
+        "textLength": 1339
+      },
+      "pass": true,
+      "group": "frontend-public"
+    },
+    {
+      "url": "http://localhost:33002/search?pickupLocation=6b00d2ce06845f6e5d13b036&from=2026-12-01T10:00:00.000Z&to=2026-12-05T10:00:00.000Z",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-checkout.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [
+        "https://a.tile.openstreetmap.org/10/163/395.png :: net::ERR_ABORTED",
+        "https://b.tile.openstreetmap.org/10/164/395.png :: net::ERR_ABORTED",
+        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_ABORTED",
+        "https://c.tile.openstreetmap.org/10/164/396.png :: net::ERR_ABORTED"
+      ],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Book now",
+        "textLength": 2244
+      },
+      "pass": true,
+      "group": "frontend-checkout"
+    },
+    {
+      "url": "http://localhost:33002/bookings",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-bookings.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "My bookings",
+        "textLength": 535
+      },
+      "pass": true,
+      "group": "frontend-auth"
+    },
+    {
+      "url": "http://localhost:33002/notifications",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-notifications.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Notifications",
+        "textLength": 380
+      },
+      "pass": true,
+      "group": "frontend-auth"
+    },
+    {
+      "url": "http://localhost:33002/settings",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/web-settings.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "My profile",
+        "textLength": 614
+      },
+      "pass": true,
+      "group": "frontend-auth"
+    },
+    {
+      "url": "http://localhost:33002/",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/mobile-home.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Explore China at your own pace.",
+        "textLength": 1709
+      },
+      "pass": true,
+      "group": "frontend-mobile"
+    },
+    {
+      "url": "http://localhost:33002/search?pickupLocation=6b00d2ce06845f6e5d13b036&from=2026-12-01T10:00:00.000Z&to=2026-12-05T10:00:00.000Z",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/mobile-search.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "San Francisco Airport (SFO)",
+        "textLength": 1300
+      },
+      "pass": true,
+      "group": "frontend-mobile"
+    },
+    {
+      "url": "http://localhost:33001/",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-dashboard.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Dashboard",
+        "textLength": 676
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/bookings",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-bookings.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Bookings",
+        "textLength": 637
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/cars",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-cars.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Vehicles",
+        "textLength": 1726
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/users",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-users.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Users",
+        "textLength": 335
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/suppliers",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-suppliers.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Suppliers",
+        "textLength": 173
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/locations",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-locations.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Pick-up locations",
+        "textLength": 198
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/settings",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-settings.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Settings",
+        "textLength": 594
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/notifications",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-notifications.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Notifications",
+        "textLength": 157
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/countries",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-countries.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Countries",
+        "textLength": 172
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/scheduler",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-scheduler.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Vehicle schedule",
+        "textLength": 613
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/bank-details",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-bank-details.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Nothing to see here!",
+        "textLength": 110
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/pricing",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-pricing.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Pricing Plans",
+        "textLength": 330
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/about",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-about.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "BookCars - Your Premier Car Rental Service",
+        "textLength": 1086
+      },
+      "pass": true,
+      "group": "admin"
+    },
+    {
+      "url": "http://localhost:33001/contact",
+      "screenshot": "/Users/louloulin/cjy/bookcars/docs/ui-preview/admin-contact.png",
+      "httpStatus": 200,
+      "pageErrors": [],
+      "consoleErrors": [],
+      "failedRequests": [],
+      "missingSelectors": [],
+      "info": {
+        "brokenImages": [],
+        "externalBlockedImages": [],
+        "horizontalOverflow": null,
+        "containerOverflow": [],
+        "fallbackAvatars": 0,
+        "h1": "Contact",
+        "textLength": 124
+      },
+      "pass": true,
+      "group": "admin"
+    }
+  ]
+}
