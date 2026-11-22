@@ -80,6 +80,34 @@ const copyCarImage = async (carId: string | mongoose.Types.ObjectId, sourceFilen
   return targetFilename
 }
 
+/**
+ * Copies a seed asset (supplier/customer avatar, location image, ...) into the
+ * given CDN folder when it is not there yet. Without this the seeded records
+ * would reference files that do not exist, and the UI would show broken images.
+ */
+const ensureSeedAsset = async (
+  sourceFilename: string,
+  targetFolder: string,
+  targetFilename: string,
+): Promise<string | null> => {
+  const sourcePath = getSourceImagePath(sourceFilename)
+  if (!sourcePath) {
+    logger.warn(`Source seed asset ${sourceFilename} not found.`)
+    return null
+  }
+
+  const targetPath = path.join(targetFolder, targetFilename)
+
+  if (await helper.pathExists(targetPath)) {
+    return targetFilename
+  }
+
+  await helper.mkdir(targetFolder)
+  await asyncFs.copyFile(sourcePath, targetPath)
+
+  return targetFilename
+}
+
 const seedCars = [
   {
     name: 'Volkswagen Golf',
@@ -389,6 +417,12 @@ async function main(): Promise<void> {
     if (!location) {
       throw new Error('The original seed location no longer exists.')
     }
+
+    // Make sure the referenced seed assets actually exist in the CDN folders,
+    // otherwise the UI renders broken images for avatars / location image.
+    await ensureSeedAsset('supplier.png', env.CDN_USERS, 'supplier.png')
+    await ensureSeedAsset('customer.png', env.CDN_USERS, 'customer.png')
+    await ensureSeedAsset('location.png', env.CDN_LOCATIONS, 'location.png')
 
     // 4. Seed Cars
     const createdCars: any[] = []

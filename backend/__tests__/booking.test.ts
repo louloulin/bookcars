@@ -15,6 +15,7 @@ import * as testHelper from './testHelper'
 import * as helper from '../src/utils/helper'
 import * as env from '../src/config/env.config'
 import Car from '../src/models/Car'
+import DateBasedPrice from '../src/models/DateBasedPrice'
 import Booking from '../src/models/Booking'
 import AdditionalDriver from '../src/models/AdditionalDriver'
 import User from '../src/models/User'
@@ -358,6 +359,51 @@ describe('booking reservation concurrency', () => {
 })
 
 describe('POST /api/checkout', () => {
+  it('uses the configured date-based rate when calculating the booking price', async () => {
+    const from = new Date(2035, 3, 10, 12)
+    const to = new Date(2035, 3, 12, 12)
+    const dateBasedPrice = new DateBasedPrice({ startDate: from, endDate: from, dailyPrice: 130 })
+    const car = (await Car.findById(CAR2_ID))!.toObject()
+    const calendarCar = new Car({ ...car, _id: new mongoose.Types.ObjectId(), isDateBasedPrice: true, dateBasedPrices: [dateBasedPrice._id] })
+    const payload: bookcarsTypes.CheckoutPayload = {
+      booking: {
+        supplier: SUPPLIER_ID,
+        car: calendarCar._id.toString(),
+        driver: DRIVER1_ID,
+        pickupLocation: LOCATION_ID,
+        dropOffLocation: LOCATION_ID,
+        from,
+        to,
+        status: bookcarsTypes.BookingStatus.Pending,
+        cancellation: false,
+        amendments: false,
+        theftProtection: false,
+        collisionDamageWaiver: false,
+        fullInsurance: false,
+        additionalDriver: false,
+        price: 176,
+      },
+      payLater: true,
+    }
+
+    try {
+      await dateBasedPrice.save()
+      await calendarCar.save()
+      const res = await request(app)
+        .post('/api/checkout')
+        .set(env.X_ACCESS_TOKEN, DRIVER1_TOKEN)
+        .send(payload)
+
+      expect(res.statusCode).toBe(200)
+      const booking = await Booking.findById(res.body.bookingId)
+      expect(booking?.price).toBe(218)
+    } finally {
+      await Booking.deleteMany({ car: calendarCar._id })
+      await calendarCar.deleteOne()
+      await dateBasedPrice.deleteOne()
+    }
+  })
+
   it('confirms checkout when pickup and drop-off translations are missing', async () => {
     const pickupValue = new LocationValue({ language: 'es', value: 'Recogida' })
     const dropOffValue = new LocationValue({ language: 'en', value: 'Drop-off' })

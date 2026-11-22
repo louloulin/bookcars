@@ -318,7 +318,9 @@ export const checkout = async (req: Request, res: Response) => {
       res.status(400).send('Invalid car')
       return
     }
-    const carObj = await Car.findById(bookingInput.car).lean()
+    const carObj = await Car.findById(bookingInput.car)
+      .populate<{ dateBasedPrices: env.DateBasedPrice[] }>('dateBasedPrices')
+      .lean()
     if (!carObj) {
       res.status(400).send('Car not found')
       return
