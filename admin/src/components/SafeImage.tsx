@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState } from 'react'
 
 /**
  * An <img> that degrades gracefully: if the remote/CDN file is missing or
@@ -17,17 +17,17 @@ interface Props {
 }
 
 const SafeImage: React.FC<Props> = ({ src, alt, className, style, fallback, initials }) => {
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState(false)
 
   if (!src || failed) {
     return (
       <span className={`safe-image-fallback ${className || ''}`} style={style} aria-hidden="true">
         {fallback ?? initials ?? ''}
       </span>
-    );
+    )
   }
 
-  return <img src={src} alt={alt} className={className} style={style} onError={() => setFailed(true)} />;
-};
+  return <img src={src} alt={alt} className={className} style={style} onError={() => setFailed(true)} />
+}
 
-export default SafeImage;
+export default SafeImage
