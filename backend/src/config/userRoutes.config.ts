@@ -34,6 +34,7 @@ const routes = {
   createLicense: '/api/create-license',
   updateLicense: '/api/update-license/:id',
   deleteLicense: '/api/delete-license/:id',
+  downloadLicense: '/api/download-license/:id',
   deleteTempLicense: '/api/delete-temp-license/:file',
 }
 

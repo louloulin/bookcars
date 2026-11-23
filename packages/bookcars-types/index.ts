@@ -100,6 +100,12 @@ export interface Booking {
   _additionalDriver?: string | AdditionalDriver
   cancelRequest?: boolean
   price?: number
+  //
+  // The amount that was actually charged (deposit only, or rental price
+  // plus deposit). It differs from `price`, which is the rental price.
+  //
+  paidAmount?: number
+  fees?: ChinaFeeBreakdown
   sessionId?: string
   paymentIntentId?: string
   customerId?: string
@@ -177,6 +183,23 @@ export interface UpsertLocationPayload {
    * Opening hours of the pickup point, e.g. '09:00 - 21:00'.
    */
   businessHours?: string
+  /**
+   * Administrative district code of the pickup point, filled by the map
+   * service (e.g. '310115').
+   */
+  adcode?: string
+  /**
+   * Instructions for the vehicle handover, shown to the customer.
+   */
+  pickupInstructions?: string
+  /**
+   * The payment cards that are accepted on site.
+   */
+  acceptCards?: string[]
+  /**
+   * The IANA timezone of the pickup point, e.g. 'Asia/Shanghai'.
+   */
+  timezone?: string
 }
 
 export interface UpdateSupplierPayload {
@@ -465,6 +488,7 @@ export interface MapAddress {
   city?: string
   district?: string
   township?: string
+  adcode?: string
 }
 
 /**
@@ -499,6 +523,10 @@ export interface Location {
   parentLocation?: Location
   address?: string
   businessHours?: string
+  adcode?: string
+  pickupInstructions?: string
+  acceptCards?: string[]
+  timezone?: string
 }
 
 export interface Country {
@@ -681,12 +709,45 @@ export interface UpsertBankDetailsPayload {
   showBankDetailsPage: boolean
 }
 
+export type ChinaFeeCode = 'nightService' | 'oneWay' | 'overtime' | 'mileage'
+
+export interface ChinaFeeItem {
+  code: ChinaFeeCode
+  amount: number
+}
+
+export interface ChinaFeeBreakdown {
+  items: ChinaFeeItem[]
+  total: number
+}
+
 export interface Setting {
   _id: string
   minPickupHours: number
   minRentalHours: number
   minPickupDropoffHour: number
   maxPickupDropoffHour: number
+  /** Fee charged when the car is picked up or returned during the night */
+  nightServiceFee?: number
+  /** First hour of the night service (inclusive) */
+  nightServiceStartHour?: number
+  /** First hour of the day time (exclusive) */
+  nightServiceEndHour?: number
+  /** Fee charged when the car is returned to another store */
+  oneWayFee?: number
+  /** Fee charged per hour of overtime */
+  overtimeFee?: number
+  /** Free overtime, in hours */
+  overtimeFreeHours?: number
+  /** Fee charged per driven kilometre over the included mileage */
+  mileageFee?: number
+  /**
+   * Enforce the booking rules of the store on the server (minimum duration,
+   * minimum lead time and the opening hours of the pick-up point).
+   */
+  enforceBookingRules?: boolean
+  /** Mileage included in the rental price, in kilometres */
+  mileageIncluded?: number
 }
 
 export interface UpdateSettingsPayload {
@@ -694,6 +755,15 @@ export interface UpdateSettingsPayload {
   minRentalHours: number
   minPickupDropoffHour: number
   maxPickupDropoffHour: number
+  nightServiceFee?: number
+  nightServiceStartHour?: number
+  nightServiceEndHour?: number
+  oneWayFee?: number
+  overtimeFee?: number
+  overtimeFreeHours?: number
+  mileageFee?: number
+  mileageIncluded?: number
+  enforceBookingRules?: boolean
 }
 
 // 

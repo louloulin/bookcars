@@ -1,5 +1,6 @@
 import validator from 'validator'
 import { Schema, model } from 'mongoose'
+import * as bookcarsHelper from ':bookcars-helper'
 import * as env from '../config/env.config'
 
 const additionalDriverSchema = new Schema<env.AdditionalDriver>(
@@ -20,6 +21,17 @@ const additionalDriverSchema = new Schema<env.AdditionalDriver>(
     },
     phone: {
       type: String,
+      set: (value: string) => {
+        const trimmed = (value || '').trim()
+
+        if (!trimmed) {
+          return trimmed
+        }
+
+        const normalized = bookcarsHelper.normalizePhoneNumber(trimmed)
+
+        return normalized || trimmed
+      },
       validate: {
         validator: (value: string) => {
           // Check if value is empty then return false.
@@ -27,8 +39,9 @@ const additionalDriverSchema = new Schema<env.AdditionalDriver>(
             return false
           }
 
-          // If value is empty will not validate for mobile phone.
-          return validator.isMobilePhone(value)
+          // An international number is validated against the pattern of
+          // its country, a national number against the default country
+          return bookcarsHelper.isValidPhoneNumber(value)
         },
         message: '{VALUE} is not valid',
       },

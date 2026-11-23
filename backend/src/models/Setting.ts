@@ -24,6 +24,58 @@ const settingSchema = new Schema<env.Setting>({
     min: 0,
     max: 23,
   },
+  // Chinese market fees
+  nightServiceFee: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  nightServiceStartHour: {
+    type: Number,
+    default: 22,
+    min: 0,
+    max: 23,
+  },
+  nightServiceEndHour: {
+    type: Number,
+    default: 6,
+    min: 0,
+    max: 23,
+  },
+  oneWayFee: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  overtimeFee: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  overtimeFreeHours: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  mileageFee: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
+  //
+  // The booking rules of the store (minimum duration, minimum lead time and
+  // the opening hours of the pick-up point) are enforced on the server when
+  // this flag is enabled.
+  //
+  enforceBookingRules: {
+    type: Boolean,
+    default: false,
+  },
+  mileageIncluded: {
+    type: Number,
+    default: 0,
+    min: 0,
+  },
 }, {
   timestamps: true,
   strict: true,

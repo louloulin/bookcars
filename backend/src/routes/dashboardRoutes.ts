@@ -5,6 +5,8 @@ import * as dashboardController from '../controllers/dashboardController'
 
 const routes = express.Router()
 
-routes.route(routeNames.getStats).get(authJwt.verifyToken, dashboardController.getStats)
+// The dashboard is only available for the platform admin and the suppliers,
+// a customer has no access to the aggregated figures.
+routes.route(routeNames.getStats).get(authJwt.verifyToken, authJwt.authSupplier, dashboardController.getStats)
 
 export default routes

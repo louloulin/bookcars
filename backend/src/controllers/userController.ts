@@ -2373,6 +2373,78 @@ export const deleteLicense = async (req: Request, res: Response) => {
 }
 
 /**
+* Download a driver license.
+*
+* The licenses are private documents: they are never served from the public
+* CDN and are only accessible through this authenticated endpoint.
+*
+* @export
+* @async
+* @param {Request} req
+* @param {Response} res
+* @returns {*}
+*/
+export const downloadLicense = async (req: Request, res: Response) => {
+  const { id } = req.params as { id: string }
+  const { user: sessionUser } = req
+
+  try {
+    if (!helper.isValidObjectId(id)) {
+      throw new Error('User Id not valid')
+    }
+
+    const target = await User.findOne({ _id: id, type: bookcarsTypes.UserType.User })
+
+    if (!target || !target.license) {
+      res.status(404).send('License not found')
+      return
+    }
+
+    const isAdmin = sessionUser?.type === bookcarsTypes.UserType.Admin
+    const isOwner = sessionUser?.type === bookcarsTypes.UserType.User
+      && sessionUser._id.toString() === target._id.toString()
+    const isSupplier = sessionUser?.type === bookcarsTypes.UserType.Supplier
+
+    if (!isAdmin && !isOwner) {
+      if (!isSupplier) {
+        res.status(403).send('Forbidden')
+        return
+      }
+
+      //
+      // A supplier only sees the licenses of the drivers that booked
+      // one of their cars
+      //
+      const supplierBooking = await Booking.exists({ driver: target._id, supplier: sessionUser._id })
+      if (!supplierBooking) {
+        res.status(403).send('Forbidden')
+        return
+      }
+    }
+
+    const baseDir = path.resolve(env.CDN_LICENSES)
+    const licensePath = path.resolve(baseDir, path.basename(target.license))
+
+    // critical security check: prevent directory traversal
+    if (!licensePath.startsWith(baseDir + path.sep)) {
+      logger.warn(`Directory traversal attempt: ${target.license}`)
+      res.status(403).send('Forbidden')
+      return
+    }
+
+    if (!(await helper.pathExists(licensePath))) {
+      res.status(404).send('License file not found')
+      return
+    }
+
+    res.sendFile(licensePath)
+  } catch (err) {
+    logger.error(`[user.downloadLicense] ${i18n.t('ERROR')} ${id}`, err)
+    res.status(400).send(i18n.t('ERROR') + err)
+  }
+}
+
+/**
 * Delete a temp license.
 *
 * @export

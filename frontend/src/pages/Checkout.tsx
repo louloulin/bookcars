@@ -51,6 +51,7 @@ import * as PaymentService from '@/services/PaymentService'
 import * as StripeService from '@/services/StripeService'
 import * as PayPalService from '@/services/PayPalService'
 import { useRecaptchaContext, RecaptchaContextType } from '@/context/RecaptchaContext'
+import { useSetting } from '@/context/SettingContext'
 import Layout from '@/components/Layout'
 import Error from '@/components/Error'
 import DatePicker from '@/components/DatePicker'
@@ -109,10 +110,15 @@ const Checkout = () => {
   const [licenseRequired, setLicenseRequired] = useState(false)
   const [license, setLicense] = useState<string | null>(null)
   const [distance, setDistance] = useState<bookcarsTypes.MapDistance>()
+  const [fees, setFees] = useState<bookcarsTypes.ChinaFeeBreakdown>({ items: [], total: 0 })
+  const [feeItems, setFeeItems] = useState<bookcarsTypes.ChinaFeeItem[]>([])
+  const feesTotal = feeItems.reduce((total, fee) => total + fee.amount, 0)
   const [openMapDialog, setOpenMapDialog] = useState(false)
   const [payPalLoaded, setPayPalLoaded] = useState(false)
   const [payPalInit, setPayPalInit] = useState(false)
   const [payPalProcessing, setPayPalProcessing] = useState(false)
+
+  const { settings } = useSetting()
 
   const birthDateRef = useRef<HTMLInputElement | null>(null)
   const additionalDriverBirthDateRef = useRef<HTMLInputElement | null>(null)
@@ -134,6 +140,19 @@ const Checkout = () => {
   const bookingDetailHeight = env.SUPPLIER_IMAGE_HEIGHT + 10
   const days = bookcarsHelper.days(from, to)
   const daysLabel = from && to && `${helper.getDaysShort(language, days)} (${bookcarsHelper.capitalize(format(from, _format, { locale: _locale }))} - ${bookcarsHelper.capitalize(format(to, _format, { locale: _locale }))})`
+  // The pickup moment in the timezone of the store, so a traveller that uses
+  // another timezone sees the same moment as the store.
+  const pickupTimezone = pickupLocation?.timezone || 'Asia/Shanghai'
+  const storeTimeLabel = from
+    ? new Intl.DateTimeFormat(language === 'zh' ? 'zh-CN' : 'en-US', {
+      timeZone: pickupTimezone,
+      month: 'short',
+      day: 'numeric',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).format(from)
+    : ''
 
   const schema = createSchema(car)
 
@@ -214,14 +233,16 @@ const Checkout = () => {
       // The prices displayed in the selected currency are only estimates.
       //
       const priceChangeRate = car.supplier.priceChangeRate || 0
-      const baseTotalPrice = bookcarsHelper.calculateTotalPrice(car, from, to, priceChangeRate, {
-        cancellation: data.cancellation,
-        amendments: data.amendments,
-        theftProtection: data.theftProtection,
-        collisionDamageWaiver: data.collisionDamageWaiver,
-        fullInsurance: data.fullInsurance,
-        additionalDriver,
-      })
+      const baseTotalPrice = Number((
+        bookcarsHelper.calculateTotalPrice(car, from, to, priceChangeRate, {
+          cancellation: data.cancellation,
+          amendments: data.amendments,
+          theftProtection: data.theftProtection,
+          collisionDamageWaiver: data.collisionDamageWaiver,
+          fullInsurance: data.fullInsurance,
+          additionalDriver,
+        }) + fees.total
+      ).toFixed(2))
       let baseDepositPrice = car.deposit > 0 ? car.deposit : 0
       baseDepositPrice += baseDepositPrice * (priceChangeRate / 100)
 
@@ -470,6 +491,46 @@ const Checkout = () => {
     }
   }, [pickupLocation, dropOffLocation])
 
+  //
+  // The fees of the Chinese market (night service, one way) are computed
+  // with the same helper as the backend, so the quote and the stored price
+  // are always the same
+  //
+  useEffect(() => {
+    if (!pickupLocation || !dropOffLocation || !from) {
+      setFees({ items: [], total: 0 })
+      setFeeItems([])
+
+      return
+    }
+
+    const _fees = bookcarsHelper.calculateChinaFees({
+      from,
+      timezone: pickupLocation.timezone || 'Asia/Shanghai',
+      sameStore: pickupLocation._id === dropOffLocation._id,
+      settings: settings
+        ? {
+          nightServiceFee: settings.nightServiceFee,
+          nightServiceStartHour: settings.nightServiceStartHour,
+          nightServiceEndHour: settings.nightServiceEndHour,
+          oneWayFee: settings.oneWayFee,
+        }
+        : undefined,
+    })
+
+    setFees(_fees)
+
+    if (_fees.items.length === 0) {
+      setFeeItems([])
+
+      return
+    }
+
+    Promise.all(_fees.items.map((item) => PaymentService.convertPrice(item.amount)))
+      .then((amounts) => setFeeItems(_fees.items.map((item, index) => ({ code: item.code, amount: amounts[index] }))))
+      .catch(() => setFeeItems(_fees.items))
+  }, [pickupLocation, dropOffLocation, from, settings])
+
   return (
     <>
       <Layout onLoad={onLoad} strict={false}>
@@ -538,31 +599,50 @@ const Checkout = () => {
                         </div>
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{commonStrings.PICK_UP_LOCATION}</span>
-                          <div className="checkout-detail-value">{pickupLocation.name}</div>
-                          {pickupLocation.address && (
-                            <div className="checkout-detail-value checkout-detail-sub">
-                              {pickupLocation.address}
-                            </div>
-                          )}
-                          {pickupLocation.businessHours && (
-                            <div className="checkout-detail-value checkout-detail-sub">
-                              {`${mapStrings.BUSINESS_HOURS}: ${pickupLocation.businessHours}`}
-                            </div>
-                          )}
+                          <div className="checkout-detail-value">
+                            <div>{pickupLocation.name}</div>
+                            {pickupLocation.address && (
+                              <div className="checkout-detail-sub">
+                                {pickupLocation.address}
+                              </div>
+                            )}
+                            {pickupLocation.businessHours && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.BUSINESS_HOURS}: ${pickupLocation.businessHours}`}
+                              </div>
+                            )}
+                            {storeTimeLabel && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.STORE_TIME}: ${storeTimeLabel} (${pickupTimezone})`}
+                              </div>
+                            )}
+                            {pickupLocation.pickupInstructions && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.PICKUP_INSTRUCTIONS}: ${pickupLocation.pickupInstructions}`}
+                              </div>
+                            )}
+                            {pickupLocation.acceptCards && pickupLocation.acceptCards.length > 0 && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.ACCEPT_CARDS}: ${pickupLocation.acceptCards.join(', ')}`}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{commonStrings.DROP_OFF_LOCATION}</span>
-                          <div className="checkout-detail-value">{dropOffLocation.name}</div>
-                          {dropOffLocation.address && (
-                            <div className="checkout-detail-value checkout-detail-sub">
-                              {dropOffLocation.address}
-                            </div>
-                          )}
-                          {distance && (
-                            <div className="checkout-detail-value checkout-detail-sub">
-                              {`${mapStrings.DISTANCE}: ${(distance.distance / 1000).toFixed(1)} km · ${Math.round(distance.duration / 60)} min`}
-                            </div>
-                          )}
+                          <div className="checkout-detail-value">
+                            <div>{dropOffLocation.name}</div>
+                            {dropOffLocation.address && (
+                              <div className="checkout-detail-sub">
+                                {dropOffLocation.address}
+                              </div>
+                            )}
+                            {distance && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.DISTANCE}: ${(distance.distance / 1000).toFixed(1)} km · ${Math.round(distance.duration / 60)} min`}
+                              </div>
+                            )}
+                          </div>
                         </div>
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{strings.CAR}</span>
@@ -579,9 +659,27 @@ const Checkout = () => {
                             </div>
                           </div>
                         )}
-                        <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
+                        <div className="checkout-detail" style={{ height: 'auto', minHeight: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{strings.COST}</span>
-                          <div className="checkout-detail-value booking-price">{bookcarsHelper.formatPrice(price, commonStrings.CURRENCY, language)}</div>
+                          <div className="checkout-detail-value booking-price">
+                            <div>
+                              {bookcarsHelper.formatPrice(price + feesTotal, commonStrings.CURRENCY, language)}
+                            </div>
+                            {feeItems.length > 0 && (
+                              <div className="checkout-fees">
+                                {feeItems.map((fee) => (
+                                  <div className="checkout-fee" key={fee.code}>
+                                    <span className="checkout-fee-label">
+                                      {fee.code === 'nightService' ? mapStrings.NIGHT_SERVICE_FEE : mapStrings.ONE_WAY_FEE}
+                                    </span>
+                                    <span className="checkout-fee-amount">
+                                      {bookcarsHelper.formatPrice(fee.amount, commonStrings.CURRENCY, language)}
+                                    </span>
+                                  </div>
+                                ))}
+                              </div>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -949,8 +1047,8 @@ const Checkout = () => {
                         {
                           bookcarsHelper.formatPrice(
                             payDeposit ? depositPrice
-                              : payInFull ? (price + depositPrice)
-                                : price
+                              : payInFull ? (price + depositPrice + feesTotal)
+                                : price + feesTotal
                             , commonStrings.CURRENCY, language)
                         }
                       </div>

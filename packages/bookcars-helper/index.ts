@@ -644,3 +644,355 @@ export const truncateString = (str: string, maxLength: number) => {
 
   return str.slice(0, maxLength)
 }
+
+/**
+ * A country that can be used in a phone number.
+ */
+export interface PhoneCountry {
+  /** ISO 3166-1 alpha-2 country code */
+  code: string
+  /** English country name */
+  name: string
+  /** International dialing code, e.g. `+86` */
+  dial: string
+  /** Pattern of the national (country code free) mobile number */
+  pattern: RegExp
+}
+
+/**
+ * The countries that are supported for phone numbers.
+ *
+ * The list covers the Chinese market and the main source markets of the
+ * inbound travellers, so a guest can enter a phone number in the format
+ * they know.
+ */
+export const PHONE_COUNTRIES: PhoneCountry[] = [
+  { code: 'CN', name: 'China', dial: '+86', pattern: /^1[3-9]\d{9}$/ },
+  { code: 'HK', name: 'Hong Kong SAR', dial: '+852', pattern: /^[569]\d{7}$/ },
+  { code: 'MO', name: 'Macao SAR', dial: '+853', pattern: /^6\d{7}$/ },
+  { code: 'TW', name: 'Taiwan', dial: '+886', pattern: /^9\d{8}$/ },
+  { code: 'US', name: 'United States', dial: '+1', pattern: /^[2-9]\d{2}[2-9]\d{6}$/ },
+  { code: 'CA', name: 'Canada', dial: '+1', pattern: /^[2-9]\d{2}[2-9]\d{6}$/ },
+  { code: 'GB', name: 'United Kingdom', dial: '+44', pattern: /^7\d{9}$/ },
+  { code: 'AU', name: 'Australia', dial: '+61', pattern: /^4\d{8}$/ },
+  { code: 'NZ', name: 'New Zealand', dial: '+64', pattern: /^2\d{8,9}$/ },
+  { code: 'JP', name: 'Japan', dial: '+81', pattern: /^(?:70|80|90)\d{8}$/ },
+  { code: 'KR', name: 'South Korea', dial: '+82', pattern: /^1[0-26-9]\d{7,8}$/ },
+  { code: 'SG', name: 'Singapore', dial: '+65', pattern: /^[89]\d{7}$/ },
+  { code: 'MY', name: 'Malaysia', dial: '+60', pattern: /^1[0-46-9]\d{7,8}$/ },
+  { code: 'TH', name: 'Thailand', dial: '+66', pattern: /^6\d{8}$/ },
+  { code: 'VN', name: 'Vietnam', dial: '+84', pattern: /^(?:3\d|5[2-9]|7[0-9]|8[1-9]|9\d)\d{7}$/ },
+  { code: 'ID', name: 'Indonesia', dial: '+62', pattern: /^8[1-9]\d{7,10}$/ },
+  { code: 'PH', name: 'Philippines', dial: '+63', pattern: /^9\d{9}$/ },
+  { code: 'IN', name: 'India', dial: '+91', pattern: /^[6-9]\d{9}$/ },
+  { code: 'AE', name: 'United Arab Emirates', dial: '+971', pattern: /^5[024-68]\d{7}$/ },
+  { code: 'SA', name: 'Saudi Arabia', dial: '+966', pattern: /^5[013-689]\d{7}$/ },
+  { code: 'DE', name: 'Germany', dial: '+49', pattern: /^1[5-7]\d{8,11}$/ },
+  { code: 'FR', name: 'France', dial: '+33', pattern: /^[67]\d{8}$/ },
+  { code: 'IT', name: 'Italy', dial: '+39', pattern: /^3\d{9}$/ },
+  { code: 'ES', name: 'Spain', dial: '+34', pattern: /^[67]\d{8}$/ },
+  { code: 'NL', name: 'Netherlands', dial: '+31', pattern: /^6[1-9]\d{7}$/ },
+  { code: 'RU', name: 'Russia', dial: '+7', pattern: /^9\d{9}$/ },
+  { code: 'BR', name: 'Brazil', dial: '+55', pattern: /^[1-9]\d{9,10}$/ },
+  { code: 'TR', name: 'Türkiye', dial: '+90', pattern: /^5\d{9}$/ },
+  { code: 'SE', name: 'Sweden', dial: '+46', pattern: /^7[02369]\d{7}$/ },
+  { code: 'NO', name: 'Norway', dial: '+47', pattern: /^4[01589]\d{7}$/ },
+  { code: 'DK', name: 'Denmark', dial: '+45', pattern: /^[2-9]\d{7}$/ },
+]
+
+/**
+ * The country that is used for a phone number without an international
+ * dialing code.
+ */
+export const DEFAULT_PHONE_COUNTRY = 'CN'
+
+/**
+ * Normalize a phone number: the separators are removed and the number is
+ * stored in the international format (`+<country code><number>`).
+ *
+ * @export
+ * @param {string} phone
+ * @returns {string}
+ */
+export const normalizePhoneNumber = (phone: string): string => {
+  const trimmed = (phone || '').trim()
+  if (!trimmed) {
+    return ''
+  }
+
+  const isInternational = trimmed.startsWith('+')
+  const digits = trimmed.replace(/\D/g, '')
+
+  return isInternational ? `+${digits}` : digits
+}
+
+/**
+ * Find the country of an international phone number.
+ *
+ * @export
+ * @param {string} phone
+ * @returns {PhoneCountry | undefined}
+ */
+export const findPhoneCountry = (phone: string): PhoneCountry | undefined => {
+  const normalized = normalizePhoneNumber(phone)
+
+  if (!normalized.startsWith('+')) {
+    return undefined
+  }
+
+  const digits = normalized.slice(1)
+
+  return [...PHONE_COUNTRIES]
+    .sort((first, second) => second.dial.length - first.dial.length)
+    .find((country) => digits.startsWith(country.dial.slice(1)))
+}
+
+/**
+ * Check that a phone number is valid.
+ *
+ * An international number is validated against the pattern of its country,
+ * a national number against the pattern of the default country.
+ *
+ * @export
+ * @param {string} phone
+ * @param {string} [defaultCountry=DEFAULT_PHONE_COUNTRY]
+ * @returns {boolean}
+ */
+export const isValidPhoneNumber = (phone: string, defaultCountry: string = DEFAULT_PHONE_COUNTRY): boolean => {
+  const normalized = normalizePhoneNumber(phone)
+
+  if (!normalized) {
+    return false
+  }
+
+  const digits = normalized.replace('+', '')
+
+  if (!/^\d+$/.test(digits) || digits.length < 6 || digits.length > 15) {
+    return false
+  }
+
+  if (normalized.startsWith('+')) {
+    const country = findPhoneCountry(normalized)
+
+    if (!country) {
+      return false
+    }
+
+    return country.pattern.test(digits.slice(country.dial.length - 1))
+  }
+
+  const country = PHONE_COUNTRIES.find((item) => item.code === defaultCountry)
+
+  if (!country) {
+    return false
+  }
+
+  return country.pattern.test(digits)
+}
+
+/**
+ * Get the country of a phone number, falling back to the default country.
+ *
+ * @export
+ * @param {string} phone
+ * @param {string} [defaultCountry=DEFAULT_PHONE_COUNTRY]
+ * @returns {PhoneCountry}
+ */
+export const getPhoneCountry = (phone: string, defaultCountry: string = DEFAULT_PHONE_COUNTRY): PhoneCountry => {
+  const country = findPhoneCountry(phone)
+
+  if (country) {
+    return country
+  }
+
+  return PHONE_COUNTRIES.find((item) => item.code === defaultCountry) || PHONE_COUNTRIES[0]
+}
+
+/**
+ * Fees of the Chinese rental market.
+ *
+ * The thresholds are configured in the back office (settings) and are
+ * evaluated by the shared helper, so the quote shown to the customer and
+ * the price stored by the backend are always the same.
+ */
+export interface ChinaFeeSettings {
+  /** Fee charged when the car is picked up or returned during the night */
+  nightServiceFee?: number
+  /** First hour of the night service (inclusive) */
+  nightServiceStartHour?: number
+  /** First hour of the day time (exclusive) */
+  nightServiceEndHour?: number
+  /** Fee charged when the car is returned to another store */
+  oneWayFee?: number
+  /** Fee charged per hour of overtime */
+  overtimeFee?: number
+  /** Free overtime, in hours */
+  overtimeFreeHours?: number
+  /** Fee charged per driven kilometre over the included mileage */
+  mileageFee?: number
+  /** Mileage included in the rental price, in kilometres */
+  mileageIncluded?: number
+}
+
+export type ChinaFeeCode = bookcarsTypes.ChinaFeeCode
+
+export const DEFAULT_CHINA_TIMEZONE = 'Asia/Shanghai'
+
+/**
+ * Get the local hour of a date in a given time zone.
+ *
+ * @export
+ * @param {Date} date
+ * @param {string} [timezone=DEFAULT_CHINA_TIMEZONE]
+ * @returns {number} the local hour (0-23)
+ */
+export const getLocalHour = (date: Date, timezone: string = DEFAULT_CHINA_TIMEZONE): number => {
+  try {
+    const formatter = new Intl.DateTimeFormat('en-US', {
+      timeZone: timezone,
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    })
+    const hour = Number(formatter.formatToParts(date).find((part) => part.type === 'hour')?.value)
+
+    if (!Number.isFinite(hour)) {
+      return date.getHours()
+    }
+
+    return hour % 24
+  } catch {
+    return date.getHours()
+  }
+}
+
+/**
+ * Check that an hour belongs to the night service window.
+ *
+ * The window can wrap the midnight (22:00 - 06:00 by default).
+ *
+ * @export
+ * @param {number} hour
+ * @param {number} [startHour=22]
+ * @param {number} [endHour=6]
+ * @returns {boolean}
+ */
+export const isNightHour = (hour: number, startHour: number = 22, endHour: number = 6): boolean => {
+  if (startHour === endHour) {
+    return false
+  }
+
+  if (startHour < endHour) {
+    return hour >= startHour && hour < endHour
+  }
+
+  return hour >= startHour || hour < endHour
+}
+
+/**
+ * Calculate the fees that can be known when the booking is created.
+ *
+ * The overtime and the mileage fees are settled when the car is returned,
+ * they are calculated by calculateOvertimeFee and calculateMileageFee.
+ *
+ * @export
+ * @param {object} params
+ * @param {Date} params.from - the pick-up date
+ * @param {string} [params.timezone] - the time zone of the store
+ * @param {boolean} [params.sameStore=true] - false when the car is returned to another store
+ * @param {ChinaFeeSettings} [params.settings]
+ * @returns {ChinaFeeBreakdown}
+ */
+export const calculateChinaFees = (params: {
+  from: Date
+  timezone?: string
+  sameStore?: boolean
+  settings?: ChinaFeeSettings
+}): bookcarsTypes.ChinaFeeBreakdown => {
+  const items: bookcarsTypes.ChinaFeeItem[] = []
+  const settings = params.settings || {}
+
+  const nightServiceFee = Number(settings.nightServiceFee) || 0
+  const pickupHour = getLocalHour(params.from, params.timezone || DEFAULT_CHINA_TIMEZONE)
+
+  if (
+    nightServiceFee > 0
+    && isNightHour(pickupHour, Number(settings.nightServiceStartHour ?? 22), Number(settings.nightServiceEndHour ?? 6))
+  ) {
+    items.push({ code: 'nightService', amount: Number(nightServiceFee.toFixed(2)) })
+  }
+
+  const oneWayFee = Number(settings.oneWayFee) || 0
+
+  if (oneWayFee > 0 && params.sameStore === false) {
+    items.push({ code: 'oneWay', amount: Number(oneWayFee.toFixed(2)) })
+  }
+
+  const total = Number(items.reduce((sum, item) => sum + item.amount, 0).toFixed(2))
+
+  return { items, total }
+}
+
+/**
+ * Calculate the overtime fee, charged when the car is returned later than
+ * the booked return date.
+ *
+ * @export
+ * @param {object} params
+ * @param {Date} params.returnDate - the actual return date
+ * @param {Date} params.bookedTo - the booked return date
+ * @param {ChinaFeeSettings} [params.settings]
+ * @returns {ChinaFeeBreakdown}
+ */
+export const calculateOvertimeFee = (params: {
+  returnDate: Date
+  bookedTo: Date
+  settings?: ChinaFeeSettings
+}): bookcarsTypes.ChinaFeeBreakdown => {
+  const items: bookcarsTypes.ChinaFeeItem[] = []
+  const settings = params.settings || {}
+  const overtimeFee = Number(settings.overtimeFee) || 0
+  const freeHours = Number(settings.overtimeFreeHours) || 0
+  const overtimeHours = (params.returnDate.getTime() - params.bookedTo.getTime()) / (1000 * 60 * 60)
+
+  if (overtimeFee > 0 && overtimeHours > freeHours) {
+    const amount = Number(((overtimeHours - freeHours) * overtimeFee).toFixed(2))
+
+    if (amount > 0) {
+      items.push({ code: 'overtime', amount })
+    }
+  }
+
+  const total = Number(items.reduce((sum, item) => sum + item.amount, 0).toFixed(2))
+
+  return { items, total }
+}
+
+/**
+ * Calculate the mileage fee, charged for the kilometres driven over the
+ * mileage included in the rental price.
+ *
+ * @export
+ * @param {object} params
+ * @param {number} params.kilometres - the driven distance
+ * @param {ChinaFeeSettings} [params.settings]
+ * @returns {ChinaFeeBreakdown}
+ */
+export const calculateMileageFee = (params: {
+  kilometres: number
+  settings?: ChinaFeeSettings
+}): bookcarsTypes.ChinaFeeBreakdown => {
+  const items: bookcarsTypes.ChinaFeeItem[] = []
+  const settings = params.settings || {}
+  const mileageFee = Number(settings.mileageFee) || 0
+  const mileageIncluded = Number(settings.mileageIncluded) || 0
+  const extraKilometres = (Number(params.kilometres) || 0) - mileageIncluded
+
+  if (mileageFee > 0 && extraKilometres > 0) {
+    items.push({ code: 'mileage', amount: Number((extraKilometres * mileageFee).toFixed(2)) })
+  }
+
+  const total = Number(items.reduce((sum, item) => sum + item.amount, 0).toFixed(2))
+
+  return { items, total }
+}

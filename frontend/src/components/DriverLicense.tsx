@@ -110,7 +110,11 @@ const DriverLicense = ({
           <>
             <IconButton
               onClick={() => {
-                const url = `${bookcarsHelper.trimEnd(user ? env.CDN_LICENSES : env.CDN_TEMP_LICENSES, '/')}/${license}`
+                // A saved license is a private document: it is only
+                // accessible through the authenticated download endpoint
+                const url = user
+                  ? `${bookcarsHelper.trimEnd(env.API_HOST, '/')}/api/download-license/${user._id}`
+                  : `${bookcarsHelper.trimEnd(env.CDN_TEMP_LICENSES, '/')}/${license}`
                 helper.downloadURI(url)
               }}
             >

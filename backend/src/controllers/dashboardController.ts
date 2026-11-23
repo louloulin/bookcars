@@ -8,12 +8,12 @@ import User from '../models/User'
 import i18n from '../lang/i18n'
 import * as logger from '../utils/logger'
 
-// Bookings that represent collected (or committed) money.
+// Bookings that represent collected money. A booking is only counted
+// once the money has actually been collected.
 const REVENUE_STATUSES = [
   bookcarsTypes.BookingStatus.Deposit,
   bookcarsTypes.BookingStatus.Paid,
   bookcarsTypes.BookingStatus.PaidInFull,
-  bookcarsTypes.BookingStatus.Reserved,
 ]
 
 const MONTHS_BACK = 6
@@ -63,7 +63,16 @@ export const getStats = async (req: Request, res: Response) => {
       ]),
       Booking.aggregate([
         { $match: { ...bookingFilter, status: { $in: REVENUE_STATUSES } } },
-        { $group: { _id: null, total: { $sum: '$price' } } },
+        {
+          $group: {
+            _id: null,
+            total: {
+              $sum: {
+                $cond: [{ $gt: ['$paidAmount', 0] }, '$paidAmount', '$price'],
+              },
+            },
+          },
+        },
       ]),
       Booking.aggregate([
         { $match: bookingFilter },
@@ -72,7 +81,11 @@ export const getStats = async (req: Request, res: Response) => {
             _id: { $dateToString: { format: '%Y-%m', date: '$createdAt' } },
             revenue: {
               $sum: {
-                $cond: [{ $in: ['$status', REVENUE_STATUSES] }, '$price', 0],
+                $cond: [
+                  { $in: ['$status', REVENUE_STATUSES] },
+                  { $cond: [{ $gt: ['$paidAmount', 0] }, '$paidAmount', '$price'] },
+                  0,
+                ],
               },
             },
             bookings: { $sum: 1 },
@@ -81,7 +94,7 @@ export const getStats = async (req: Request, res: Response) => {
         { $sort: { _id: 1 } },
       ]),
       Car.countDocuments(carFilter),
-      Location.countDocuments({}),
+      Location.countDocuments(isAdmin ? {} : { supplier: supplierId }),
       User.countDocuments({ type: bookcarsTypes.UserType.Supplier }),
       User.countDocuments({ type: bookcarsTypes.UserType.User }),
       Booking.find(bookingFilter)

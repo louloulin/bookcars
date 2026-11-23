@@ -129,10 +129,11 @@ div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value 
   word-break: break-word;
 }
 
-div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value.checkout-detail-sub {
+div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value div.checkout-detail-sub {
   color: #7b8d84;
   font-size: .82em;
   line-height: 1.35;
+  margin-top: 3px;
 }
 
 div.checkout div.checkout-details div.checkout-detail span.checkout-detail-title {
@@ -278,4 +279,35 @@ div.checkout div.driver-details-form { width: min(100%, 520px); }
   div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value {
     line-height: 25px;
   }
+}
+
+//
+// The fees of the Chinese market (night service, one way) are listed under
+// the total price so that the visitor sees every part of the quote.
+//
+div.checkout-fees {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin-top: 8px;
+  padding-top: 8px;
+  border-top: 1px solid #eef2ec;
+}
+
+div.checkout-fees div.checkout-fee {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+div.checkout-fees span.checkout-fee-label {
+  color: #7b8d84;
+  font-size: 0.82em;
+}
+
+div.checkout-fees span.checkout-fee-amount {
+  color: #4d6057;
+  font-size: 0.85em;
+  font-variant-numeric: tabular-nums;
 }

@@ -177,7 +177,7 @@ export const geocode = async (address: string, city?: string): Promise<MapPlace 
 export const reverseGeocode = async (
   longitude: number,
   latitude: number
-): Promise<{ address?: string, city?: string, district?: string, township?: string } | null> => {
+): Promise<{ address?: string, city?: string, district?: string, township?: string, adcode?: string } | null> => {
   if (!isAmapEnabled()) {
     return null
   }
@@ -206,6 +206,7 @@ export const reverseGeocode = async (
     city: Array.isArray(addressComponent.city) ? addressComponent.city[0] : addressComponent.city,
     district: Array.isArray(addressComponent.district) ? addressComponent.district[0] : addressComponent.district,
     township: Array.isArray(addressComponent.township) ? addressComponent.township[0] : addressComponent.township,
+    adcode: addressComponent.adcode ? String(addressComponent.adcode) : undefined,
   }
 
   setCached(cacheKey, result)

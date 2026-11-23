@@ -66,3 +66,29 @@ div.signup .signup-form-subtitle {
   line-height: 1.55;
   margin: -12px 0 22px;
 }
+
+div.signup .phone-input {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+div.signup .phone-input .phone-input-country {
+  min-width: 150px;
+  flex: 0 0 auto;
+}
+
+div.signup .phone-input .phone-input-number {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+div.signup .phone-input-wrapper {
+  margin: 8px 0;
+}
+
+div.signup .phone-input-wrapper .phone-input-helper {
+  color: #b3261e;
+  font-size: 0.8rem;
+  padding: 4px 14px 0;
+}

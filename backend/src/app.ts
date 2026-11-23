@@ -1,9 +1,10 @@
 import * as Sentry from '@sentry/node'
-import express from 'express'
+import express, { NextFunction, Request, Response } from 'express'
 import compression from 'compression'
 import helmet from 'helmet'
 import nocache from 'nocache'
 import cookieParser from 'cookie-parser'
+import path from 'node:path'
 import i18n from './lang/i18n'
 import * as env from './config/env.config'
 import cors from './middlewares/cors'
@@ -22,6 +23,7 @@ import bankDetailsRoutes from './routes/bankDetailsRoutes'
 import settingRoutes from './routes/settingRoutes'
 import dashboardRoutes from './routes/dashboardRoutes'
 import mapRoutes from './routes/mapRoutes'
+import { webhook as stripeWebhook } from './controllers/stripeController'
 import * as helper from './utils/helper'
 
 const app = express()
@@ -45,6 +47,13 @@ app.use(helmet.crossOriginOpenerPolicy())
 
 app.use(nocache())
 app.use(compression({ threshold: 0 }))
+
+//
+// The Stripe webhook verifies its signature against the raw request body,
+// so it is mounted before the JSON body parser
+//
+app.post('/api/stripe/webhook', express.raw({ type: 'application/json', limit: '1mb' }), stripeWebhook)
+
 app.use(express.urlencoded({ limit: '50mb', extended: true }))
 app.use(express.json({ limit: '50mb' }))
 
@@ -52,6 +61,26 @@ app.use(cors())
 // app.options('*', cors())
 app.use(cookieParser(env.COOKIE_SECRET))
 app.use(allowedMethods)
+
+//
+// Driver licenses are private documents: they are never served from the
+// public CDN, they are only accessible through the authenticated
+// download endpoint. The temporary folder keeps its random (unguessable)
+// file names, because the upload preview relies on it
+//
+const privateCdnPaths = [env.CDN_LICENSES].map((folder) => {
+  const relative = path.relative(env.CDN_ROOT, folder).split(path.sep).join('/')
+  return `/${relative}`
+})
+
+app.use('/cdn', (req: Request, res: Response, next: NextFunction) => {
+  const requestPath = decodeURIComponent(req.path)
+  if (privateCdnPaths.some((privatePath) => requestPath.startsWith(privatePath))) {
+    res.status(403).send('Forbidden')
+    return
+  }
+  next()
+})
 
 // Serve static files from the CDN directory
 app.use('/cdn', express.static(env.CDN_ROOT))

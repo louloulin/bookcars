@@ -29,6 +29,7 @@ import SocialLogin from '@/components/SocialLogin'
 import Footer from '@/components/Footer'
 import { schema, FormFields } from '@/models/SignUpForm'
 import PasswordInput from '@/components/PasswordInput'
+import PhoneInput from '@/components/PhoneInput'
 
 import '@/assets/css/signup.css'
 
@@ -43,10 +44,12 @@ const SignUp = () => {
   const [visible, setVisible] = useState(false)
   const [success, setSuccess] = useState(false)
 
-  const { register, handleSubmit, formState: { errors, isSubmitting }, setError, clearErrors, setValue, reset } = useForm<FormFields>({
+  const { register, handleSubmit, formState: { errors, isSubmitting }, setError, clearErrors, setValue, reset, watch } = useForm<FormFields>({
     resolver: zodResolver(schema),
     mode: 'onSubmit'
   })
+
+  const phoneValue = watch('phone')
 
   // Reset form and view state whenever search params or route changes
   useEffect(() => {
@@ -149,22 +152,19 @@ const SignUp = () => {
                   />
                   <FormHelperText error={!!errors.email}>{errors.email?.message || ''}</FormHelperText>
                 </FormControl>
-                <FormControl fullWidth margin="dense" error={!!errors.phone}>
-                  <InputLabel className="required">{commonStrings.PHONE}</InputLabel>
-                  <OutlinedInput
-                    type="text"
-                    {...register('phone')}
-                    label={commonStrings.PHONE}
-                    autoComplete="off"
-                    onChange={() => {
-                      if (errors.phone) {
-                        clearErrors('phone')
-                      }
-                    }}
-                    required
-                  />
-                  <FormHelperText error={!!errors.phone}>{errors.phone?.message || ''}</FormHelperText>
-                </FormControl>
+                <PhoneInput
+                  label={commonStrings.PHONE}
+                  value={phoneValue || ''}
+                  onChange={(value) => {
+                    setValue('phone', value, { shouldValidate: true, shouldDirty: true })
+                    if (errors.phone) {
+                      clearErrors('phone')
+                    }
+                  }}
+                  error={!!errors.phone}
+                  helperText={errors.phone?.message || ''}
+                  required
+                />
                 <FormControl fullWidth margin="dense" error={!!errors.birthDate}>
                   <DatePicker
                     label={commonStrings.BIRTH_DATE}

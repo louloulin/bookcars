@@ -44,6 +44,7 @@ routes.route(routeNames.hasPassword).get(authJwt.verifyToken, userController.has
 routes.route(routeNames.createLicense).post([multer({ storage: multer.memoryStorage() }).single('file')], userController.createLicense)
 routes.route(routeNames.updateLicense).post([authJwt.verifyToken, multer({ storage: multer.memoryStorage() }).single('file')], userController.updateLicense)
 routes.route(routeNames.deleteLicense).post(authJwt.verifyToken, userController.deleteLicense)
+routes.route(routeNames.downloadLicense).get(authJwt.verifyToken, userController.downloadLicense)
 routes.route(routeNames.deleteTempLicense).post(userController.deleteTempLicense)
 
 export default routes

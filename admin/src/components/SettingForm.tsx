@@ -2,7 +2,7 @@ import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { Button, FormControl, FormHelperText, Input, InputLabel, Paper } from '@mui/material'
+import { Button, Checkbox, FormControl, FormControlLabel, FormHelperText, Input, InputLabel, Paper } from '@mui/material'
 import * as bookcarsTypes from ':bookcars-types'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as settingsStrings } from '@/lang/settings'
@@ -30,6 +30,15 @@ const SettingForm = ({ settings, onSubmit: onFormSubmit }: SettingFormProps) => 
       setValue('minRentalHours', settings.minRentalHours.toString())
       setValue('minPickupDropoffHour', settings.minPickupDropoffHour.toString())
       setValue('maxPickupDropoffHour', settings.maxPickupDropoffHour.toString())
+      setValue('nightServiceFee', (settings.nightServiceFee ?? 0).toString())
+      setValue('nightServiceStartHour', (settings.nightServiceStartHour ?? 0).toString())
+      setValue('nightServiceEndHour', (settings.nightServiceEndHour ?? 0).toString())
+      setValue('oneWayFee', (settings.oneWayFee ?? 0).toString())
+      setValue('overtimeFee', (settings.overtimeFee ?? 0).toString())
+      setValue('overtimeFreeHours', (settings.overtimeFreeHours ?? 0).toString())
+      setValue('mileageFee', (settings.mileageFee ?? 0).toString())
+      setValue('mileageIncluded', (settings.mileageIncluded ?? 0).toString())
+      setValue('enforceBookingRules', settings.enforceBookingRules === true)
     }
   }, [settings, setValue])
 
@@ -40,6 +49,15 @@ const SettingForm = ({ settings, onSubmit: onFormSubmit }: SettingFormProps) => 
         minRentalHours: Number(data.minRentalHours),
         minPickupDropoffHour: Number(data.minPickupDropoffHour),
         maxPickupDropoffHour: Number(data.maxPickupDropoffHour),
+        nightServiceFee: Number(data.nightServiceFee) || 0,
+        nightServiceStartHour: Number(data.nightServiceStartHour) || 0,
+        nightServiceEndHour: Number(data.nightServiceEndHour) || 0,
+        oneWayFee: Number(data.oneWayFee) || 0,
+        overtimeFee: Number(data.overtimeFee) || 0,
+        overtimeFreeHours: Number(data.overtimeFreeHours) || 0,
+        mileageFee: Number(data.mileageFee) || 0,
+        mileageIncluded: Number(data.mileageIncluded) || 0,
+        enforceBookingRules: data.enforceBookingRules === true,
       }
 
       const { status, data: res } = await SettingService.updateSettings(payload)
@@ -92,6 +110,78 @@ const SettingForm = ({ settings, onSubmit: onFormSubmit }: SettingFormProps) => 
           {errors.maxPickupDropoffHour && (
             <FormHelperText error>{errors.maxPickupDropoffHour.message}</FormHelperText>
           )}
+        </FormControl>
+
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.NIGHT_SERVICE_FEE}</InputLabel>
+          <Input {...register('nightServiceFee')} type="text" autoComplete="off" />
+          {errors.nightServiceFee && (
+            <FormHelperText error>{errors.nightServiceFee.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.NIGHT_SERVICE_START_HOUR}</InputLabel>
+          <Input {...register('nightServiceStartHour')} type="text" autoComplete="off" />
+          {errors.nightServiceStartHour && (
+            <FormHelperText error>{errors.nightServiceStartHour.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.NIGHT_SERVICE_END_HOUR}</InputLabel>
+          <Input {...register('nightServiceEndHour')} type="text" autoComplete="off" />
+          {errors.nightServiceEndHour && (
+            <FormHelperText error>{errors.nightServiceEndHour.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.ONE_WAY_FEE}</InputLabel>
+          <Input {...register('oneWayFee')} type="text" autoComplete="off" />
+          {errors.oneWayFee && (
+            <FormHelperText error>{errors.oneWayFee.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.OVERTIME_FEE}</InputLabel>
+          <Input {...register('overtimeFee')} type="text" autoComplete="off" />
+          {errors.overtimeFee && (
+            <FormHelperText error>{errors.overtimeFee.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.OVERTIME_FREE_HOURS}</InputLabel>
+          <Input {...register('overtimeFreeHours')} type="text" autoComplete="off" />
+          {errors.overtimeFreeHours && (
+            <FormHelperText error>{errors.overtimeFreeHours.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.MILEAGE_FEE}</InputLabel>
+          <Input {...register('mileageFee')} type="text" autoComplete="off" />
+          {errors.mileageFee && (
+            <FormHelperText error>{errors.mileageFee.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <InputLabel>{strings.MILEAGE_INCLUDED}</InputLabel>
+          <Input {...register('mileageIncluded')} type="text" autoComplete="off" />
+          {errors.mileageIncluded && (
+            <FormHelperText error>{errors.mileageIncluded.message}</FormHelperText>
+          )}
+        </FormControl>
+
+        <FormControl fullWidth margin="dense">
+          <FormControlLabel
+            control={<Checkbox {...register('enforceBookingRules')} />}
+            label={strings.ENFORCE_BOOKING_RULES}
+          />
         </FormControl>
 
         <div className="buttons">

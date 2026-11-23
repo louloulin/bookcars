@@ -78,6 +78,16 @@ div.locations ul.locations-list .locations-list-name {
   line-height: 1.35;
 }
 
+div.locations ul.locations-list .locations-list-meta {
+  color: #5d7268;
+  font-size: .84rem;
+  line-height: 1.45;
+}
+
+div.locations ul.locations-list .locations-list-instructions {
+  color: #7b8d84;
+}
+
 div.locations ul.locations-list .locations-list-cta {
   color: #2f6b4f;
   font-size: .82rem;

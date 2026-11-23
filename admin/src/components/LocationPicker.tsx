@@ -11,7 +11,7 @@ import '@/assets/css/location-picker.css'
 interface LocationPickerProps {
   latitude?: number | string
   longitude?: number | string
-  onChange: (values: { latitude?: number, longitude?: number, address?: string }) => void
+  onChange: (values: { latitude?: number, longitude?: number, address?: string, adcode?: string }) => void
 }
 
 /**
@@ -58,7 +58,12 @@ const LocationPicker = ({ latitude, longitude, onChange }: LocationPickerProps) 
       const { status, data } = await LocationService.reverseGeocode(gcjLng, gcjLat)
 
       if (status === 200 && data?.address) {
-        onChange({ latitude: wgs.latitude, longitude: wgs.longitude, address: data.address })
+        onChange({
+          latitude: wgs.latitude,
+          longitude: wgs.longitude,
+          address: data.address,
+          adcode: data.adcode,
+        })
       }
     } catch {
       // the coordinates are already set, the address can be typed manually

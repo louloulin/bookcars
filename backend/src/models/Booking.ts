@@ -86,6 +86,52 @@ const bookingSchema = new Schema<env.Booking>(
       type: Number,
       required: [true, "can't be blank"],
     },
+    //
+    // The amount that was actually charged for this booking.
+    //
+    // `price` is the rental price, while the charged amount depends on the
+    // payment option (deposit only, or rental price + deposit) and on the
+    // supplier price change rate. It is stored so that the revenue reports
+    // never have to infer it.
+    //
+    paidAmount: {
+      type: Number,
+      default: 0,
+    },
+    //
+    // The fees of the Chinese market (night service, one way) that were
+    // added to the rental price when the booking was created.
+    //
+    fees: {
+      type: new Schema(
+        {
+          items: {
+            type: [
+              new Schema(
+                {
+                  code: {
+                    type: String,
+                    required: true,
+                  },
+                  amount: {
+                    type: Number,
+                    required: true,
+                  },
+                },
+                { _id: false }
+              ),
+            ],
+            default: [],
+          },
+          total: {
+            type: Number,
+            default: 0,
+          },
+        },
+        { _id: false }
+      ),
+      default: undefined,
+    },
     cancelRequest: {
       type: Boolean,
       default: false,

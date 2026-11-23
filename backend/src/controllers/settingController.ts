@@ -59,6 +59,15 @@ export const updateSettings = async (req: Request, res: Response) => {
       minRentalHours,
       minPickupDropoffHour,
       maxPickupDropoffHour,
+      nightServiceFee,
+      nightServiceStartHour,
+      nightServiceEndHour,
+      oneWayFee,
+      overtimeFee,
+      overtimeFreeHours,
+      mileageFee,
+      mileageIncluded,
+      enforceBookingRules,
     }: bookcarsTypes.UpdateSettingsPayload = req.body
     const settings = await Setting.findOne({})
 
@@ -67,6 +76,15 @@ export const updateSettings = async (req: Request, res: Response) => {
       settings.minRentalHours = minRentalHours
       settings.minPickupDropoffHour = minPickupDropoffHour
       settings.maxPickupDropoffHour = maxPickupDropoffHour
+      settings.nightServiceFee = nightServiceFee ?? settings.nightServiceFee
+      settings.nightServiceStartHour = nightServiceStartHour ?? settings.nightServiceStartHour
+      settings.nightServiceEndHour = nightServiceEndHour ?? settings.nightServiceEndHour
+      settings.oneWayFee = oneWayFee ?? settings.oneWayFee
+      settings.overtimeFee = overtimeFee ?? settings.overtimeFee
+      settings.overtimeFreeHours = overtimeFreeHours ?? settings.overtimeFreeHours
+      settings.mileageFee = mileageFee ?? settings.mileageFee
+      settings.mileageIncluded = mileageIncluded ?? settings.mileageIncluded
+      settings.enforceBookingRules = enforceBookingRules ?? settings.enforceBookingRules
 
       await settings.save()
 

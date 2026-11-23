@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-23 11:43:58",
+  "generatedAt": "2026-11-23 14:23:46",
   "frontend": "http://localhost:33002",
   "admin": "http://localhost:33001",
-  "elapsedSeconds": 133.1,
+  "elapsedSeconds": 143.9,
   "total": 30,
   "passed": 30,
   "failed": 0,
@@ -15,8 +15,7 @@
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
       "failedRequests": [
-        "http://localhost:33002/src/components/Header.tsx :: net::ERR_ABORTED",
-        "http://localhost:33002/src/pages/Home.tsx :: net::ERR_ABORTED"
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
       ],
       "missingSelectors": [],
       "info": {
@@ -24,9 +23,9 @@
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Explore China at your own pace.",
-        "textLength": 1748
+        "textLength": 1793
       },
       "pass": true,
       "group": "frontend-public"
@@ -47,7 +46,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Pick-up points",
-        "textLength": 494
+        "textLength": 669
       },
       "pass": true,
       "group": "frontend-public"
@@ -59,16 +58,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "The suppliers who trust us",
-        "textLength": 746
+        "textLength": 878
       },
       "pass": true,
       "group": "frontend-public"
@@ -194,7 +195,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Register",
-        "textLength": 660
+        "textLength": 665
       },
       "pass": true,
       "group": "frontend-public"
@@ -227,26 +228,36 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [
-        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://a.tile.openstreetmap.org/10/163/395.png",
         "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://b.tile.openstreetmap.org/10/164/395.png",
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://b.tile.openstreetmap.org/10/163/396.png",
         "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://c.tile.openstreetmap.org/10/164/396.png",
-        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://b.tile.openstreetmap.org/10/163/396.png"
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://a.tile.openstreetmap.org/10/162/396.png"
       ],
       "failedRequests": [
-        "https://a.tile.openstreetmap.org/10/163/395.png :: net::ERR_CONNECTION_CLOSED",
+        "https://a.tile.openstreetmap.org/10/163/395.png :: net::ERR_ABORTED",
+        "https://b.tile.openstreetmap.org/10/164/395.png :: net::ERR_ABORTED",
+        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_ABORTED",
+        "https://c.tile.openstreetmap.org/10/164/396.png :: net::ERR_ABORTED",
         "https://b.tile.openstreetmap.org/10/164/395.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_CONNECTION_CLOSED",
         "https://c.tile.openstreetmap.org/10/164/396.png :: net::ERR_CONNECTION_CLOSED",
-        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_CONNECTION_CLOSED"
+        "https://a.tile.openstreetmap.org/10/162/396.png :: net::ERR_CONNECTION_CLOSED",
+        "https://js.stripe.com/v3/controller-with-preconnect-37337a9544970962ebc1d8c325e82dee.html :: net::ERR_ABORTED"
       ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
-        "externalBlockedImages": [],
+        "externalBlockedImages": [
+          "https://b.tile.openstreetmap.org/10/164/395.png",
+          "https://b.tile.openstreetmap.org/10/163/396.png",
+          "https://c.tile.openstreetmap.org/10/164/396.png",
+          "https://a.tile.openstreetmap.org/10/162/396.png"
+        ],
         "horizontalOverflow": null,
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Book now",
-        "textLength": 2266
+        "textLength": 2629
       },
       "pass": true,
       "group": "frontend-checkout"
@@ -258,16 +269,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "My bookings",
-        "textLength": 535
+        "textLength": 562
       },
       "pass": true,
       "group": "frontend-auth"
@@ -321,16 +334,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 9,
         "h1": "Explore China at your own pace.",
-        "textLength": 1709
+        "textLength": 1764
       },
       "pass": true,
       "group": "frontend-mobile"
@@ -372,7 +387,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Dashboard",
-        "textLength": 676
+        "textLength": 681
       },
       "pass": true,
       "group": "admin"
@@ -384,16 +399,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Bookings",
-        "textLength": 637
+        "textLength": 668
       },
       "pass": true,
       "group": "admin"
@@ -405,16 +422,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Vehicles",
-        "textLength": 1726
+        "textLength": 1757
       },
       "pass": true,
       "group": "admin"
@@ -426,16 +445,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Users",
-        "textLength": 335
+        "textLength": 2188
       },
       "pass": true,
       "group": "admin"
@@ -447,16 +468,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Suppliers",
-        "textLength": 173
+        "textLength": 334
       },
       "pass": true,
       "group": "admin"
@@ -477,7 +500,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Pick-up locations",
-        "textLength": 198
+        "textLength": 202
       },
       "pass": true,
       "group": "admin"
@@ -498,7 +521,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Settings",
-        "textLength": 594
+        "textLength": 907
       },
       "pass": true,
       "group": "admin"
@@ -519,7 +542,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Notifications",
-        "textLength": 157
+        "textLength": 2558
       },
       "pass": true,
       "group": "admin"
@@ -540,7 +563,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Countries",
-        "textLength": 172
+        "textLength": 176
       },
       "pass": true,
       "group": "admin"
@@ -552,16 +575,18 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:4002/cdn/bookcars/users/avatar.jpg :: net::ERR_BLOCKED_BY_ORB"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
         "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
-        "fallbackAvatars": 0,
+        "fallbackAvatars": 4,
         "h1": "Vehicle schedule",
-        "textLength": 613
+        "textLength": 644
       },
       "pass": true,
       "group": "admin"
@@ -582,7 +607,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Nothing to see here!",
-        "textLength": 110
+        "textLength": 114
       },
       "pass": true,
       "group": "admin"
@@ -603,7 +628,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Pricing Plans",
-        "textLength": 330
+        "textLength": 334
       },
       "pass": true,
       "group": "admin"
@@ -624,7 +649,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "BookCars - Your Premier Car Rental Service",
-        "textLength": 1086
+        "textLength": 1090
       },
       "pass": true,
       "group": "admin"
@@ -645,7 +670,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Contact",
-        "textLength": 124
+        "textLength": 128
       },
       "pass": true,
       "group": "admin"

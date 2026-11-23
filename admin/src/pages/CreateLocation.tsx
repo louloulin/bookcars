@@ -56,6 +56,10 @@ const CreateLocation = () => {
       longitude: '',
       address: '',
       businessHours: '',
+      adcode: '',
+      pickupInstructions: '',
+      acceptCards: '',
+      timezone: 'Asia/Shanghai',
       parkingSpots: [],
       image: undefined,
       parentLocation: undefined,
@@ -134,6 +138,12 @@ const CreateLocation = () => {
           longitude: data.longitude ? Number(data.longitude) : undefined,
           address: data.address || undefined,
           businessHours: data.businessHours || undefined,
+          adcode: data.adcode || undefined,
+          pickupInstructions: data.pickupInstructions || undefined,
+          acceptCards: data.acceptCards
+            ? data.acceptCards.split(',').map((card) => card.trim()).filter((card) => !!card)
+            : undefined,
+          timezone: data.timezone || undefined,
           names: data.names,
           image: data.image,
           parkingSpots: data.parkingSpots as bookcarsTypes.ParkingSpot[] || [],
@@ -151,6 +161,10 @@ const CreateLocation = () => {
             longitude: '',
             address: '',
             businessHours: '',
+            adcode: '',
+            pickupInstructions: '',
+            acceptCards: '',
+            timezone: 'Asia/Shanghai',
             parkingSpots: [],
             image: undefined,
             parentLocation: undefined,
@@ -269,6 +283,34 @@ const CreateLocation = () => {
               />
             </FormControl>
 
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.PICKUP_INSTRUCTIONS}</InputLabel>
+              <Input
+                {...register('pickupInstructions')}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.ACCEPT_CARDS}</InputLabel>
+              <Input
+                {...register('acceptCards')}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.ADCODE}</InputLabel>
+              <Input
+                {...register('adcode')}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.TIMEZONE}</InputLabel>
+              <Input
+                {...register('timezone')}
+              />
+            </FormControl>
+
             <LocationPicker
               latitude={latitude}
               longitude={longitude}
@@ -281,6 +323,9 @@ const CreateLocation = () => {
                 }
                 if (values.address !== undefined) {
                   setValue('address', values.address)
+                }
+                if (values.adcode !== undefined) {
+                  setValue('adcode', values.adcode)
                 }
               }}
             />

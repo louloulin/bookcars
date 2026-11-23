@@ -270,6 +270,128 @@ export const checkCheckoutSession = async (req: Request, res: Response) => {
 }
 
 /**
+ * Confirm a booking that was paid, independently of the browser callback.
+ *
+ * @param {Stripe.PaymentIntent} paymentIntent
+ */
+export const confirmPaidBooking = async (paymentIntent: Stripe.PaymentIntent) => {
+  const booking = await Booking.findOne({ paymentIntentId: paymentIntent.id })
+
+  if (!booking) {
+    logger.info(`[stripe.confirmPaidBooking] No booking found for PaymentIntent ${paymentIntent.id}`)
+    return
+  }
+
+  if ([
+    bookcarsTypes.BookingStatus.Paid,
+    bookcarsTypes.BookingStatus.Deposit,
+    bookcarsTypes.BookingStatus.PaidInFull,
+  ].includes(booking.status)) {
+    return
+  }
+
+  //
+  // Only a pending booking (stored as Void with an expiration date) can
+  // be confirmed by the webhook
+  //
+  if (booking.status !== bookcarsTypes.BookingStatus.Void || !booking.expireAt) {
+    logger.info(`[stripe.confirmPaidBooking] Booking ${booking._id.toString()} is not pending, skipping`)
+    return
+  }
+
+  const car = await Car.findById(booking.car)
+  if (!car) {
+    throw new Error(`Car ${booking.car} not found`)
+  }
+
+  const supplierPriceChangeRate = (await User.findById(booking.supplier, { priceChangeRate: 1 }).lean())?.priceChangeRate || 0
+  const price = helper.getPaymentAmount(booking.price, car.deposit, supplierPriceChangeRate, booking.isDeposit, booking.isPayedInFull)
+  const expectedAmountCents = helper.toCents(price)
+
+  if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
+    throw new Error(`Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`)
+  }
+
+  if (paymentIntent.amount !== expectedAmountCents) {
+    throw new Error(`Payment amount mismatch: expected ${expectedAmountCents}, got ${paymentIntent.amount}`)
+  }
+
+  const status = bookingController.getPaidBookingStatus(booking.isDeposit, booking.isPayedInFull)
+  const confirmed = await bookingController.confirmPendingBooking(booking, status, paymentIntent.amount / 100)
+
+  if (!confirmed) {
+    return
+  }
+
+  const user = await User.findById(booking.driver)
+  const supplier = await User.findById(booking.supplier)
+
+  if (user && supplier) {
+    try {
+      await bookingController.notifyBookingConfirmed(booking, user, supplier, false)
+    } catch (notifyErr) {
+      logger.error(`[stripe.confirmPaidBooking] Booking ${booking._id.toString()} paid, but sending emails or notifications failed`, notifyErr)
+    }
+  }
+}
+
+/**
+ * Handle the Stripe webhook events.
+ *
+ * The webhook makes the payment confirmation independent of the browser
+ * callback: a checkout that was paid but never confirmed in the browser
+ * (closed tab, lost connection) is confirmed here.
+ *
+ * @async
+ * @param {Request} req
+ * @param {Response} res
+ * @returns {unknown}
+ */
+export const webhook = async (req: Request, res: Response) => {
+  if (!env.STRIPE_WEBHOOK_SECRET) {
+    res.status(501).send('Stripe webhook is not configured')
+    return
+  }
+
+  const signature = req.headers['stripe-signature']
+
+  let event: Stripe.Event
+  try {
+    const stripeAPI = (await import('../payment/stripe.js')).default
+    event = stripeAPI.webhooks.constructEvent(req.body, signature as string, env.STRIPE_WEBHOOK_SECRET)
+  } catch (err) {
+    logger.error(`[stripe.webhook] Invalid webhook signature: ${err}`)
+    res.status(400).send('Invalid signature')
+    return
+  }
+
+  try {
+    if (event.type === 'payment_intent.succeeded') {
+      await confirmPaidBooking(event.data.object as Stripe.PaymentIntent)
+    } else if (event.type === 'payment_intent.payment_failed') {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent
+      const booking = await Booking.findOne({ paymentIntentId: paymentIntent.id })
+      if (booking && booking.status === bookcarsTypes.BookingStatus.Void) {
+        //
+        // The payment failed: the pending booking is released, so the
+        // car becomes available again
+        //
+        booking.status = bookcarsTypes.BookingStatus.Cancelled
+        booking.expireAt = undefined
+        await booking.save()
+        logger.info(`[stripe.webhook] Booking ${booking._id.toString()} cancelled after a failed payment`)
+      }
+    }
+  } catch (err) {
+    logger.error(`[stripe.webhook] Failed to handle ${event.type}`, err)
+    res.status(500).send('Webhook handler failed')
+    return
+  }
+
+  res.json({ received: true })
+}
+
+/**
  * Create Payment Intent.
  *
  * @async

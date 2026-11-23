@@ -67,6 +67,10 @@ const UpdateLocation = () => {
       longitude: '',
       address: '',
       businessHours: '',
+      adcode: '',
+      pickupInstructions: '',
+      acceptCards: '',
+      timezone: 'Asia/Shanghai',
       parkingSpots: [],
       image: undefined,
       parentLocation: undefined,
@@ -159,6 +163,12 @@ const UpdateLocation = () => {
           longitude: data.longitude ? Number(data.longitude) : undefined,
           address: data.address || undefined,
           businessHours: data.businessHours || undefined,
+          adcode: data.adcode || undefined,
+          pickupInstructions: data.pickupInstructions || undefined,
+          acceptCards: data.acceptCards
+            ? data.acceptCards.split(',').map((card) => card.trim()).filter((card) => !!card)
+            : undefined,
+          timezone: data.timezone || undefined,
           names: data.names,
           image: watchImage,
           parkingSpots: data.parkingSpots as bookcarsTypes.ParkingSpot[] || [],
@@ -222,6 +232,10 @@ const UpdateLocation = () => {
               setValue('latitude', (_location.latitude && _location.latitude.toString()) || '')
               setValue('address', _location.address || '')
               setValue('businessHours', _location.businessHours || '')
+              setValue('adcode', _location.adcode || '')
+              setValue('pickupInstructions', _location.pickupInstructions || '')
+              setValue('acceptCards', (_location.acceptCards || []).join(', '))
+              setValue('timezone', _location.timezone || 'Asia/Shanghai')
               setValue('parkingSpots', _location.parkingSpots?.map((ps) => ({
                 latitude: ps.latitude.toString(),
                 longitude: ps.longitude.toString(),
@@ -347,6 +361,34 @@ const UpdateLocation = () => {
                 />
               </FormControl>
 
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.PICKUP_INSTRUCTIONS}</InputLabel>
+                <Input
+                  {...register('pickupInstructions')}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.ACCEPT_CARDS}</InputLabel>
+                <Input
+                  {...register('acceptCards')}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.ADCODE}</InputLabel>
+                <Input
+                  {...register('adcode')}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.TIMEZONE}</InputLabel>
+                <Input
+                  {...register('timezone')}
+                />
+              </FormControl>
+
               <LocationPicker
                 latitude={latitude}
                 longitude={longitude}
@@ -359,6 +401,9 @@ const UpdateLocation = () => {
                   }
                   if (values.address !== undefined) {
                     setValue('address', values.address)
+                  }
+                  if (values.adcode !== undefined) {
+                    setValue('adcode', values.adcode)
                   }
                 }}
               />

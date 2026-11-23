@@ -115,6 +115,10 @@ export const create = async (req: Request, res: Response) => {
     parentLocation,
     address,
     businessHours,
+    adcode,
+    pickupInstructions,
+    acceptCards,
+    timezone,
   } = body
 
   try {
@@ -154,6 +158,10 @@ export const create = async (req: Request, res: Response) => {
       parentLocation,
       address,
       businessHours,
+      adcode,
+      pickupInstructions,
+      acceptCards,
+      timezone,
     })
     await location.save()
 
@@ -258,6 +266,10 @@ export const update = async (req: Request, res: Response) => {
         parentLocation,
         address,
         businessHours,
+        adcode,
+        pickupInstructions,
+        acceptCards,
+        timezone,
       }: bookcarsTypes.UpsertLocationPayload = req.body
 
       location.country = new mongoose.Types.ObjectId(country)
@@ -266,6 +278,10 @@ export const update = async (req: Request, res: Response) => {
       location.parentLocation = parentLocation ? new mongoose.Types.ObjectId(parentLocation) : undefined
       location.address = address
       location.businessHours = businessHours
+      location.adcode = adcode
+      location.pickupInstructions = pickupInstructions
+      location.acceptCards = acceptCards || []
+      location.timezone = timezone || location.timezone
 
       for (const name of names) {
         const locationValue = location.values.filter((value) => value.language === name.language)[0]

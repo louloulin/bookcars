@@ -17,6 +17,7 @@ import Notification from '../models/Notification'
 import NotificationCounter from '../models/NotificationCounter'
 import PushToken from '../models/PushToken'
 import AdditionalDriver from '../models/AdditionalDriver'
+import Setting from '../models/Setting'
 import * as helper from '../utils/helper'
 import * as mailHelper from '../utils/mailHelper'
 import * as logger from '../utils/logger'
@@ -286,6 +287,259 @@ const cancelPaymentIntentSafely = async (paymentIntentId: string) => {
 }
 
 /**
+ * Capture a Stripe PaymentIntent that uses a manual capture.
+ *
+ * The booking is only reported as paid once the capture succeeded, so a
+ * failed capture never leaves a "paid" booking behind.
+ *
+ * @param {string} paymentIntentId - The ID of the PaymentIntent to capture.
+ * @returns {Promise<{ captured: boolean, amount: number, message?: string }>}
+ */
+export const capturePaymentIntent = async (
+  paymentIntentId: string
+): Promise<{ captured: boolean, amount: number, message?: string }> => {
+  try {
+    const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+
+    if (paymentIntent.status === 'succeeded') {
+      return { captured: true, amount: paymentIntent.amount }
+    }
+
+    if (paymentIntent.status !== 'requires_capture') {
+      return {
+        captured: false,
+        amount: paymentIntent.amount,
+        message: `Payment failed: ${paymentIntent.status}`,
+      }
+    }
+
+    const captured = await stripeAPI.paymentIntents.capture(paymentIntentId)
+
+    //
+    // The capture response does not always carry the amount, in that case
+    // the amount of the PaymentIntent is used
+    //
+    const capturedAmount = typeof captured.amount === 'number'
+      ? captured.amount
+      : paymentIntent.amount
+
+    if (captured.status === 'succeeded') {
+      return { captured: true, amount: capturedAmount }
+    }
+
+    return {
+      captured: false,
+      amount: capturedAmount,
+      message: `Payment failed: ${captured.status}`,
+    }
+  } catch (err) {
+    logger.error(`[capturePaymentIntent] Failed to capture PaymentIntent ${paymentIntentId}`, err)
+    return {
+      captured: false,
+      amount: 0,
+      message: 'Payment capture failed. Please retry.',
+    }
+  }
+}
+
+/**
+ * Cancel or refund a payment that belongs to a booking that could not be
+ * created.
+ *
+ * A payment intent that was not captured yet is cancelled (the customer is
+ * not charged), a captured payment is refunded.
+ *
+ * @param {string} paymentIntentId - The ID of the PaymentIntent.
+ * @returns {Promise<void>}
+ */
+export const cancelOrRefundPayment = async (paymentIntentId: string): Promise<void> => {
+  const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+
+  if (paymentIntent.status === 'requires_capture') {
+    await stripeAPI.paymentIntents.cancel(paymentIntentId)
+    return
+  }
+
+  if (paymentIntent.status === 'succeeded') {
+    await stripeAPI.refunds.create(
+      { payment_intent: paymentIntentId },
+      { idempotencyKey: `booking-conflict-${paymentIntentId}` },
+    )
+  }
+}
+
+/**
+ * Confirm a pending booking (stored as `Void` with an expiration date) as
+ * paid.
+ *
+ * The compare-and-set on the status guarantees that a booking is confirmed
+ * exactly once, no matter whether the checkout, the recovery path or the
+ * Stripe webhook confirms it.
+ *
+ * @param {HydratedDocument<env.Booking>} booking
+ * @param {bookcarsTypes.BookingStatus} status
+ * @param {number} paidAmount
+ * @returns {Promise<boolean>} true when the booking was confirmed.
+ */
+export const confirmPendingBooking = async (
+  booking: HydratedDocument<env.Booking>,
+  status: bookcarsTypes.BookingStatus,
+  paidAmount: number
+): Promise<boolean> => {
+  booking.status = status
+  booking.expireAt = undefined
+  booking.paidAmount = Number.isFinite(paidAmount) ? paidAmount : 0
+
+  const confirmed = await saveBookingWithAvailability(booking, {
+    expectedStatus: bookcarsTypes.BookingStatus.Void,
+    requireExpireAt: true,
+  })
+
+  if (!confirmed) {
+    logger.info(`[confirmPendingBooking] Booking ${booking._id.toString()} was already confirmed`)
+  }
+
+  return confirmed
+}
+
+/**
+ * The paid status of a booking, depending on the payment option.
+ *
+ * @param {boolean} isDeposit
+ * @param {boolean} isPayedInFull
+ * @returns {bookcarsTypes.BookingStatus}
+ */
+export const getPaidBookingStatus = (
+  isDeposit?: boolean,
+  isPayedInFull?: boolean
+): bookcarsTypes.BookingStatus => {
+  if (isDeposit) {
+    return bookcarsTypes.BookingStatus.Deposit
+  }
+
+  if (isPayedInFull) {
+    return bookcarsTypes.BookingStatus.PaidInFull
+  }
+
+  return bookcarsTypes.BookingStatus.Paid
+}
+
+/**
+ * Recover a booking whose payment capture did not complete.
+ *
+ * The payment is validated (currency and amount) before it is captured, so
+ * a recovery can never collect a different amount than the booking is worth.
+ *
+ * @param {HydratedDocument<env.Booking>} booking
+ * @param {string} paymentIntentId
+ * @returns {Promise<boolean>} true when the booking was recovered and confirmed.
+ */
+export const recoverPendingCapture = async (
+  booking: HydratedDocument<env.Booking>,
+  paymentIntentId: string
+): Promise<boolean> => {
+  try {
+    const car = await Car.findById(booking.car)
+
+    if (!car) {
+      logger.error(`[recoverPendingCapture] Car ${booking.car.toString()} not found`)
+      return false
+    }
+
+    const supplier = await User.findById(booking.supplier)
+    const expectedAmount = helper.getPaymentAmount(
+      booking.price,
+      car.deposit,
+      supplier?.priceChangeRate || 0,
+      booking.isDeposit,
+      booking.isPayedInFull
+    )
+    const expectedAmountCents = helper.toCents(expectedAmount)
+    const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
+
+    if (paymentIntent.currency.toLowerCase() !== env.BASE_CURRENCY.toLowerCase()) {
+      logger.error(`[recoverPendingCapture] Payment currency mismatch: expected ${env.BASE_CURRENCY}, got ${paymentIntent.currency}`)
+      return false
+    }
+
+    if (paymentIntent.amount !== expectedAmountCents) {
+      logger.error(`[recoverPendingCapture] Payment amount mismatch: expected ${expectedAmountCents}, got ${paymentIntent.amount}`)
+      return false
+    }
+
+    const capture = await capturePaymentIntent(paymentIntentId)
+
+    if (!capture.captured) {
+      logger.error(`[recoverPendingCapture] Payment capture failed for PaymentIntent ${paymentIntentId}: ${capture.message}`)
+      return false
+    }
+
+    return await confirmPendingBooking(
+      booking,
+      getPaidBookingStatus(booking.isDeposit, booking.isPayedInFull),
+      capture.amount / 100
+    )
+  } catch (err) {
+    logger.error(`[recoverPendingCapture] Failed to recover the payment of booking ${booking._id.toString()}`, err)
+    return false
+  }
+}
+
+/**
+ * Notify the driver, the supplier and the admin about a confirmed booking.
+ *
+ * @param {HydratedDocument<env.Booking>} booking
+ * @param {env.User} user - the driver
+ * @param {env.User} supplier
+ * @param {boolean} payLater
+ */
+export const notifyBookingConfirmed = async (
+  booking: HydratedDocument<env.Booking>,
+  user: env.User,
+  supplier: env.User,
+  payLater: boolean
+) => {
+  // A payment intent booking is confirmed as Paid, Deposit or PaidInFull
+  // depending on the payment option: all three are paid bookings
+  const paidWithPaymentIntent = !payLater && [
+    bookcarsTypes.BookingStatus.Paid,
+    bookcarsTypes.BookingStatus.Deposit,
+    bookcarsTypes.BookingStatus.PaidInFull,
+  ].includes(booking.status)
+
+  if (paidWithPaymentIntent) {
+    const car = await Car.findById(booking.car)
+    if (!car) {
+      throw new Error(`Car ${booking.car} not found`)
+    }
+    car.trips += 1
+    await car.save()
+  }
+
+  if (!payLater && !paidWithPaymentIntent) {
+    return
+  }
+
+  // Send confirmation email to customer
+  if (!(await confirm(user, supplier, booking, payLater))) {
+    logger.error(`[booking.checkout] Confirmation email not sent for booking ${booking._id.toString()}`)
+  }
+
+  // Notify supplier
+  i18n.locale = supplier.language
+  let message = payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+  await notify(user, booking._id.toString(), supplier, message)
+
+  // Notify admin
+  const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: bookcarsTypes.UserType.Admin }))
+  if (admin) {
+    i18n.locale = admin.language
+    message = payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
+    await notify(user, booking._id.toString(), admin, message)
+  }
+}
+
+/**
  * Complete checkout process and create Booking.
  *
  * @export
@@ -308,7 +562,48 @@ export const checkout = async (req: Request, res: Response) => {
     if (checkoutPaymentIntentId) {
       const existingBooking = await Booking.findOne({ paymentIntentId: checkoutPaymentIntentId })
       if (existingBooking) {
-        res.status(200).send({ bookingId: existingBooking._id.toString() })
+        //
+        // A booking whose payment capture did not complete is recovered
+        // here: the retry collects the payment instead of silently
+        // returning a booking that was never paid
+        //
+        if (
+          existingBooking.status === bookcarsTypes.BookingStatus.Void
+          && existingBooking.expireAt
+          && existingBooking.expireAt.getTime() > Date.now()
+        ) {
+          const recovered = await recoverPendingCapture(existingBooking, checkoutPaymentIntentId)
+
+          if (recovered) {
+            const existingUser = await User.findById(existingBooking.driver)
+            const existingSupplier = await User.findById(existingBooking.supplier)
+
+            if (existingUser && existingSupplier) {
+              try {
+                await notifyBookingConfirmed(existingBooking, existingUser, existingSupplier, false)
+              } catch (notifyErr) {
+                logger.error(`[booking.checkout] Booking ${existingBooking._id.toString()} recovered, but sending emails or notifications failed`, notifyErr)
+              }
+            }
+
+            res.status(200).send({ bookingId: existingBooking._id.toString() })
+            return
+          }
+
+          res.status(500).send('Payment capture failed. Please retry the payment.')
+          return
+        }
+
+        if ([
+          bookcarsTypes.BookingStatus.Paid,
+          bookcarsTypes.BookingStatus.Deposit,
+          bookcarsTypes.BookingStatus.PaidInFull,
+        ].includes(existingBooking.status)) {
+          res.status(200).send({ bookingId: existingBooking._id.toString() })
+          return
+        }
+
+        res.status(400).send(`PaymentIntent ${checkoutPaymentIntentId} has already been used`)
         return
       }
     }
@@ -364,11 +659,64 @@ export const checkout = async (req: Request, res: Response) => {
     if (
       typeof pickupLocation !== 'string' || !helper.isValidObjectId(pickupLocation)
       || typeof dropOffLocation !== 'string' || !helper.isValidObjectId(dropOffLocation)
-      || !(await Location.exists({ _id: pickupLocation }))
-      || !(await Location.exists({ _id: dropOffLocation }))
     ) {
       res.status(400).send('Invalid pick-up or drop-off location')
       return
+    }
+
+    const [pickupLocationDoc, dropOffLocationDoc] = await Promise.all([
+      Location.findById(pickupLocation),
+      Location.findById(dropOffLocation),
+    ])
+    if (!pickupLocationDoc || !dropOffLocationDoc) {
+      res.status(400).send('Invalid pick-up or drop-off location')
+      return
+    }
+
+    //
+    // The booking rules are enforced by the server: the customer interface
+    // only proposes valid values, it is never trusted.
+    //
+    // They are enabled by the operator with the `enforceBookingRules` setting
+    // (admin -> Settings), so that the historic bookings and the deployments
+    // that do not use the store opening hours yet are not affected.
+    //
+    const settings = await Setting.findOne({})
+    const rentalHours = (toDate.getTime() - fromDate.getTime()) / (1000 * 60 * 60)
+    const enforceBookingRules = settings?.enforceBookingRules === true
+
+    if (enforceBookingRules && settings?.minRentalHours && rentalHours < settings.minRentalHours) {
+      res.status(400).send('The rental duration is shorter than the minimum duration')
+      return
+    }
+
+    if (enforceBookingRules && settings?.minPickupHours) {
+      const earliestPickup = Date.now() + (settings.minPickupHours * 1000 * 60 * 60)
+
+      if (fromDate.getTime() < earliestPickup) {
+        res.status(400).send('The pick-up date is too close')
+        return
+      }
+    }
+
+    const storeTimezone = pickupLocationDoc.timezone || bookcarsHelper.DEFAULT_CHINA_TIMEZONE
+    const pickupHour = bookcarsHelper.getLocalHour(fromDate, storeTimezone)
+
+    if (enforceBookingRules && pickupLocationDoc.businessHours) {
+      const [opening, closing] = pickupLocationDoc.businessHours.split('-').map((time) => time.trim())
+      const openingHour = Number(opening?.split(':')[0])
+      const closingHour = Number(closing?.split(':')[0])
+
+      if (Number.isFinite(openingHour) && Number.isFinite(closingHour)) {
+        const isOpen = openingHour <= closingHour
+          ? pickupHour >= openingHour && pickupHour < closingHour
+          : pickupHour >= openingHour || pickupHour < closingHour
+
+        if (!isOpen) {
+          res.status(400).send('The pick-up time is outside the opening hours of the store')
+          return
+        }
+      }
     }
 
     // Calculate expected total price
@@ -386,7 +734,27 @@ export const checkout = async (req: Request, res: Response) => {
         additionalDriver: bookingInput.additionalDriver,
       }
     )
-    const expectedBasePriceInBaseCurrency = await bookcarsHelper.convertPrice(expectedBasePrice, env.BASE_CURRENCY, env.BASE_CURRENCY)
+    //
+    // The fees of the Chinese market (night service, one way) are added to
+    // the rental price. The same helper is used by the customer interface,
+    // so the quote and the stored price are always the same
+    //
+    const sameStore = pickupLocationDoc._id.toString() === dropOffLocationDoc._id.toString()
+    const fees = bookcarsHelper.calculateChinaFees({
+      from: fromDate,
+      timezone: storeTimezone,
+      sameStore,
+      settings: settings
+        ? {
+          nightServiceFee: settings.nightServiceFee,
+          nightServiceStartHour: settings.nightServiceStartHour,
+          nightServiceEndHour: settings.nightServiceEndHour,
+          oneWayFee: settings.oneWayFee,
+        }
+        : undefined,
+    })
+    const expectedBasePriceWithFees = Number((expectedBasePrice + fees.total).toFixed(2))
+    const expectedBasePriceInBaseCurrency = await bookcarsHelper.convertPrice(expectedBasePriceWithFees, env.BASE_CURRENCY, env.BASE_CURRENCY)
     if (!Number.isFinite(expectedBasePriceInBaseCurrency) || expectedBasePriceInBaseCurrency < 0) {
       res.status(400).send('Invalid booking price')
       return
@@ -555,13 +923,17 @@ export const checkout = async (req: Request, res: Response) => {
         }
 
         bookingData.paymentIntentId = paymentIntentId
-        let status = bookcarsTypes.BookingStatus.Paid
-        if (bookingData.isDeposit) {
-          status = bookcarsTypes.BookingStatus.Deposit
-        } else if (bookingData.isPayedInFull) {
-          status = bookcarsTypes.BookingStatus.PaidInFull
-        }
-        bookingData.status = status
+
+        //
+        // The booking is stored as a pending (Void) booking with an
+        // expiration date: it reserves the car while the payment is
+        // captured and it is confirmed as paid afterwards, so a failed
+        // capture never leaves a paid booking behind
+        //
+        const paymentExpireAt = new Date()
+        paymentExpireAt.setSeconds(paymentExpireAt.getSeconds() + env.BOOKING_EXPIRE_AT)
+        bookingData.status = bookcarsTypes.BookingStatus.Void
+        bookingData.expireAt = paymentExpireAt
       } else {
         //
         // Bookings created from checkout with Stripe are temporary
@@ -656,6 +1028,7 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     bookingData.price = expectedBasePriceInBaseCurrency
+    bookingData.fees = fees
     const booking = new Booking(bookingData)
 
     // Save the booking inside the per-property lock when exclusive
@@ -695,34 +1068,49 @@ export const checkout = async (req: Request, res: Response) => {
       await saveBookingWithAvailability(booking)
     }
 
-    const status = body.payLater
+    const intendedStatus = body.payLater
       ? bookcarsTypes.BookingStatus.Pending
       : body.paymentIntentId
-        ? bookcarsTypes.BookingStatus.Paid
+        ? getPaidBookingStatus(bookingData.isDeposit, bookingData.isPayedInFull)
         : bookcarsTypes.BookingStatus.Void
-    if (guestUser && (status === bookcarsTypes.BookingStatus.Paid || body.payLater)) {
+
+    //
+    // CAPTURE FUNDS before the booking is confirmed as paid: a booking is
+    // only reported as paid once the payment was captured successfully, so
+    // a failed capture leaves a pending booking that a retry can recover
+    //
+    const { paymentIntentId } = body
+    if (paymentIntentId) {
+      const capture = await capturePaymentIntent(paymentIntentId)
+
+      if (!capture.captured) {
+        logger.error(`[booking.checkout] Failed to capture PaymentIntent ${paymentIntentId}: ${capture.message}`)
+        res.status(500).send('Payment capture failed. Please retry the payment.')
+        return
+      }
+
+      const confirmed = await confirmPendingBooking(
+        booking,
+        intendedStatus,
+        capture.amount / 100
+      )
+
+      if (!confirmed) {
+        // The booking was confirmed by another request in the meantime
+        res.status(200).send({ bookingId: booking._id.toString() })
+        return
+      }
+    }
+
+    //
+    // The guest account is only kept when the booking is confirmed
+    //
+    if (guestUser && intendedStatus !== bookcarsTypes.BookingStatus.Void) {
       try {
         guestUser.expireAt = undefined
         await guestUser.save()
       } catch (guestErr) {
         logger.error(`[booking.checkout] Booking ${booking._id.toString()} saved, but clearing the guest account expiry failed`, guestErr)
-      }
-    }
-
-    // CAPTURE FUNDS once the booking is successfully persisted,
-    // before the emails and notifications below, so that a booking saved
-    // as paid is not left with an uncaptured payment if one of them fails
-    const { paymentIntentId } = body
-    if (paymentIntentId) {
-      try {
-        const paymentIntent = await stripeAPI.paymentIntents.retrieve(paymentIntentId)
-        if (paymentIntent.status === 'requires_capture') {
-          await stripeAPI.paymentIntents.capture(paymentIntentId)
-        }
-      } catch (captureError) {
-        logger.error(`[booking.checkout] Failed to capture PaymentIntent ${paymentIntentId}`, captureError)
-        res.status(500).send('Booking saved, but payment capture failed. Please contact support.')
-        return
       }
     }
 
@@ -750,47 +1138,7 @@ export const checkout = async (req: Request, res: Response) => {
         await user.save()
       }
 
-      // A payment intent booking is saved as Paid, Deposit or PaidInFull
-      // depending on the payment option: all three are paid bookings
-      const paidWithPaymentIntent = !!body.paymentIntentId && !!body.customerId && [
-        bookcarsTypes.BookingStatus.Paid,
-        bookcarsTypes.BookingStatus.Deposit,
-        bookcarsTypes.BookingStatus.PaidInFull,
-      ].includes(booking.status)
-
-      if (paidWithPaymentIntent) {
-        const car = await Car.findById(booking.car)
-        if (!car) {
-          throw new Error(`Car ${booking.car} not found`)
-        }
-        car.trips += 1
-        await car.save()
-      }
-
-      if (body.payLater || paidWithPaymentIntent) {
-        // Mark car as fully booked
-        // if (env.MARK_CAR_AS_FULLY_BOOKED_ON_CHECKOUT) {
-        //   await Car.updateOne({ _id: booking.car }, { fullyBooked: false })
-        // }
-
-        // Send confirmation email to customer
-        if (!(await confirm(user, supplier, booking, body.payLater))) {
-          logger.error(`[booking.checkout] Confirmation email not sent for booking ${booking._id.toString()}`)
-        }
-
-        // Notify supplier
-        i18n.locale = supplier.language
-        let message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-        await notify(user, booking._id.toString(), supplier, message)
-
-        // Notify admin
-        const admin = !!env.ADMIN_EMAIL && (await User.findOne({ email: env.ADMIN_EMAIL, type: bookcarsTypes.UserType.Admin }))
-        if (admin) {
-          i18n.locale = admin.language
-          message = body.payLater ? i18n.t('BOOKING_PAY_LATER_NOTIFICATION') : i18n.t('BOOKING_PAID_NOTIFICATION')
-          await notify(user, booking._id.toString(), admin, message)
-        }
-      }
+      await notifyBookingConfirmed(booking, user, supplier, !!body.payLater)
     } catch (notifyErr) {
       logger.error(`[booking.checkout] Booking ${booking._id.toString()} saved, but sending emails or notifications failed`, notifyErr)
     }
@@ -810,10 +1158,7 @@ export const checkout = async (req: Request, res: Response) => {
             res.status(200).send({ bookingId: existingBooking._id.toString() })
             return
           }
-          await stripeAPI.refunds.create(
-            { payment_intent: checkoutPaymentIntentId },
-            { idempotencyKey: `booking-conflict-${checkoutPaymentIntentId}` },
-          )
+          await cancelOrRefundPayment(checkoutPaymentIntentId)
         } catch (refundError) {
           logger.error('[booking.checkout] Failed to refund payment after booking conflict', refundError)
           res.status(500).send('Booking unavailable. Payment refund requires support review.')

@@ -57,7 +57,7 @@ const ADDITIONAL_DRIVER: bookcarsTypes.AdditionalDriver = {
   email: ADDITIONAL_DRIVER_EMAIL,
   fullName: 'Additional Driver 1',
   birthDate: new Date(2024, 5, 20),
-  phone: '0102010101',
+  phone: '+8613912345678',
 }
 
 //
@@ -805,7 +805,7 @@ describe('POST /api/checkout', () => {
       email: testHelper.GetRandomEmail(),
       fullName: 'Addtional Driver',
       birthDate: new Date(1980, 2, 25),
-      phone: '01010101',
+      phone: '+8613912345678',
     }
     res = await request(app)
       .post('/api/checkout')

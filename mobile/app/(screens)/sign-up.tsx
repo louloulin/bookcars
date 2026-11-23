@@ -4,6 +4,7 @@ import { useIsFocused, useLocalSearchParams, useRouter } from 'expo-router'
 import { intervalToDuration } from 'date-fns'
 import validator from 'validator'
 import * as bookcarsTypes from ':bookcars-types'
+import * as bookcarsHelper from ':bookcars-helper'
 
 import i18n from '@/lang/i18n'
 import TextInput from '@/components/TextInput'
@@ -136,7 +137,7 @@ const SignUpScreen = () => {
 
   const validatePhone = () => {
     if (phone) {
-      const _phoneValid = validator.isMobilePhone(phone)
+      const _phoneValid = bookcarsHelper.isValidPhoneNumber(phone)
       setPhoneRequired(false)
       setPhoneValid(_phoneValid)
 

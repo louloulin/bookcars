@@ -432,6 +432,16 @@ export const EXPO_ACCESS_TOKEN = __env__('BC_EXPO_ACCESS_TOKEN', false)
  */
 export const STRIPE_SECRET_KEY = __env__('BC_STRIPE_SECRET_KEY', false, 'STRIPE_SECRET_KEY')
 
+/**
+ * Stripe webhook signing secret.
+ *
+ * It is used to verify that a webhook event really comes from Stripe.
+ * When it is not set, the webhook endpoint rejects every event.
+ *
+ * @type {string}
+ */
+export const STRIPE_WEBHOOK_SECRET = __env__('BC_STRIPE_WEBHOOK_SECRET', false, '')
+
 let stripeSessionExpireAt = Number.parseInt(__env__('BC_STRIPE_SESSION_EXPIRE_AT', false, '82800'), 10)
 stripeSessionExpireAt = stripeSessionExpireAt < 1800 ? 1800 : stripeSessionExpireAt
 stripeSessionExpireAt = stripeSessionExpireAt <= 82800 ? stripeSessionExpireAt : 82800
@@ -720,6 +730,8 @@ export interface Booking extends Document {
   _additionalDriver?: Types.ObjectId
   cancelRequest?: boolean
   price: number
+  paidAmount?: number
+  fees?: bookcarsTypes.ChinaFeeBreakdown
   sessionId?: string
   paymentIntentId?: string
   customerId?: string
@@ -924,6 +936,10 @@ export interface Location extends Document {
   parentLocation?: Types.ObjectId
   address?: string
   businessHours?: string
+  adcode?: string
+  pickupInstructions?: string
+  acceptCards?: string[]
+  timezone?: string
 }
 
 /**
@@ -1050,6 +1066,15 @@ export interface Setting extends Document {
   minRentalHours: number
   minPickupDropoffHour: number
   maxPickupDropoffHour: number
+  nightServiceFee?: number
+  nightServiceStartHour?: number
+  nightServiceEndHour?: number
+  oneWayFee?: number
+  overtimeFee?: number
+  overtimeFreeHours?: number
+  mileageFee?: number
+  mileageIncluded?: number
+  enforceBookingRules?: boolean
 }
 
 /**

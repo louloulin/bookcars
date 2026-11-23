@@ -1,6 +1,7 @@
 import validator from 'validator'
 import { Schema, model } from 'mongoose'
 import * as bookcarsTypes from ':bookcars-types'
+import * as bookcarsHelper from ':bookcars-helper'
 import * as env from '../config/env.config'
 
 export const USER_EXPIRE_AT_INDEX_NAME = 'expireAt'
@@ -22,6 +23,20 @@ const userSchema = new Schema<env.User>(
     },
     phone: {
       type: String,
+      set: (value: string) => {
+        const trimmed = (value || '').trim()
+
+        if (!trimmed) {
+          return trimmed
+        }
+
+        const normalized = bookcarsHelper.normalizePhoneNumber(trimmed)
+
+        // A value that holds no digit at all is invalid: it is kept as it
+        // is so the validator can reject it instead of storing an empty
+        // phone number
+        return normalized || trimmed
+      },
       validate: {
         validator: (value: string) => {
           // Check if value is empty then return true.
@@ -29,8 +44,9 @@ const userSchema = new Schema<env.User>(
             return true
           }
 
-          // If value is empty will not validate for mobile phone.
-          return validator.isMobilePhone(value)
+          // An international number is validated against the pattern of
+          // its country, a national number against the default country
+          return bookcarsHelper.isValidPhoneNumber(value)
         },
         message: '{VALUE} is not valid',
       },

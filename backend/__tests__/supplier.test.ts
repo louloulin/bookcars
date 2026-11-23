@@ -220,7 +220,7 @@ describe('PUT /api/update-supplier', () => {
     SUPPLIER1_NAME = testHelper.getSupplierName()
     const bio = 'bio1'
     const location = 'location1'
-    const phone = '01010101'
+    const phone = '+8613912345678'
     const payLater = false
     const payload: bookcarsTypes.UpdateSupplierPayload = {
       _id: SUPPLIER1_ID,
@@ -518,7 +518,7 @@ describe('DELETE /api/delete-supplier/:id', () => {
     const additionalDriver = new AdditionalDriver({
       email: testHelper.GetRandomEmail(),
       fullName: 'additional-driver',
-      phone: '01010101',
+      phone: '+8613912345678',
       birthDate: new Date(1990, 2, 3),
     })
     await additionalDriver.save()

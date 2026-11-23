@@ -90,7 +90,7 @@ describe('POST /api/sign-up', () => {
       fullName: 'user1',
       language: testHelper.LANGUAGE,
       birthDate: new Date(1992, 5, 25),
-      phone: '09090909',
+      phone: '+8613912345678',
       avatar: AVATAR1,
     }
     let res = await request(app)
@@ -201,7 +201,7 @@ describe('POST /api/sign-up', () => {
         language: testHelper.LANGUAGE,
         password: USER1_PASSWORD,
         birthDate: new Date(1992, 5, 25),
-        phone: '09090909',
+        phone: '+8613912345678',
       }
 
       res = await request(newApp)
@@ -228,7 +228,7 @@ describe.skip('POST /api/admin-sign-up', () => {
       fullName: 'admin',
       language: testHelper.LANGUAGE,
       birthDate: new Date(1992, 5, 25),
-      phone: '09090909',
+      phone: '+8613912345678',
     }
     const res = await request(app)
       .post('/api/admin-sign-up')
@@ -280,7 +280,7 @@ describe('POST /api/create-user', () => {
       fullName: 'user2',
       language: testHelper.LANGUAGE,
       birthDate: new Date(1992, 5, 25),
-      phone: '09090909',
+      phone: '+8613912345678',
       location: 'location',
       bio: 'bio',
       avatar: AVATAR1,
@@ -317,7 +317,7 @@ describe('POST /api/create-user', () => {
       fullName: 'supplier',
       language: testHelper.LANGUAGE,
       birthDate: new Date(1992, 5, 25),
-      phone: '09090909',
+      phone: '+8613912345678',
       location: 'location',
       bio: 'bio',
       avatar: AVATAR1,
@@ -352,7 +352,7 @@ describe('POST /api/create-user', () => {
       fullName: 'admin',
       language: testHelper.LANGUAGE,
       birthDate: new Date(1992, 5, 25),
-      phone: '09090909',
+      phone: '+8613912345678',
       location: 'location',
       bio: 'bio',
       avatar: AVATAR1,
@@ -1232,7 +1232,7 @@ describe('POST /api/update-user', () => {
       _id: USER1_ID,
       fullName: 'user1-1',
       birthDate: new Date(1993, 5, 25),
-      phone: '09090908',
+      phone: '+8613912345678',
       location: 'location1-1',
       bio: 'bio1-1',
       type: bookcarsTypes.UserType.Supplier,
@@ -1323,7 +1323,7 @@ describe('POST /api/update-user', () => {
     const basePayload: bookcarsTypes.UpdateUserPayload = {
       _id: supplier1Id,
       fullName: 'Updated Supplier Name',
-      phone: '01010101',
+      phone: '+8613912345678',
       location: 'supplier location',
       bio: 'supplier bio',
     }
@@ -2516,7 +2516,7 @@ describe('POST /api/delete-users', () => {
     const additionalDriver = new AdditionalDriver({
       email: testHelper.GetRandomEmail(),
       fullName: 'additional-driver',
-      phone: '01010101',
+      phone: '+8613912345678',
       birthDate: new Date(1990, 2, 3),
     })
     await additionalDriver.save()

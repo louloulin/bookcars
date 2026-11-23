@@ -10,6 +10,7 @@ import Map from '@/components/Map'
 import SearchForm from '@/components/SearchForm'
 import Footer from '@/components/Footer'
 import { strings as pageStrings } from '@/lang/page'
+import { strings as mapStrings } from '@/lang/map'
 
 import '@/assets/css/locations.css'
 
@@ -50,6 +51,9 @@ const Locations = () => {
               <li key={location._id}>
                 <button type="button" className="locations-list-item" onClick={() => selectLocation(location._id)}>
                   <span className="locations-list-name">{location.name}</span>
+                  {location.address && <span className="locations-list-meta">{`${mapStrings.ADDRESS}: ${location.address}`}</span>}
+                  {location.businessHours && <span className="locations-list-meta">{`${mapStrings.BUSINESS_HOURS}: ${location.businessHours}`}</span>}
+                  {location.pickupInstructions && <span className="locations-list-meta locations-list-instructions">{location.pickupInstructions}</span>}
                   <span className="locations-list-cta">{pageStrings.SELECT_LOCATION}</span>
                 </button>
               </li>
