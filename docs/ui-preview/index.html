@@ -134,6 +134,7 @@
         <li>后台表单页统一收敛到 <code>form-page.css</code>（登录/注册/车辆/用户/供应商/地点/国家/预订/银行/价格）。</li>
         <li>移动端：预订与通知页新增品牌头部卡片，校验提示改为白卡片。</li>
         <li>健壮性：新增 <code>SafeImage</code> / <code>SupplierAvatar</code> 组件，CDN 资源缺失时自动降级为图标或字母徽标，不再出现裂图。</li>
+        <li>社交登录：未配置真实 App ID 的渠道（如本地 <code>XXXXXXXXXX</code>）不再渲染按钮，消除 GSI 403 报错与无效入口。</li>
       </ul>
     </div>
   </section>

@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-22 20:00:03",
+  "generatedAt": "2026-11-23 10:37:20",
   "frontend": "http://localhost:33002",
   "admin": "http://localhost:33001",
-  "elapsedSeconds": 124.6,
+  "elapsedSeconds": 123.9,
   "total": 30,
   "passed": 30,
   "failed": 0,
@@ -13,6 +13,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -33,33 +34,12 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
-      "failedRequests": [
-        "https://c.tile.openstreetmap.org/5/14/12.png :: net::ERR_CONNECTION_CLOSED",
-        "https://b.tile.openstreetmap.org/5/17/11.png :: net::ERR_CONNECTION_CLOSED",
-        "https://c.tile.openstreetmap.org/5/15/11.png :: net::ERR_CONNECTION_CLOSED",
-        "https://b.tile.openstreetmap.org/5/16/12.png :: net::ERR_CONNECTION_CLOSED",
-        "https://a.tile.openstreetmap.org/5/15/12.png :: net::ERR_CONNECTION_CLOSED",
-        "https://b.tile.openstreetmap.org/5/17/14.png :: net::ERR_CONNECTION_CLOSED",
-        "https://a.tile.openstreetmap.org/5/14/13.png :: net::ERR_CONNECTION_CLOSED",
-        "https://c.tile.openstreetmap.org/5/18/14.png :: net::ERR_CONNECTION_CLOSED",
-        "https://c.tile.openstreetmap.org/5/18/11.png :: net::ERR_CONNECTION_CLOSED",
-        "https://b.tile.openstreetmap.org/5/18/13.png :: net::ERR_CONNECTION_CLOSED"
-      ],
+      "thirdPartyConsoleErrors": [],
+      "failedRequests": [],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
-        "externalBlockedImages": [
-          "https://b.tile.openstreetmap.org/5/16/12.png",
-          "https://a.tile.openstreetmap.org/5/15/12.png",
-          "https://c.tile.openstreetmap.org/5/15/11.png",
-          "https://b.tile.openstreetmap.org/5/17/11.png",
-          "https://b.tile.openstreetmap.org/5/17/14.png",
-          "https://c.tile.openstreetmap.org/5/14/12.png",
-          "https://a.tile.openstreetmap.org/5/14/13.png",
-          "https://b.tile.openstreetmap.org/5/18/13.png",
-          "https://c.tile.openstreetmap.org/5/18/11.png",
-          "https://c.tile.openstreetmap.org/5/18/14.png"
-        ],
+        "externalBlockedImages": [],
         "horizontalOverflow": null,
         "containerOverflow": [],
         "fallbackAvatars": 0,
@@ -75,6 +55,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -95,6 +76,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -115,6 +97,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -135,6 +118,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -155,6 +139,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -175,6 +160,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -184,7 +170,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Sign in",
-        "textLength": 506
+        "textLength": 503
       },
       "pass": true,
       "group": "frontend-public"
@@ -195,6 +181,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -204,7 +191,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Register",
-        "textLength": 663
+        "textLength": 660
       },
       "pass": true,
       "group": "frontend-public"
@@ -215,6 +202,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -235,12 +223,8 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
-      "failedRequests": [
-        "https://a.tile.openstreetmap.org/10/163/395.png :: net::ERR_ABORTED",
-        "https://b.tile.openstreetmap.org/10/164/395.png :: net::ERR_ABORTED",
-        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_ABORTED",
-        "https://c.tile.openstreetmap.org/10/164/396.png :: net::ERR_ABORTED"
-      ],
+      "thirdPartyConsoleErrors": [],
+      "failedRequests": [],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
@@ -249,7 +233,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Book now",
-        "textLength": 2244
+        "textLength": 2241
       },
       "pass": true,
       "group": "frontend-checkout"
@@ -260,6 +244,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -280,6 +265,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -300,6 +286,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -320,6 +307,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -340,6 +328,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -360,6 +349,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -380,6 +370,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -400,6 +391,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -420,6 +412,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -440,6 +433,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -460,6 +454,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -480,6 +475,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -500,6 +496,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -520,6 +517,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -540,6 +538,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -560,6 +559,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -580,6 +580,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -600,6 +601,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {
@@ -620,6 +622,7 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
+      "thirdPartyConsoleErrors": [],
       "failedRequests": [],
       "missingSelectors": [],
       "info": {

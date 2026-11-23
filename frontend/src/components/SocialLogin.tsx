@@ -20,6 +20,17 @@ import '@/assets/css/social-login.css'
 
 const REDIRECT_URI = window.location.href
 
+// .env.example 里的占位值（如 XXXXXXXXXX）表示该渠道未配置。
+// 未配置时隐藏对应按钮：否则 GSI 会向 accounts.google.com 反复请求并返回 403，
+// 用户看到的是一个永远无法使用的按钮。
+const isConfigured = (id?: string) => {
+  const value = (id ?? '').trim()
+  if (!value) {
+    return false
+  }
+  return !/^x+$/i.test(value) && value.toLowerCase() !== 'undefined'
+}
+
 interface SocialLoginProps {
   facebook?: boolean
   apple?: boolean
@@ -88,6 +99,14 @@ const SocialLogin = ({
     }
   }
 
+  const showFacebook = Boolean(facebook) && isConfigured(env.FB_APP_ID)
+  const showApple = Boolean(apple) && isConfigured(env.APPLE_ID)
+  const showGoogle = Boolean(google) && isConfigured(env.GG_APP_ID)
+
+  if (!showFacebook && !showApple && !showGoogle) {
+    return null
+  }
+
   const getEmail = (jwtToken: string) => {
     const jwt = UserService.parseJwt(jwtToken)
     const { email } = jwt
@@ -96,14 +115,16 @@ const SocialLogin = ({
 
   return (
     <div className={`${className ? `${className} ` : ''}social-login`}>
-      <div className="separator">
-        <hr />
-        <span>{commonStrings.OR}</span>
-        <hr />
-      </div>
+      {(showFacebook || showApple || showGoogle) && (
+        <div className="separator">
+          <hr />
+          <span>{commonStrings.OR}</span>
+          <hr />
+        </div>
+      )}
 
       <div className="login-buttons">
-        {facebook && (
+        {showFacebook && (
           <LoginSocialFacebook
             appId={env.FB_APP_ID}
             redirect_uri={REDIRECT_URI}
@@ -119,7 +140,7 @@ const SocialLogin = ({
           </LoginSocialFacebook>
         )}
 
-        {apple && (
+        {showApple && (
           <LoginSocialApple
             client_id={env.APPLE_ID}
             scope="name email"
@@ -137,7 +158,7 @@ const SocialLogin = ({
           </LoginSocialApple>
         )}
 
-        {google && (
+        {showGoogle && (
           <LoginSocialGoogle
             client_id={env.GG_APP_ID}
             typeResponse="idToken"

@@ -102,6 +102,15 @@ SEARCH_QUERY = (
 )
 
 
+def is_local_url(url):
+    """判断资源是否来自本地应用。第三方来源的错误单独统计，不计入失败。"""
+    if not url:
+        return True
+    if url.startswith(("/")) or url.startswith("data:"):
+        return True
+    return url.startswith("http://localhost") or url.startswith("http://127.0.0.1")
+
+
 def collect(page):
     """返回页面内可自动断言的结构化信息。
 
@@ -147,16 +156,31 @@ def collect(page):
 
 
 def run_page(ctx, url, out_png, selectors, wait=2200, click=None):
-    """打开一页，收集错误，截图，返回结果字典。"""
-    errors, console_errors, failed_requests = [], [], []
+    """打开一页，收集错误，截图，返回结果字典。
+
+    console error 按来源区分：本地应用脚本产生的算失败项；
+    第三方（Google GSI、地图瓦片等）产生的记入 third_party_console_errors，
+    不作为失败依据。
+    """
+    errors, console_errors, third_party_console_errors, failed_requests = [], [], [], []
     page = ctx.new_page()
     page.on("pageerror", lambda e: errors.append(str(e)))
-    page.on(
-        "console",
-        lambda m: console_errors.append(f"{m.type}: {m.text}")
-        if m.type in ("error",)
-        else None,
-    )
+
+    def _on_console(m):
+        if m.type != "error":
+            return
+        text = f"{m.type}: {m.text}"
+        src = ""
+        try:
+            src = (m.location or {}).get("url") or ""
+        except Exception:  # noqa: BLE001
+            src = ""
+        if src and not is_local_url(src):
+            third_party_console_errors.append(f"{text}  ← {src}")
+        else:
+            console_errors.append(text)
+
+    page.on("console", _on_console)
     page.on("requestfailed", lambda r: failed_requests.append(f"{r.url} :: {r.failure}"))
 
     result = {"url": url, "screenshot": str(out_png)}
@@ -197,6 +221,7 @@ def run_page(ctx, url, out_png, selectors, wait=2200, click=None):
             "httpStatus": status,
             "pageErrors": errors,
             "consoleErrors": [c for c in console_errors if "Failed to load resource" not in c],
+            "thirdPartyConsoleErrors": third_party_console_errors,
             "failedRequests": failed_requests,
             "missingSelectors": missing,
             "info": info,
@@ -350,18 +375,19 @@ def main():
         f"- 前台：{FRONTEND}　后台：{ADMIN}",
         f"- 用时：{elapsed}s　页面数：{total}　通过：{passed}　失败：{total - passed}",
         "",
-        "| 页面 | 分组 | HTTP | pageerror | console error | 破图 | 外站拦截 | 横向溢出 | 兜底头像 | 结论 |",
-        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
+        "| 页面 | 分组 | HTTP | pageerror | console error | 第三方 console | 破图 | 外站拦截 | 横向溢出 | 兜底头像 | 结论 |",
+        "| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |",
     ]
     for r in results:
         info = r.get("info", {})
         lines.append(
-            "| {name} | {grp} | {st} | {pe} | {ce} | {bi} | {eb} | {ov} | {fa} | {ok} |".format(
+            "| {name} | {grp} | {st} | {pe} | {ce} | {tc} | {bi} | {eb} | {ov} | {fa} | {ok} |".format(
                 name=r["screenshot"].split("/")[-1],
                 grp=r.get("group", "-"),
                 st=r.get("httpStatus", "-"),
                 pe=len(r.get("pageErrors", [])),
                 ce=len(r.get("consoleErrors", [])),
+                tc=len(r.get("thirdPartyConsoleErrors", [])),
                 bi=len(info.get("brokenImages", [])),
                 eb=len(info.get("externalBlockedImages", [])),
                 ov="有" if info.get("horizontalOverflow") else "无",
@@ -383,6 +409,7 @@ def main():
                 f"- 缺失选择器：{r.get('missingSelectors') or '无'}",
                 f"- 破图：{info.get('brokenImages') or '无'}",
                 f"- 外站资源被拦截（不计入失败）：{info.get('externalBlockedImages') or '无'}",
+                f"- 第三方 console error（不计入失败）：{len(r.get('thirdPartyConsoleErrors', []))}",
                 f"- 横向溢出：{info.get('horizontalOverflow') or '无'}",
                 "",
             ]
@@ -402,6 +429,21 @@ def main():
             "## 外站资源（离线/网络受限，未计入失败）",
             "",
             *[f"- `{u}`" for u in external],
+        ]
+
+    third_party = sorted({
+        e
+        for r in results
+        for e in r.get("thirdPartyConsoleErrors", [])
+    })
+    if third_party:
+        lines += [
+            "",
+            "## 第三方 console error（未计入失败）",
+            "",
+            "来自 Google GSI / 地图瓦片等外部脚本，根因通常是本地 `.env` 未配置真实凭据。",
+            "",
+            *[f"- `{e}`" for e in third_party],
         ]
 
     (OUT_DIR / "verify-report.md").write_text("\n".join(lines) + "\n", encoding="utf-8")
