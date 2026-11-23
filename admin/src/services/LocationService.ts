@@ -180,3 +180,39 @@ export const deleteTempImage = (image: string): Promise<number> =>
       { withCredentials: true }
     )
     .then((res) => res.status)
+
+/**
+ * Search points of interest (map service proxy).
+ *
+ * @param {string} keyword
+ * @param {string} city
+ * @returns {Promise<{ status: number, data: bookcarsTypes.MapPlace[] }>}
+ */
+export const placeSearch = (
+  keyword: string,
+  city?: string
+): Promise<{ status: number, data: bookcarsTypes.MapPlace[] }> =>
+  axiosInstance
+    .get(
+      `/api/map/place-search?keyword=${encodeURIComponent(keyword)}${city ? `&city=${encodeURIComponent(city)}` : ''}`,
+      { withCredentials: true }
+    )
+    .then((res) => ({ status: res.status, data: res.data }))
+
+/**
+ * Reverse geocode coordinates into an address (map service proxy).
+ *
+ * @param {number} longitude
+ * @param {number} latitude
+ * @returns {Promise<{ status: number, data: bookcarsTypes.MapAddress }>}
+ */
+export const reverseGeocode = (
+  longitude: number,
+  latitude: number
+): Promise<{ status: number, data: bookcarsTypes.MapAddress }> =>
+  axiosInstance
+    .get(
+      `/api/map/reverse-geocode?longitude=${longitude}&latitude=${latitude}`,
+      { withCredentials: true }
+    )
+    .then((res) => ({ status: res.status, data: res.data }))

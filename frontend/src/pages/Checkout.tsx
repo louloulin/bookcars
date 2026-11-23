@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import {
   OutlinedInput,
@@ -42,6 +42,7 @@ import * as BookingService from '@/services/BookingService'
 import { strings as commonStrings } from '@/lang/common'
 import { strings as csStrings } from '@/lang/cars'
 import { strings } from '@/lang/checkout'
+import { strings as mapStrings } from '@/lang/map'
 import * as helper from '@/utils/helper'
 import * as UserService from '@/services/UserService'
 import * as CarService from '@/services/CarService'
@@ -107,6 +108,7 @@ const Checkout = () => {
   // const [distance, setDistance] = useState('')
   const [licenseRequired, setLicenseRequired] = useState(false)
   const [license, setLicense] = useState<string | null>(null)
+  const [distance, setDistance] = useState<bookcarsTypes.MapDistance>()
   const [openMapDialog, setOpenMapDialog] = useState(false)
   const [payPalLoaded, setPayPalLoaded] = useState(false)
   const [payPalInit, setPayPalInit] = useState(false)
@@ -436,6 +438,38 @@ const Checkout = () => {
     }
   }
 
+  // Driving distance between the pick-up and the drop-off point
+  useEffect(() => {
+    const _pickup = pickupLocation
+    const _dropOff = dropOffLocation
+
+    if (!_pickup?.latitude || !_pickup?.longitude || !_dropOff?.latitude || !_dropOff?.longitude) {
+      setDistance(undefined)
+      return
+    }
+
+    let cancelled = false
+
+    LocationService.getDistance(
+      `${_pickup.longitude},${_pickup.latitude}`,
+      `${_dropOff.longitude},${_dropOff.latitude}`
+    )
+      .then(({ status, data }) => {
+        if (!cancelled && status === 200) {
+          setDistance(data)
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          setDistance(undefined)
+        }
+      })
+
+    return () => {
+      cancelled = true
+    }
+  }, [pickupLocation, dropOffLocation])
+
   return (
     <>
       <Layout onLoad={onLoad} strict={false}>
@@ -505,10 +539,30 @@ const Checkout = () => {
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{commonStrings.PICK_UP_LOCATION}</span>
                           <div className="checkout-detail-value">{pickupLocation.name}</div>
+                          {pickupLocation.address && (
+                            <div className="checkout-detail-value checkout-detail-sub">
+                              {pickupLocation.address}
+                            </div>
+                          )}
+                          {pickupLocation.businessHours && (
+                            <div className="checkout-detail-value checkout-detail-sub">
+                              {`${mapStrings.BUSINESS_HOURS}: ${pickupLocation.businessHours}`}
+                            </div>
+                          )}
                         </div>
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{commonStrings.DROP_OFF_LOCATION}</span>
                           <div className="checkout-detail-value">{dropOffLocation.name}</div>
+                          {dropOffLocation.address && (
+                            <div className="checkout-detail-value checkout-detail-sub">
+                              {dropOffLocation.address}
+                            </div>
+                          )}
+                          {distance && (
+                            <div className="checkout-detail-value checkout-detail-sub">
+                              {`${mapStrings.DISTANCE}: ${(distance.distance / 1000).toFixed(1)} km · ${Math.round(distance.duration / 60)} min`}
+                            </div>
+                          )}
                         </div>
                         <div className="checkout-detail" style={{ height: bookingDetailHeight }}>
                           <span className="checkout-detail-title">{strings.CAR}</span>

@@ -55,3 +55,54 @@ export const getLocationId = (name: string, language: string): Promise<{ status:
       `/api/location-id/${encodeURIComponent(name)}/${language}`
     )
     .then((res) => ({ status: res.status, data: res.data }))
+
+/**
+ * Driving distance between two coordinates.
+ *
+ * @param {string} from 'longitude,latitude'
+ * @param {string} to 'longitude,latitude'
+ * @returns {Promise<{ status: number, data: { distance: number, duration: number, source: string } }>}
+ */
+export const getDistance = (
+  from: string,
+  to: string
+): Promise<{ status: number, data: { distance: number, duration: number, source: string } }> =>
+  axiosInstance
+    .get(
+      `/api/map/distance?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}`
+    )
+    .then((res) => ({ status: res.status, data: res.data }))
+
+/**
+ * Geocode an address into coordinates.
+ *
+ * @param {string} address
+ * @param {string} city
+ * @returns {Promise<{ status: number, data: { name: string, address?: string, city?: string, longitude: number, latitude: number } }>}
+ */
+export const geocode = (
+  address: string,
+  city?: string
+): Promise<{ status: number, data: { name: string, address?: string, city?: string, longitude: number, latitude: number } }> =>
+  axiosInstance
+    .get(
+      `/api/map/geocode?address=${encodeURIComponent(address)}${city ? `&city=${encodeURIComponent(city)}` : ''}`
+    )
+    .then((res) => ({ status: res.status, data: res.data }))
+
+/**
+ * Search points of interest.
+ *
+ * @param {string} keyword
+ * @param {string} city
+ * @returns {Promise<{ status: number, data: { name: string, address?: string, city?: string, longitude: number, latitude: number }[] }>}
+ */
+export const placeSearch = (
+  keyword: string,
+  city?: string
+): Promise<{ status: number, data: { name: string, address?: string, city?: string, longitude: number, latitude: number }[] }> =>
+  axiosInstance
+    .get(
+      `/api/map/place-search?keyword=${encodeURIComponent(keyword)}${city ? `&city=${encodeURIComponent(city)}` : ''}`
+    )
+    .then((res) => ({ status: res.status, data: res.data }))

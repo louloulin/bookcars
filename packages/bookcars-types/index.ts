@@ -168,6 +168,15 @@ export interface UpsertLocationPayload {
   parkingSpots?: ParkingSpot[]
   supplier?: string
   parentLocation?: string
+  /**
+   * Street address of the pickup point, used by the map service and shown to
+   * the customer before the booking is confirmed.
+   */
+  address?: string
+  /**
+   * Opening hours of the pickup point, e.g. '09:00 - 21:00'.
+   */
+  businessHours?: string
 }
 
 export interface UpdateSupplierPayload {
@@ -434,6 +443,49 @@ export interface ParkingSpot {
   values?: LocationValue[]
 }
 
+/**
+ * A point of interest returned by the map service.
+ */
+export interface MapPlace {
+  id?: string
+  name: string
+  address?: string
+  city?: string
+  district?: string
+  longitude: number
+  latitude: number
+  type?: string
+}
+
+/**
+ * An address resolved from coordinates by the map service.
+ */
+export interface MapAddress {
+  address?: string
+  city?: string
+  district?: string
+  township?: string
+}
+
+/**
+ * Driving distance between two coordinates.
+ */
+export interface MapDistance {
+  /**
+   * Distance in meters.
+   */
+  distance: number
+  /**
+   * Duration in seconds.
+   */
+  duration: number
+  /**
+   * 'amap' when the value comes from the map provider, 'estimate' when it is
+   * a straight line estimation computed locally.
+   */
+  source: string
+}
+
 export interface Location {
   _id: string
   country?: Country
@@ -445,6 +497,8 @@ export interface Location {
   parkingSpots?: ParkingSpot[]
   supplier?: User
   parentLocation?: Location
+  address?: string
+  businessHours?: string
 }
 
 export interface Country {

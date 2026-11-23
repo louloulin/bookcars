@@ -36,6 +36,14 @@ const locationSchema = new Schema<env.Location>(
       type: Schema.Types.ObjectId,
       ref: 'Location',
     },
+    address: {
+      type: String,
+      trim: true,
+    },
+    businessHours: {
+      type: String,
+      trim: true,
+    },
   },
   {
     timestamps: true,

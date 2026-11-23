@@ -27,6 +27,8 @@ import env from '@/config/env.config'
 import CountrySelectList from '@/components/CountrySelectList'
 import Avatar from '@/components/Avatar'
 import PositionInput from '@/components/PositionInput'
+import LocationPicker from '@/components/LocationPicker'
+import { strings as mapStrings } from '@/lang/location-map'
 import ParkingSpotEditList from '@/components/ParkingSpotEditList'
 import SupplierBadge from '@/components/SupplierBadge'
 import { schema, ParkingSpot, FormFields } from '@/models/LocationForm'
@@ -63,6 +65,8 @@ const UpdateLocation = () => {
       names: env._LANGUAGES.map(lang => ({ language: lang.code, name: '' })),
       latitude: '',
       longitude: '',
+      address: '',
+      businessHours: '',
       parkingSpots: [],
       image: undefined,
       parentLocation: undefined,
@@ -94,6 +98,16 @@ const UpdateLocation = () => {
   const parentLocation = useWatch({
     control,
     name: 'parentLocation'
+  })
+
+  const latitude = useWatch({
+    control,
+    name: 'latitude'
+  })
+
+  const longitude = useWatch({
+    control,
+    name: 'longitude'
   })
 
   const handleBeforeUpload = () => {
@@ -143,6 +157,8 @@ const UpdateLocation = () => {
           country: data.country?._id!,
           latitude: data.latitude ? Number(data.latitude) : undefined,
           longitude: data.longitude ? Number(data.longitude) : undefined,
+          address: data.address || undefined,
+          businessHours: data.businessHours || undefined,
           names: data.names,
           image: watchImage,
           parkingSpots: data.parkingSpots as bookcarsTypes.ParkingSpot[] || [],
@@ -204,6 +220,8 @@ const UpdateLocation = () => {
               setValue('names', _names)
               setValue('longitude', (_location.longitude && _location.longitude.toString()) || '')
               setValue('latitude', (_location.latitude && _location.latitude.toString()) || '')
+              setValue('address', _location.address || '')
+              setValue('businessHours', _location.businessHours || '')
               setValue('parkingSpots', _location.parkingSpots?.map((ps) => ({
                 latitude: ps.latitude.toString(),
                 longitude: ps.longitude.toString(),
@@ -314,6 +332,36 @@ const UpdateLocation = () => {
                   {...register('longitude')}
                 />
               </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.ADDRESS}</InputLabel>
+                <Input
+                  {...register('address')}
+                />
+              </FormControl>
+
+              <FormControl fullWidth margin="dense">
+                <InputLabel>{mapStrings.BUSINESS_HOURS}</InputLabel>
+                <Input
+                  {...register('businessHours')}
+                />
+              </FormControl>
+
+              <LocationPicker
+                latitude={latitude}
+                longitude={longitude}
+                onChange={(values) => {
+                  if (values.latitude !== undefined) {
+                    setValue('latitude', String(values.latitude))
+                  }
+                  if (values.longitude !== undefined) {
+                    setValue('longitude', String(values.longitude))
+                  }
+                  if (values.address !== undefined) {
+                    setValue('address', values.address)
+                  }
+                }}
+              />
 
               <ParkingSpotEditList
                 title={clStrings.PARKING_SPOTS}

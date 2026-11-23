@@ -86,3 +86,55 @@
   background: #173d30;
   transform: translateY(-1px);
 }
+
+/* AMap (Gaode) container */
+
+.map-amap {
+  position: relative;
+  overflow: hidden;
+}
+
+.map-amap-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* Overlay hosting the page children (buttons rendered above the map) */
+
+.map-overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  pointer-events: none;
+}
+
+.map-overlay > * {
+  pointer-events: auto;
+}
+
+/* Fallback panel displayed when the map provider cannot be loaded */
+
+.map-unavailable {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #4d6057;
+  font-size: .95rem;
+  text-align: center;
+  padding: 24px;
+}
+
+/* AMap info window, aligned with the Leaflet popup styles */
+
+.amap-info-window {
+  padding: 0;
+}
+
+.amap-info-content {
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #fff;
+  box-shadow: 0 8px 24px rgb(26 54 39 / 14%);
+}

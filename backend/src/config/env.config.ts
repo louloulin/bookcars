@@ -64,6 +64,36 @@ export const WEBSITE_NAME = __env__('BC_WEBSITE_NAME', false, 'BookCars')
 export const BASE_CURRENCY = __env__('BC_BASE_CURRENCY', false, 'USD')
 
 /**
+ * Map provider used by the platform.
+ *
+ * 'amap' = AMap (Gaode / AutoNavi), the reference provider for the Chinese
+ * market: GCJ-02 coordinates, mainland China base map, POI search, driving
+ * route and distance matrix, all covered by an online mapping licence.
+ *
+ * 'osm' = OpenStreetMap tiles (default), used for deployments outside
+ * mainland China where AMap coverage or licensing does not apply.
+ *
+ * @type {string}
+ */
+export const MAP_PROVIDER = __env__('BC_MAP_PROVIDER', false, 'osm').toLowerCase()
+
+/**
+ * AMap (Gaode) Web service key. Server side only, never exposed to the browser.
+ * Used by the map proxy endpoints (geocoding, POI search, driving distance).
+ *
+ * @type {string}
+ */
+export const AMAP_KEY = __env__('BC_AMAP_KEY', false, '')
+
+/**
+ * AMap (Gaode) Web service digital signature secret. Optional, only required
+ * when the key is created with the 'digital signature' security option.
+ *
+ * @type {string}
+ */
+export const AMAP_SECRET = __env__('BC_AMAP_SECRET', false, '')
+
+/**
  * Indicate whether we are in CI environment or not.
  *
  * @type {boolean}
@@ -892,6 +922,8 @@ export interface Location extends Document {
   parkingSpots?: Types.ObjectId[] | null
   supplier?: Types.ObjectId
   parentLocation?: Types.ObjectId
+  address?: string
+  businessHours?: string
 }
 
 /**

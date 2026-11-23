@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-11-23 10:37:20",
+  "generatedAt": "2026-11-23 11:43:58",
   "frontend": "http://localhost:33002",
   "admin": "http://localhost:33001",
-  "elapsedSeconds": 123.9,
+  "elapsedSeconds": 133.1,
   "total": 30,
   "passed": 30,
   "failed": 0,
@@ -14,7 +14,10 @@
       "pageErrors": [],
       "consoleErrors": [],
       "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "failedRequests": [
+        "http://localhost:33002/src/components/Header.tsx :: net::ERR_ABORTED",
+        "http://localhost:33002/src/pages/Home.tsx :: net::ERR_ABORTED"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
@@ -223,8 +226,18 @@
       "httpStatus": 200,
       "pageErrors": [],
       "consoleErrors": [],
-      "thirdPartyConsoleErrors": [],
-      "failedRequests": [],
+      "thirdPartyConsoleErrors": [
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://a.tile.openstreetmap.org/10/163/395.png",
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://b.tile.openstreetmap.org/10/164/395.png",
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://c.tile.openstreetmap.org/10/164/396.png",
+        "error: Failed to load resource: net::ERR_CONNECTION_CLOSED  ← https://b.tile.openstreetmap.org/10/163/396.png"
+      ],
+      "failedRequests": [
+        "https://a.tile.openstreetmap.org/10/163/395.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/10/164/395.png :: net::ERR_CONNECTION_CLOSED",
+        "https://c.tile.openstreetmap.org/10/164/396.png :: net::ERR_CONNECTION_CLOSED",
+        "https://b.tile.openstreetmap.org/10/163/396.png :: net::ERR_CONNECTION_CLOSED"
+      ],
       "missingSelectors": [],
       "info": {
         "brokenImages": [],
@@ -233,7 +246,7 @@
         "containerOverflow": [],
         "fallbackAvatars": 0,
         "h1": "Book now",
-        "textLength": 2241
+        "textLength": 2266
       },
       "pass": true,
       "group": "frontend-checkout"

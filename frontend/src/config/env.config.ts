@@ -77,6 +77,10 @@ const CURRENCIES: Currency[] = [
     code: 'AUD',
     symbol: '$',
   },
+  {
+    code: 'CNY',
+    symbol: '¥',
+  },
 ]
 
 const getPaymentGateway = () => {
@@ -158,6 +162,24 @@ const env = {
   MAP_LATITUDE: Number(String(import.meta.env.VITE_BC_MAP_LATITUDE || '34.0268755')),
   MAP_LONGITUDE: Number(String(import.meta.env.VITE_BC_MAP_LONGITUDE || '1.6528399999999976')),
   MAP_ZOOM: Number(String(import.meta.env.VITE_BC_MAP_ZOOM || '5')),
+  /**
+   * Map provider: 'amap' (AMap / Gaode, required for mainland China) or
+   * 'osm' (OpenStreetMap, default for the rest of the world).
+   */
+  MAP_PROVIDER: String(import.meta.env.VITE_BC_MAP_PROVIDER || 'osm').toLowerCase(),
+  /**
+   * AMap Web端 (JS API) key. Public by design, it is protected by the
+   * security code and by the domain whitelist of the AMap console.
+   */
+  AMAP_KEY: String(import.meta.env.VITE_BC_AMAP_KEY || ''),
+  /**
+   * AMap security code (jscode), required since 2021 for every new key.
+   */
+  AMAP_SECURITY_CODE: String(import.meta.env.VITE_BC_AMAP_SECURITY_CODE || ''),
+  /**
+   * Tile template used by the OpenStreetMap provider.
+   */
+  MAP_TILE_URL: String(import.meta.env.VITE_BC_MAP_TILE_URL || 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png'),
   PASSWORD_MIN_LENGTH: 6,
 }
 

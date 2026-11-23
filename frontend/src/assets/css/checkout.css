@@ -129,6 +129,12 @@ div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value 
   word-break: break-word;
 }
 
+div.checkout div.checkout-details div.checkout-detail div.checkout-detail-value.checkout-detail-sub {
+  color: #7b8d84;
+  font-size: .82em;
+  line-height: 1.35;
+}
+
 div.checkout div.checkout-details div.checkout-detail span.checkout-detail-title {
   font-weight: 700;
   padding-right: 12px;

@@ -24,6 +24,8 @@ export const schema = z.object({
   names: z.array(locationNameSchema),
   latitude: z.string().optional(),
   longitude: z.string().optional(),
+  address: z.string().optional(),
+  businessHours: z.string().optional(),
   image: z.string().optional(),
   parkingSpots: z.array(parkingSpotSchema).optional(),
   parentLocation: optionSchema.optional(),

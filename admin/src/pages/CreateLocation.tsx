@@ -21,6 +21,8 @@ import Avatar from '@/components/Avatar'
 import Backdrop from '@/components/SimpleBackdrop'
 import ParkingSpotEditList from '@/components/ParkingSpotEditList'
 import PositionInput from '@/components/PositionInput'
+import LocationPicker from '@/components/LocationPicker'
+import { strings as mapStrings } from '@/lang/location-map'
 import { UserContextType, useUserContext } from '@/context/UserContext'
 import { schema, ParkingSpot, FormFields } from '@/models/LocationForm'
 import LocationSelectList from '@/components/LocationSelectList'
@@ -52,6 +54,8 @@ const CreateLocation = () => {
       names: env._LANGUAGES.map(lang => ({ language: lang.code, name: '' })),
       latitude: '',
       longitude: '',
+      address: '',
+      businessHours: '',
       parkingSpots: [],
       image: undefined,
       parentLocation: undefined,
@@ -83,6 +87,16 @@ const CreateLocation = () => {
   const parentLocation = useWatch({
     control,
     name: 'parentLocation'
+  })
+
+  const latitude = useWatch({
+    control,
+    name: 'latitude'
+  })
+
+  const longitude = useWatch({
+    control,
+    name: 'longitude'
   })
 
   const handleBeforeUpload = () => {
@@ -118,6 +132,8 @@ const CreateLocation = () => {
           country: data.country?._id!,
           latitude: data.latitude ? Number(data.latitude) : undefined,
           longitude: data.longitude ? Number(data.longitude) : undefined,
+          address: data.address || undefined,
+          businessHours: data.businessHours || undefined,
           names: data.names,
           image: data.image,
           parkingSpots: data.parkingSpots as bookcarsTypes.ParkingSpot[] || [],
@@ -133,6 +149,8 @@ const CreateLocation = () => {
             names: env._LANGUAGES.map(lang => ({ language: lang.code, name: '' })),
             latitude: '',
             longitude: '',
+            address: '',
+            businessHours: '',
             parkingSpots: [],
             image: undefined,
             parentLocation: undefined,
@@ -236,6 +254,36 @@ const CreateLocation = () => {
                 {...register('longitude')}
               />
             </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.ADDRESS}</InputLabel>
+              <Input
+                {...register('address')}
+              />
+            </FormControl>
+
+            <FormControl fullWidth margin="dense">
+              <InputLabel>{mapStrings.BUSINESS_HOURS}</InputLabel>
+              <Input
+                {...register('businessHours')}
+              />
+            </FormControl>
+
+            <LocationPicker
+              latitude={latitude}
+              longitude={longitude}
+              onChange={(values) => {
+                if (values.latitude !== undefined) {
+                  setValue('latitude', String(values.latitude))
+                }
+                if (values.longitude !== undefined) {
+                  setValue('longitude', String(values.longitude))
+                }
+                if (values.address !== undefined) {
+                  setValue('address', values.address)
+                }
+              }}
+            />
 
             <ParkingSpotEditList
               title={strings.PARKING_SPOTS}

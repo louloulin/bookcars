@@ -1,0 +1,76 @@
+.location-picker {
+  margin: 12px 0 4px;
+}
+
+.location-picker-search {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.location-picker-results {
+  list-style: none;
+  margin: 0 0 8px;
+  padding: 0;
+  max-height: 180px;
+  overflow-y: auto;
+  border: 1px solid #e2e9df;
+  border-radius: 10px;
+  background: #fff;
+}
+
+.location-picker-results li {
+  border-bottom: 1px solid #eef2ec;
+}
+
+.location-picker-results li:last-child {
+  border-bottom: 0;
+}
+
+.location-picker-results button {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  width: 100%;
+  text-align: left;
+  background: transparent;
+  border: 0;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+.location-picker-results button:hover {
+  background: #f2f7ef;
+}
+
+.location-picker-results .name {
+  color: #193329;
+  font-size: .9rem;
+  font-weight: 600;
+}
+
+.location-picker-results .address {
+  color: #7b8d84;
+  font-size: .8rem;
+}
+
+.location-picker-map {
+  height: 320px;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid #e2e9df;
+}
+
+.location-picker-hint {
+  color: #7b8d84;
+  font-size: .8rem;
+  margin: 6px 0 0;
+}
+
+.location-picker-disabled {
+  color: #7b8d84;
+  font-size: .85rem;
+}

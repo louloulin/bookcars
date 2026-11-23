@@ -89,6 +89,18 @@ const env = {
   CONTACT_EMAIL: String(import.meta.env.VITE_BC_CONTACT_EMAIL || ''),
   RECAPTCHA_ENABLED: (import.meta.env.VITE_BC_RECAPTCHA_ENABLED && import.meta.env.VITE_BC_RECAPTCHA_ENABLED.toLowerCase()) === 'true',
   RECAPTCHA_SITE_KEY: String(import.meta.env.VITE_BC_RECAPTCHA_SITE_KEY),
+  /**
+   * Map provider used by the location picker: 'amap' (AMap / Gaode) or 'osm'.
+   */
+  MAP_PROVIDER: String(import.meta.env.VITE_BC_MAP_PROVIDER || 'osm').toLowerCase(),
+  /**
+   * AMap Web端 (JS API) key.
+   */
+  AMAP_KEY: String(import.meta.env.VITE_BC_AMAP_KEY || ''),
+  /**
+   * AMap security code (jscode).
+   */
+  AMAP_SECURITY_CODE: String(import.meta.env.VITE_BC_AMAP_SECURITY_CODE || ''),
   PASSWORD_MIN_LENGTH: 6,
 }
 
