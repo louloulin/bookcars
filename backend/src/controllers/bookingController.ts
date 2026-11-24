@@ -700,23 +700,13 @@ export const checkout = async (req: Request, res: Response) => {
     }
 
     const storeTimezone = pickupLocationDoc.timezone || bookcarsHelper.DEFAULT_CHINA_TIMEZONE
-    const pickupHour = bookcarsHelper.getLocalHour(fromDate, storeTimezone)
-
-    if (enforceBookingRules && pickupLocationDoc.businessHours) {
-      const [opening, closing] = pickupLocationDoc.businessHours.split('-').map((time) => time.trim())
-      const openingHour = Number(opening?.split(':')[0])
-      const closingHour = Number(closing?.split(':')[0])
-
-      if (Number.isFinite(openingHour) && Number.isFinite(closingHour)) {
-        const isOpen = openingHour <= closingHour
-          ? pickupHour >= openingHour && pickupHour < closingHour
-          : pickupHour >= openingHour || pickupHour < closingHour
-
-        if (!isOpen) {
-          res.status(400).send('The pick-up time is outside the opening hours of the store')
-          return
-        }
-      }
+    if (enforceBookingRules && !bookcarsHelper.isWithinBusinessHours(fromDate, pickupLocationDoc.businessHours, storeTimezone)) {
+      res.status(400).send('The pick-up time is outside the opening hours of the store')
+      return
+    }
+    if (enforceBookingRules && !bookcarsHelper.isWithinBusinessHours(toDate, dropOffLocationDoc.businessHours, dropOffLocationDoc.timezone)) {
+      res.status(400).send('The drop-off time is outside the opening hours of the store')
+      return
     }
 
     // Calculate expected total price
@@ -1794,6 +1784,7 @@ export const getBookings = async (req: Request, res: Response) => {
     const { language } = req.params
 
     const data = await Booking.aggregate([
+      { $unset: ['handover', 'invoice', 'scheduledReminders'] },
       {
         $lookup: {
           from: 'User',

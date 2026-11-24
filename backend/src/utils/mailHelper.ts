@@ -53,9 +53,12 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
     
     // Verify connection on startup to catch config errors early
     await transporter.verify()
-    
+
     return transporter
-  })()
+  })().catch((error) => {
+    transporterPromise = null
+    throw error
+  })
 
   return transporterPromise
 }
@@ -76,4 +79,11 @@ const createTransporter = async (): Promise<nodemailer.Transporter> => {
 export const sendMail = async (mailOptions: nodemailer.SendMailOptions): Promise<nodemailer.SentMessageInfo> => {
   const transporter = await createTransporter()
   return transporter.sendMail(mailOptions)
+}
+
+export const closeTransporter = async () => {
+  const pending = transporterPromise
+  transporterPromise = null
+  const transporter = await pending?.catch(() => null)
+  transporter?.close()
 }

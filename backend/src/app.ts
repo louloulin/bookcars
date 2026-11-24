@@ -64,18 +64,25 @@ app.use(allowedMethods)
 
 //
 // Driver licenses are private documents: they are never served from the
-// public CDN, they are only accessible through the authenticated
-// download endpoint. The temporary folder keeps its random (unguessable)
-// file names, because the upload preview relies on it
+// public CDN. Upload previews use the file already selected on the device.
 //
-const privateCdnPaths = [env.CDN_LICENSES].map((folder) => {
+const privateCdnPaths = [env.CDN_LICENSES, env.CDN_TEMP_LICENSES].map((folder) => {
   const relative = path.relative(env.CDN_ROOT, folder).split(path.sep).join('/')
   return `/${relative}`
 })
 
 app.use('/cdn', (req: Request, res: Response, next: NextFunction) => {
-  const requestPath = decodeURIComponent(req.path)
-  if (privateCdnPaths.some((privatePath) => requestPath.startsWith(privatePath))) {
+  let requestPath: string
+  try {
+    requestPath = path.posix.normalize(decodeURIComponent(req.path)).toLowerCase()
+  } catch {
+    res.sendStatus(400)
+    return
+  }
+  if (privateCdnPaths.some((folder) => {
+    const privatePath = folder.toLowerCase()
+    return requestPath === privatePath || requestPath.startsWith(`${privatePath}/`)
+  })) {
     res.status(403).send('Forbidden')
     return
   }

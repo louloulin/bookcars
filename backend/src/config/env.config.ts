@@ -712,6 +712,9 @@ export interface AdditionalDriver {
  * @extends {Document}
  */
 export interface Booking extends Document {
+  handover?: bookcarsTypes.BookingHandover
+  scheduledReminders?: bookcarsTypes.HandoverReminderLog
+  invoice?: bookcarsTypes.BookingInvoice
   _id: Types.ObjectId
   supplier: Types.ObjectId
   car: Types.ObjectId

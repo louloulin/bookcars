@@ -1,10 +1,20 @@
 import express from 'express'
 import routeNames from '../config/bookingRoutes.config'
 import authJwt from '../middlewares/authJwt'
-import rateLimiter from '../middlewares/rateLimiter'
+import rateLimiter, { createRateLimiter } from '../middlewares/rateLimiter'
 import * as bookingController from '../controllers/bookingController'
+import { handover, sendHandoverReminder } from '../controllers/handoverController'
+import { invoice } from '../controllers/invoiceController'
 
 const routes = express.Router()
+
+routes.route('/api/bookings/:id/invoice').all(authJwt.verifyToken).get(invoice).post(invoice)
+
+routes.route('/api/booking-handover/:id')
+  .all(authJwt.verifyToken, authJwt.authSupplier)
+  .get(handover)
+  .post(handover)
+routes.post('/api/booking-handover/:id/reminder', authJwt.verifyToken, authJwt.authSupplier, createRateLimiter('handover-reminder', true), sendHandoverReminder)
 
 routes.route(routeNames.create).post(authJwt.verifyToken, authJwt.authSupplier, bookingController.create)
 routes.route(routeNames.checkout).post(rateLimiter, authJwt.verifyTokenOptional, bookingController.checkout)

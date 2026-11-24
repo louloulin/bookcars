@@ -10,13 +10,13 @@ const parseCoordinates = (value?: string): { longitude: number, latitude: number
     return null
   }
 
-  const parts = value.split(',').map((p) => Number.parseFloat(p.trim()))
+  const parts = value.split(',').map((part) => part.trim())
 
-  if (parts.length !== 2 || parts.some((p) => Number.isNaN(p))) {
+  if (parts.length !== 2 || parts.some((part) => !/^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:e[+-]?\d+)?$/i.test(part))) {
     return null
   }
 
-  const [longitude, latitude] = parts
+  const [longitude, latitude] = parts.map(Number)
 
   if (longitude < -180 || longitude > 180 || latitude < -90 || latitude > 90) {
     return null
@@ -62,15 +62,16 @@ export const reverseGeocode = async (req: Request, res: Response) => {
   const { longitude, latitude } = req.query
 
   try {
-    const lng = Number.parseFloat(String(longitude))
-    const lat = Number.parseFloat(String(latitude))
+    const position = typeof longitude === 'string' && typeof latitude === 'string'
+      ? parseCoordinates(`${longitude},${latitude}`)
+      : null
 
-    if (Number.isNaN(lng) || Number.isNaN(lat)) {
+    if (!position) {
       res.status(400).json({ error: 'longitude and latitude are required' })
       return
     }
 
-    const address = await mapHelper.reverseGeocode(lng, lat)
+    const address = await mapHelper.reverseGeocode(position.longitude, position.latitude)
 
     if (!address) {
       res.status(404).json({ error: 'address not found' })

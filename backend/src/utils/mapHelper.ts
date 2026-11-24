@@ -91,7 +91,7 @@ const parseLocation = (location?: string): { longitude: number, latitude: number
 }
 
 const amapGet = async <T>(path: string, params: Record<string, string | number>): Promise<T> => {
-  const response = await axios.get<T>(`${AMAP_WEB_BASE_URL}${path}`, {
+  const response = await axios.get<T & { status?: string, infocode?: string }>(`${AMAP_WEB_BASE_URL}${path}`, {
     params: {
       ...params,
       key: env.AMAP_KEY,
@@ -99,6 +99,10 @@ const amapGet = async <T>(path: string, params: Record<string, string | number>)
     },
     timeout: 8000,
   })
+
+  if (response.data?.status === '0') {
+    throw new Error(`AMap ${path} failed (${response.data.infocode ?? 'unknown'})`)
+  }
 
   return response.data
 }
@@ -287,19 +291,21 @@ export const drivingDistance = async (
 
   if (isAmapEnabled()) {
     try {
-      const data = await amapGet<any>('/v3/direction/driving', {
+      const data = await amapGet<{ route?: { paths?: { distance?: string, duration?: string }[] } }>('/v3/direction/driving', {
         origin: `${from.longitude},${from.latitude}`,
         destination: `${to.longitude},${to.latitude}`,
         strategy: 0,
         extensions: 'base',
       })
 
-      const route = data?.routes?.[0]
+      const path = data?.route?.paths?.[0]
+      const meters = Number(path?.distance?.trim() || NaN)
+      const seconds = Number(path?.duration?.trim() || NaN)
 
-      if (route && typeof route.distance === 'number') {
+      if (Number.isFinite(meters) && meters >= 0 && Number.isFinite(seconds) && seconds >= 0) {
         const distance: MapDistance = {
-          distance: Math.round(route.distance),
-          duration: Math.round(route.duration || (route.distance / AVERAGE_ROAD_SPEED)),
+          distance: Math.round(meters),
+          duration: Math.round(seconds),
           source: 'amap',
         }
 

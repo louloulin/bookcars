@@ -316,6 +316,21 @@ describe('P0 hardening: personal documents', () => {
     }
   })
 
+  it('keeps a temporary upload private and allows the uploader to discard it', async () => {
+    const upload = await request(app).post('/api/create-license').attach('file', LICENSE_PATH)
+    expect(upload.statusCode).toBe(200)
+    const file: string = upload.body
+    const folder = path.relative(env.CDN_ROOT, env.CDN_TEMP_LICENSES).split(path.sep).join('/')
+    try {
+      expect(await helper.pathExists(path.join(env.CDN_TEMP_LICENSES, file))).toBe(true)
+      expect((await request(app).get(`/cdn/${folder}/${file}`)).statusCode).toBe(403)
+    } finally {
+      const discard = await request(app).post(`/api/delete-temp-license/${encodeURIComponent(file)}`)
+      expect(discard.statusCode).toBe(200)
+      expect(await helper.pathExists(path.join(env.CDN_TEMP_LICENSES, file))).toBe(false)
+    }
+  })
+
   it('should only allow the owner or an admin to download a licence', async () => {
     const fileName = `${DRIVER1_ID}.pdf`
     const filePath = path.join(env.CDN_LICENSES, fileName)

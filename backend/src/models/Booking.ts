@@ -4,6 +4,11 @@ import * as env from '../config/env.config'
 
 export const BOOKING_EXPIRE_AT_INDEX_NAME = 'expireAt'
 
+const reminderEntry = new Schema({
+  status: { type: String, enum: ['sending', 'sent', 'failed'], required: true },
+  at: { type: Date, required: true },
+}, { _id: false })
+
 const bookingSchema = new Schema<env.Booking>(
   {
     supplier: {
@@ -131,6 +136,46 @@ const bookingSchema = new Schema<env.Booking>(
         { _id: false }
       ),
       default: undefined,
+    },
+    invoice: {
+      type: new Schema({
+        title: { type: String, required: true, maxlength: 160 },
+        taxId: { type: String, maxlength: 20 },
+        requestedAt: { type: Date, required: true },
+        issuedAt: Date,
+        reference: { type: String, maxlength: 64 },
+      }, { _id: false }),
+      select: false,
+    },
+    scheduledReminders: {
+      type: new Schema({ pickup: reminderEntry, return: reminderEntry, overdue: reminderEntry }, { _id: false }),
+      select: false,
+    },
+    handover: {
+      type: new Schema({
+        events: [new Schema({
+          stage: { type: String, enum: Object.values(bookcarsTypes.HandoverStage), required: true },
+          at: { type: Date, required: true },
+          operator: { type: String, required: true },
+          odometer: Number,
+          fuelPercent: Number,
+          condition: String,
+          contractVersion: String,
+          documentsVerified: Boolean,
+          returnFeeReceipt: new Schema({
+            method: { type: String, enum: Object.values(bookcarsTypes.ReturnFeePaymentMethod), required: true },
+            reference: { type: String, required: true, maxlength: 64 },
+            amount: { type: Number, required: true, min: 0 },
+            currency: { type: String, required: true },
+          }, { _id: false }),
+        }, { _id: false })],
+        fees: new Schema({
+          items: [new Schema({ code: String, amount: Number }, { _id: false })],
+          total: Number,
+        }, { _id: false }),
+        currency: String,
+      }, { _id: false }),
+      select: false,
     },
     cancelRequest: {
       type: Boolean,

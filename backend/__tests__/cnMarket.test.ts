@@ -6,6 +6,7 @@ import * as bookcarsTypes from ':bookcars-types'
 import * as bookcarsHelper from ':bookcars-helper'
 import app from '../src/app'
 import * as databaseHelper from '../src/utils/databaseHelper'
+import { runScheduledHandoverReminders } from '../src/utils/handoverReminder'
 import * as testHelper from './testHelper'
 import * as env from '../src/config/env.config'
 import Booking from '../src/models/Booking'
@@ -116,8 +117,8 @@ beforeAll(async () => {
   await car.save()
   CAR1_ID = car._id.toString()
 
-  const settings = await Setting.findOne({})
-  initialSettings = (settings?.toObject() as unknown as bookcarsTypes.Setting) ?? null
+  const settings = await Setting.findOne({}) ?? await Setting.create({})
+  initialSettings = settings.toObject() as unknown as bookcarsTypes.Setting
 })
 
 afterAll(async () => {
@@ -131,6 +132,10 @@ afterAll(async () => {
       nightServiceStartHour: initialSettings.nightServiceStartHour,
       nightServiceEndHour: initialSettings.nightServiceEndHour,
       oneWayFee: initialSettings.oneWayFee,
+      mileageFee: initialSettings.mileageFee,
+      mileageIncluded: initialSettings.mileageIncluded,
+      overtimeFee: initialSettings.overtimeFee,
+      overtimeFreeHours: initialSettings.overtimeFreeHours,
       enforceBookingRules: initialSettings.enforceBookingRules,
     })
   }
@@ -335,6 +340,32 @@ describe('P1: the booking rules of the store are enforced by the server', () => 
     await Booking.deleteMany({ driver: DRIVER1_ID })
   })
 
+  it('checks the return store’s own timezone and closing minute', async () => {
+    await Setting.findOneAndUpdate({}, { enforceBookingRules: true, minRentalHours: 1, minPickupHours: 0 })
+    const dropOff = await Location.create({
+      country: testHelper.GetRandromObjectIdAsString(), businessHours: '09:30 - 17:15', timezone: 'Asia/Tokyo',
+    })
+    const submit = (hour: number, minute: number) => request(app).post('/api/checkout')
+      .set(env.X_ACCESS_TOKEN, DRIVER1_TOKEN)
+      .send(buildCheckoutPayload(new Date('2027-01-15T02:00:00Z'), new Date(Date.UTC(2027, 0, 16, hour, minute)), String(dropOff._id)))
+    try {
+      const closed = await submit(8, 15)
+      expect(closed.statusCode).toBe(400)
+      expect(closed.text).toContain('drop-off time')
+      expect((await submit(8, 14)).statusCode).toBe(200)
+    } finally {
+      await Location.deleteOne({ _id: dropOff._id })
+      await Booking.deleteMany({ driver: DRIVER1_ID })
+    }
+  })
+
+  it.each([['14:29', false], ['14:30', true], ['22:14', true], ['22:15', false], ['01:29', false], ['01:30', true], ['02:14', true], ['02:15', false]])(
+    'checks minute boundaries at UTC %s', (utc, open) => {
+      const hours = utc.startsWith('14') || utc.startsWith('22') ? '22:30 - 06:15' : '09:30 - 10:15'
+      expect(bookcarsHelper.isWithinBusinessHours(new Date(`2027-01-15T${utc}:00Z`), hours, 'Asia/Shanghai')).toBe(open)
+    },
+  )
+
   it('should accept the same booking when the rules are not enforced', async () => {
     await Setting.findOneAndUpdate({}, {
       enforceBookingRules: false,
@@ -351,4 +382,132 @@ describe('P1: the booking rules of the store are enforced by the server', () => 
 
     await Booking.deleteMany({ driver: DRIVER1_ID })
   })
+})
+
+it('records the store handover in order and calculates return fees once', async () => {
+  const { BookingStatus, HandoverStage } = bookcarsTypes
+  await Setting.findOneAndUpdate({}, { mileageFee: 2, mileageIncluded: 50, overtimeFee: 10, overtimeFreeHours: 1 })
+  const booking = await Booking.create({
+    supplier: SUPPLIER_ID,
+    driver: DRIVER1_ID,
+    car: CAR1_ID,
+    pickupLocation: LOCATION_ID,
+    dropOffLocation: LOCATION_ID,
+    status: BookingStatus.Reserved,
+    from: new Date(Date.now() - 86_400_000),
+    to: new Date(Date.now() - 7_200_000),
+    price: 300,
+  })
+  const url = `/api/booking-handover/${booking._id}`
+  const reminderUrl = `${url}/reminder`
+  const token = await testHelper.generateToken(SUPPLIER_ID)
+  const otherSupplier = await testHelper.createSupplier(testHelper.GetRandomEmail(), testHelper.getSupplierName())
+  const otherToken = await testHelper.generateToken(otherSupplier)
+  const post = (stage: bookcarsTypes.HandoverStage, fields = {}) => request(app).post(url).set(env.X_ACCESS_TOKEN, token).send({ stage, ...fields })
+  const inspection = { odometer: 1000, fuelPercent: 90, condition: 'No new damage' }
+
+  expect((await request(app).get(url).set(env.X_ACCESS_TOKEN, DRIVER1_TOKEN)).statusCode).toBe(403)
+  expect((await request(app).get(url).set(env.X_ACCESS_TOKEN, otherToken)).statusCode).toBe(404)
+  expect((await post(HandoverStage.Ready)).statusCode).toBe(409)
+  const concurrent = await Promise.all([post(HandoverStage.Accepted), post(HandoverStage.Accepted)])
+  expect(concurrent.map((response) => response.statusCode).sort()).toEqual([200, 409])
+  expect((await post(HandoverStage.Preparing)).statusCode).toBe(200)
+  expect((await post(HandoverStage.Ready)).statusCode).toBe(200)
+  expect((await request(app).post(reminderUrl).set(env.X_ACCESS_TOKEN, otherToken)).statusCode).toBe(404)
+  expect((await post(HandoverStage.PickedUp, inspection)).statusCode).toBe(400)
+  expect((await post(HandoverStage.PickedUp, { ...inspection, contractVersion: 'CN-1', documentsVerified: true })).statusCode).toBe(200)
+  expect((await post(HandoverStage.Returned, { ...inspection, odometer: 999 })).statusCode).toBe(400)
+  const returned = await post(HandoverStage.Returned, { ...inspection, odometer: 1075 })
+  expect(returned.statusCode).toBe(200)
+  expect(returned.body.fees.items[0].code).toBe('overtime')
+  expect(returned.body.fees.items[0].amount).toBeCloseTo(10, 0)
+  expect(returned.body.fees.items[1]).toEqual({ code: 'mileage', amount: 50 })
+  expect(returned.body.fees.total).toBeCloseTo(60, 0)
+  const receipt = { method: 'wechat', reference: ' WX-DEMO-01 ', amount: 1, currency: 'CNY' }
+  expect((await post(HandoverStage.Settled, { returnFeeReceipt: { ...receipt, method: 'invalid' } })).statusCode).toBe(400)
+  expect((await post(HandoverStage.Settled, { returnFeeReceipt: { ...receipt, reference: '  ' } })).statusCode).toBe(400)
+  const settlement = await post(HandoverStage.Settled, { returnFeeReceipt: receipt })
+  expect(settlement.statusCode).toBe(200)
+  const expectedReceipt = { method: 'wechat', reference: 'WX-DEMO-01', amount: returned.body.fees.total, currency: returned.body.currency }
+  expect(settlement.body.events.at(-1).returnFeeReceipt).toEqual(expectedReceipt)
+  expect((await post(HandoverStage.Settled, { returnFeeReceipt: { ...receipt, reference: 'OTHER' } })).statusCode).toBe(409)
+  expect((await request(app).post(reminderUrl).set(env.X_ACCESS_TOKEN, token)).statusCode).toBe(409)
+  const stored = await request(app).get(url).set(env.X_ACCESS_TOKEN, token)
+  expect(stored.body.events.map((event: bookcarsTypes.HandoverEvent) => event.stage)).toEqual(Object.values(HandoverStage))
+  expect(stored.body.events.every((event: bookcarsTypes.HandoverEvent) => event.operator === SUPPLIER_ID)).toBe(true)
+  expect(stored.body.nextStage).toBeUndefined()
+  expect(stored.body.events.at(-1).returnFeeReceipt).toEqual(expectedReceipt)
+  expect((await Booking.findById(booking._id))?.handover).toBeUndefined()
+  await Booking.deleteOne({ _id: booking._id })
+})
+
+it('claims scheduled reminders once across workers and exposes the result to the store only', async () => {
+  const { BookingStatus, HandoverStage, HandoverReminderKind } = bookcarsTypes
+  const now = new Date('2030-05-01T12:00:00Z')
+  const hour = 3_600_000
+  const near = new Date(now.getTime() + hour)
+  const past = new Date(now.getTime() - hour)
+  const late = new Date(now.getTime() + 25 * hour)
+  const create = (stages: bookcarsTypes.HandoverStage[], from: Date, to: Date, status = BookingStatus.Reserved) => Booking.create({
+    supplier: SUPPLIER_ID, driver: DRIVER1_ID, car: CAR1_ID,
+    pickupLocation: LOCATION_ID, dropOffLocation: LOCATION_ID, status, from, to, price: 300,
+    handover: { events: stages.map((stage) => ({ stage, at: past, operator: SUPPLIER_ID })) },
+  })
+  const pickedUp = [HandoverStage.Ready, HandoverStage.PickedUp]
+  const pickup = await create([HandoverStage.Ready], near, late)
+  const upcomingReturn = await create(pickedUp, past, near)
+  const overdue = await create(pickedUp, new Date(past.getTime() - hour), past)
+  await create([...pickedUp, HandoverStage.Returned], new Date(past.getTime() - hour), past)
+  await create([HandoverStage.Ready], near, late, BookingStatus.Cancelled)
+  await create([HandoverStage.Ready], late, new Date(late.getTime() + hour))
+
+  const deliver = jest.fn(async (_booking: Pick<env.Booking, '_id'>, kind: bookcarsTypes.HandoverReminderKind) => kind !== HandoverReminderKind.Overdue)
+  await Promise.all([runScheduledHandoverReminders(now, deliver), runScheduledHandoverReminders(now, deliver)])
+  const actual = deliver.mock.calls.map(([booking, kind]) => [String(booking._id), kind])
+  expect(actual).toHaveLength(3)
+  expect(actual).toEqual(expect.arrayContaining([
+    [String(pickup._id), HandoverReminderKind.Pickup],
+    [String(upcomingReturn._id), HandoverReminderKind.Return],
+    [String(overdue._id), HandoverReminderKind.Overdue],
+  ]))
+  expect(await runScheduledHandoverReminders(now, deliver)).toEqual({ sent: 0, failed: 0 })
+  expect((await Booking.findById(overdue._id).select('+scheduledReminders'))?.scheduledReminders?.overdue?.status).toBe('failed')
+  expect((await Booking.findById(pickup._id))?.scheduledReminders).toBeUndefined()
+  const url = `/api/booking-handover/${pickup._id}`
+  const token = await testHelper.generateToken(SUPPLIER_ID)
+  const store = await request(app).get(url).set(env.X_ACCESS_TOKEN, token)
+  expect(store.body.scheduledReminders.pickup.status).toBe('sent')
+  expect((await request(app).get(url).set(env.X_ACCESS_TOKEN, DRIVER1_TOKEN)).statusCode).toBe(403)
+})
+
+it('accepts one invoice request after settlement and records issuance only for the owning store', async () => {
+  const { BookingStatus, HandoverStage } = bookcarsTypes
+  const booking = await Booking.create({
+    supplier: SUPPLIER_ID, driver: DRIVER1_ID, car: CAR1_ID,
+    pickupLocation: LOCATION_ID, dropOffLocation: LOCATION_ID,
+    status: BookingStatus.Reserved, from: new Date(Date.now() - 86_400_000), to: new Date(), price: 300,
+  })
+  const url = `/api/bookings/${booking._id}/invoice`
+  const store = await testHelper.generateToken(SUPPLIER_ID)
+  const anotherStore = await testHelper.createSupplier(testHelper.GetRandomEmail(), testHelper.getSupplierName())
+  const otherToken = await testHelper.generateToken(anotherStore)
+  const submit = (token: string, body: object) => request(app).post(url).set(env.X_ACCESS_TOKEN, token).send(body)
+  try {
+    expect((await submit(DRIVER1_TOKEN, { title: '示例公司' })).statusCode).toBe(409)
+    await Booking.updateOne({ _id: booking._id }, { $set: {
+      'handover.events': [{ stage: HandoverStage.Settled, at: new Date(), operator: SUPPLIER_ID }],
+    } })
+    expect((await submit(DRIVER1_TOKEN, { title: '示例公司', taxId: 'bad' })).statusCode).toBe(400)
+    const results = await Promise.all([1, 2].map(() => submit(DRIVER1_TOKEN, { title: ' 示例公司 ', taxId: '123456789012345' })))
+    expect(results.map((response) => response.statusCode).sort()).toEqual([200, 409])
+    expect((await submit(otherToken, { reference: 'TEST-01' })).statusCode).toBe(404)
+    expect((await submit(DRIVER1_TOKEN, { reference: 'TEST-01' })).statusCode).toBe(409)
+    expect((await submit(store, { reference: 'TEST-01' })).statusCode).toBe(200)
+    expect((await submit(store, { reference: 'TEST-02' })).statusCode).toBe(409)
+    const response = await request(app).get(url).set(env.X_ACCESS_TOKEN, DRIVER1_TOKEN)
+    expect(response.body.invoice).toMatchObject({ title: '示例公司', taxId: '123456789012345', reference: 'TEST-01' })
+    expect((await Booking.findById(booking._id))?.invoice).toBeUndefined()
+  } finally {
+    await Booking.deleteOne({ _id: booking._id })
+  }
 })
