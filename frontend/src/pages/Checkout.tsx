@@ -13,6 +13,7 @@ import {
   RadioGroup,
   Radio,
   CircularProgress,
+  Alert,
 } from '@mui/material'
 import {
   DirectionsCar as CarIcon,
@@ -119,6 +120,9 @@ const Checkout = () => {
   const [payPalProcessing, setPayPalProcessing] = useState(false)
 
   const { settings } = useSetting()
+  const enforceHours = settings?.enforceBookingRules === true
+  const pickupOutsideHours = enforceHours && !!from && !bookcarsHelper.isWithinBusinessHours(from, pickupLocation?.businessHours, pickupLocation?.timezone)
+  const dropOffOutsideHours = enforceHours && !!to && !bookcarsHelper.isWithinBusinessHours(to, dropOffLocation?.businessHours, dropOffLocation?.timezone)
 
   const birthDateRef = useRef<HTMLInputElement | null>(null)
   const additionalDriverBirthDateRef = useRef<HTMLInputElement | null>(null)
@@ -188,6 +192,10 @@ const Checkout = () => {
   }
 
   const onSubmit = async (data: FormFields) => {
+    if (pickupOutsideHours || dropOffOutsideHours) {
+      return
+    }
+
     try {
       if (!car || !pickupLocation || !dropOffLocation || !from || !to) {
         helper.error()
@@ -539,6 +547,12 @@ const Checkout = () => {
             <div className="checkout">
               <Paper component="main" className="checkout-form" elevation={0}>
                 <h1 className="checkout-form-title">{strings.BOOKING_HEADING}</h1>
+                {(pickupOutsideHours || dropOffOutsideHours) && (
+                  <Alert severity="warning" sx={{ mb: 2 }}>
+                    {pickupOutsideHours && <div>{strings.PICKUP_OUTSIDE_HOURS}</div>}
+                    {dropOffOutsideHours && <div>{strings.DROPOFF_OUTSIDE_HOURS}</div>}
+                  </Alert>
+                )}
                 <form onSubmit={handleSubmit(onSubmit, onError)}>
                   <div className="checkout-layout">
                     <div className="checkout-vehicle">
@@ -637,9 +651,14 @@ const Checkout = () => {
                                 {dropOffLocation.address}
                               </div>
                             )}
+                            {dropOffLocation.businessHours && (
+                              <div className="checkout-detail-sub">
+                                {`${mapStrings.BUSINESS_HOURS}: ${dropOffLocation.businessHours}`}
+                              </div>
+                            )}
                             {distance && (
                               <div className="checkout-detail-sub">
-                                {`${mapStrings.DISTANCE}: ${(distance.distance / 1000).toFixed(1)} km · ${Math.round(distance.duration / 60)} min`}
+                                {`${distance.source === 'estimate' ? mapStrings.ESTIMATED_DISTANCE : mapStrings.DISTANCE}: ${(distance.distance / 1000).toFixed(1)} km · ${Math.round(distance.duration / 60)} min`}
                               </div>
                             )}
                           </div>
@@ -1129,7 +1148,7 @@ const Checkout = () => {
                             variant="contained"
                             className="btn-checkout btn-margin-bottom"
                             aria-label="Checkout"
-                            disabled={isSubmitting || (payPalLoaded && !payPalInit)}
+                            disabled={isSubmitting || pickupOutsideHours || dropOffOutsideHours || (payPalLoaded && !payPalInit)}
                           >
                             {
                               (isSubmitting || (payPalLoaded && !payPalInit))

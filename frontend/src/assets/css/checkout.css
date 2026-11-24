@@ -281,10 +281,7 @@ div.checkout div.driver-details-form { width: min(100%, 520px); }
   }
 }
 
-//
-// The fees of the Chinese market (night service, one way) are listed under
-// the total price so that the visitor sees every part of the quote.
-//
+/* List night service and one-way fees under the total price. */
 div.checkout-fees {
   display: flex;
   flex-direction: column;

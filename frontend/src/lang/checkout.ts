@@ -4,6 +4,8 @@ import * as langHelper from '@/utils/langHelper'
 const strings = new LocalizedStrings({
   fr: {
     BOOKING_HEADING: 'Réserver Maintenant',
+    PICKUP_OUTSIDE_HOURS: 'Le retrait est prévu en dehors des heures d’ouverture de l’agence.',
+    DROPOFF_OUTSIDE_HOURS: 'Le retour est prévu en dehors des heures d’ouverture de l’agence.',
     BOOKING_OPTIONS: 'Vos options de réservation',
     BOOKING_DETAILS: 'Vos données de réservation',
     DAYS: 'Jours',
@@ -47,6 +49,8 @@ const strings = new LocalizedStrings({
   },
   en: {
     BOOKING_HEADING: 'Book now',
+    PICKUP_OUTSIDE_HOURS: 'The selected pick-up time is outside the store’s opening hours.',
+    DROPOFF_OUTSIDE_HOURS: 'The selected drop-off time is outside the store’s opening hours.',
     BOOKING_OPTIONS: 'Your booking options',
     BOOKING_DETAILS: 'Your booking details',
     DAYS: 'Days',
@@ -90,6 +94,8 @@ const strings = new LocalizedStrings({
   },
   es: {
     BOOKING_HEADING: 'Reservar ahora',
+    PICKUP_OUTSIDE_HOURS: 'La hora de recogida está fuera del horario de la oficina.',
+    DROPOFF_OUTSIDE_HOURS: 'La hora de devolución está fuera del horario de la oficina.',
     BOOKING_OPTIONS: 'Tus opciones de reserva',
     BOOKING_DETAILS: 'Tus detalles de reserva',
     DAYS: 'Días',
@@ -133,6 +139,8 @@ const strings = new LocalizedStrings({
   },
   de: {
     BOOKING_HEADING: 'Jetzt buchen',
+    PICKUP_OUTSIDE_HOURS: 'Die Abholzeit liegt außerhalb der Öffnungszeiten der Filiale.',
+    DROPOFF_OUTSIDE_HOURS: 'Die Rückgabezeit liegt außerhalb der Öffnungszeiten der Filiale.',
     BOOKING_OPTIONS: 'Ihre Buchungsoptionen',
     BOOKING_DETAILS: 'Ihre Buchungsdetails',
     DAYS: 'Tage',
@@ -176,6 +184,8 @@ const strings = new LocalizedStrings({
   },
   pt: {
     BOOKING_HEADING: 'Reservar agora',
+    PICKUP_OUTSIDE_HOURS: 'A hora de levantamento está fora do horário da loja.',
+    DROPOFF_OUTSIDE_HOURS: 'A hora de devolução está fora do horário da loja.',
     BOOKING_OPTIONS: 'As suas opções de reserva',
     BOOKING_DETAILS: 'Os detalhes da sua reserva',
     DAYS: 'Dias',
@@ -219,6 +229,8 @@ const strings = new LocalizedStrings({
   },
   it: {
     BOOKING_HEADING: 'Prenota ora',
+    PICKUP_OUTSIDE_HOURS: 'L’orario di ritiro è fuori dall’orario di apertura della sede.',
+    DROPOFF_OUTSIDE_HOURS: 'L’orario di riconsegna è fuori dall’orario di apertura della sede.',
     BOOKING_OPTIONS: 'Le tue opzioni di prenotazione',
     BOOKING_DETAILS: 'I dettagli della tua prenotazione',
     DAYS: 'Giorni',
@@ -262,6 +274,8 @@ const strings = new LocalizedStrings({
   },
   zh: {
     BOOKING_HEADING: '立即预订',
+    PICKUP_OUTSIDE_HOURS: '所选取车时间不在取车门店营业时间内。请返回修改时间。',
+    DROPOFF_OUTSIDE_HOURS: '所选还车时间不在还车门店营业时间内。请返回修改时间。',
     BOOKING_OPTIONS: '您的预订选项',
     BOOKING_DETAILS: '您的预订详情',
     DAYS: '天数',
@@ -305,6 +319,8 @@ const strings = new LocalizedStrings({
   },
   ja: {
     BOOKING_HEADING: '今すぐ予約',
+    PICKUP_OUTSIDE_HOURS: '選択した受取時刻は店舗の営業時間外です。',
+    DROPOFF_OUTSIDE_HOURS: '選択した返却時刻は店舗の営業時間外です。',
     BOOKING_OPTIONS: '予約オプション',
     BOOKING_DETAILS: '予約内容',
     DAYS: '日数',

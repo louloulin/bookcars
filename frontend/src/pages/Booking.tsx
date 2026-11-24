@@ -23,6 +23,7 @@ import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import CarList from '@/components/CarList'
+import BookingInvoice from '@/components/BookingInvoice'
 import SupplierSelectList from '@/components/SupplierSelectList'
 import LocationSelectList from '@/components/LocationSelectList'
 import CarSelectList from '@/components/CarSelectList'
@@ -502,6 +503,7 @@ const Booking = () => {
                 )}
               </div>
             </form>
+            {booking._id && <BookingInvoice key={booking._id} id={booking._id} language={language} />}
           </div>
           <div className="col-2">
             <div className="col-2-header">
