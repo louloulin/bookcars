@@ -1,5 +1,5 @@
-import React, { useState } from 'react'
-import { IconButton, Input, OutlinedInput } from '@mui/material'
+import React, { useEffect, useState } from 'react'
+import { Dialog, DialogContent, DialogTitle, IconButton, Input, OutlinedInput } from '@mui/material'
 import { Upload as UploadIcon, Delete as DeleteIcon, Visibility as ViewIcon } from '@mui/icons-material'
 import * as bookcarsTypes from ':bookcars-types'
 import * as bookcarsHelper from ':bookcars-helper'
@@ -26,6 +26,20 @@ const DriverLicense = ({
   onDelete,
 }: DriverLicenseProps) => {
   const [license, setLicense] = useState(user?.license || null)
+  const [selectedFile, setSelectedFile] = useState<File>()
+  const [previewUrl, setPreviewUrl] = useState<string>()
+  const [previewOpen, setPreviewOpen] = useState(false)
+  const previewLabel = UserService.getLanguage() === 'zh' ? '预览驾驶证' : 'Preview driver’s license'
+
+  useEffect(() => {
+    if (selectedFile && previewOpen) {
+      const url = URL.createObjectURL(selectedFile)
+      setPreviewUrl(url)
+      return () => URL.revokeObjectURL(url)
+    }
+    setPreviewUrl(undefined)
+    return undefined
+  }, [selectedFile, previewOpen])
 
   const handleClick = async () => {
     const upload = document.getElementById('upload-license') as HTMLInputElement
@@ -36,7 +50,7 @@ const DriverLicense = ({
   }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (!e.target.files) {
+    if (!e.target.files?.length) {
       helper.error()
       return
     }
@@ -71,6 +85,7 @@ const DriverLicense = ({
         }
 
         setLicense(filename)
+        setSelectedFile(filename && !user ? file : undefined)
       } catch (err) {
         helper.error(err)
       }
@@ -108,13 +123,13 @@ const DriverLicense = ({
           <>
             <IconButton
               size="small"
+              aria-label={previewLabel}
               onClick={() => {
-                // A saved license is a private document: it is only
-                // accessible through the authenticated download endpoint
-                const url = user
-                  ? `${bookcarsHelper.trimEnd(env.API_HOST, '/')}/api/download-license/${user._id}`
-                  : `${bookcarsHelper.trimEnd(env.CDN_TEMP_LICENSES, '/')}/${license}`
-                helper.downloadURI(url)
+                if (user) {
+                  helper.downloadURI(`${bookcarsHelper.trimEnd(env.API_HOST, '/')}/api/download-license/${user._id}`)
+                } else {
+                  setPreviewOpen(true)
+                }
               }}
             >
               <ViewIcon className="icon" />
@@ -132,6 +147,7 @@ const DriverLicense = ({
 
                   if (status === 200) {
                     setLicense(null)
+                    setSelectedFile(undefined)
 
                     if (onDelete) {
                       onDelete()
@@ -149,6 +165,14 @@ const DriverLicense = ({
           </>
         )}
       </div>
+      <Dialog open={previewOpen} onClose={() => setPreviewOpen(false)} fullWidth maxWidth="sm" aria-label={previewLabel}>
+        <DialogTitle>{previewLabel}</DialogTitle>
+        <DialogContent>
+          {previewUrl && selectedFile && (selectedFile.type.startsWith('image/')
+            ? <img src={previewUrl} alt={previewLabel} style={{ maxWidth: '100%' }} />
+            : <iframe title={previewLabel} src={previewUrl} style={{ width: '100%', height: '60vh', border: 0 }} />)}
+        </DialogContent>
+      </Dialog>
       <input id="upload-license" type="file" hidden onChange={handleChange} />
     </div>
   )

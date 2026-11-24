@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate } from 'react-router-dom'
 import {
   FormControl,
   FormControlLabel,
@@ -37,6 +37,8 @@ import Backdrop from '@/components/SimpleBackdrop'
 import NoMatch from './NoMatch'
 import Error from './Error'
 import CarList from '@/components/CarList'
+import BookingHandover from '@/components/BookingHandover'
+import BookingInvoice from '@/components/BookingInvoice'
 import SupplierSelectList from '@/components/SupplierSelectList'
 import UserSelectList from '@/components/UserSelectList'
 import LocationSelectList from '@/components/LocationSelectList'
@@ -885,6 +887,13 @@ const UpdateBooking = () => {
               language={language}
               hidePrice
             />
+            {booking._id && (
+              <Button component={NavLink} to={`/booking-contract?b=${encodeURIComponent(booking._id)}`} target="_blank" rel="noopener" variant="outlined" sx={{ mt: 2 }}>
+                {language === 'zh' ? '预览中文租赁合同' : 'Preview Chinese rental agreement'}
+              </Button>
+            )}
+            {booking._id && <BookingInvoice key={`invoice-${booking._id}`} id={booking._id} language={language} />}
+            {booking._id && <BookingHandover key={booking._id} id={booking._id} language={language} />}
           </div>
 
           <Dialog disableEscapeKeyDown maxWidth="xs" open={openDeleteDialog}>

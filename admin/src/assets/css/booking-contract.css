@@ -1,0 +1,90 @@
+.booking-contract {
+  width: min(850px, calc(100% - 32px));
+  margin: 24px auto 48px;
+}
+
+.contract-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.contract-sheet {
+  background: #fff;
+  border: 1px solid #e2e9df;
+  border-radius: 12px;
+  color: #182c23;
+  margin-top: 16px;
+  padding: clamp(16px, 5vw, 40px);
+  font-size: 14px;
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+
+.contract-sheet header {
+  text-align: center;
+  margin-bottom: 16px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 12px;
+}
+
+.contract-sheet h1 {
+  margin: 2px 0;
+  font-size: 28px;
+}
+
+.contract-sheet h2 {
+  margin: 0 0 8px;
+  font-size: 17px;
+}
+
+.contract-sheet section + section {
+  margin-top: 16px;
+}
+
+.contract-sheet p {
+  margin: 4px 0;
+}
+
+.contract-sheet dl {
+  display: grid;
+  grid-template-columns: minmax(6em, 20%) 1fr;
+  gap: 2px 12px;
+  margin: 0;
+}
+
+.contract-sheet dd {
+  margin: 0;
+}
+
+.contract-sheet footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 24px;
+  margin-top: 20px;
+  border-top: 1px solid #ccc;
+  padding-top: 12px;
+}
+
+@media print {
+  .app:has(.booking-contract) > :not(.content),
+  .booking-contract > :not(.contract-sheet) {
+    display: none !important;
+  }
+
+  .booking-contract,
+  .contract-sheet {
+    width: auto;
+    margin: 0;
+    padding: 0;
+    color: #000;
+    border: 0;
+  }
+
+  .contract-sheet section,
+  .contract-sheet footer {
+    break-inside: avoid;
+  }
+}

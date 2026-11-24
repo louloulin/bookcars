@@ -27,6 +27,7 @@ const CreateCar = lazy(() => import('@/pages/CreateCar'))
 const UpdateCar = lazy(() => import('@/pages/UpdateCar'))
 const Bookings = lazy(() => import('@/pages/Bookings'))
 const UpdateBooking = lazy(() => import('@/pages/UpdateBooking'))
+const BookingContract = lazy(() => import('@/pages/BookingContract'))
 const CreateBooking = lazy(() => import('@/pages/CreateBooking'))
 const Users = lazy(() => import('@/pages/Users'))
 const User = lazy(() => import('@/pages/User'))
@@ -97,6 +98,7 @@ const router = createBrowserRouter([
       { path: 'create-car', element: <CreateCar /> },
       { path: 'update-car', element: <UpdateCar /> },
       { path: 'update-booking', element: <UpdateBooking /> },
+      { path: 'booking-contract', element: <BookingContract /> },
       { path: 'create-booking', element: <CreateBooking /> },
       { path: 'users', element: <Users /> },
       { path: 'user', element: <User /> },
