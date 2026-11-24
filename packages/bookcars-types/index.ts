@@ -81,6 +81,73 @@ export enum PaymentGateway {
   Stripe = 'stripe',
 }
 
+export enum HandoverStage {
+  Accepted = 'accepted',
+  Preparing = 'preparing',
+  Ready = 'ready',
+  PickedUp = 'pickedUp',
+  Returned = 'returned',
+  Settled = 'settled',
+}
+
+export enum ReturnFeePaymentMethod {
+  WeChat = 'wechat',
+  Alipay = 'alipay',
+  Card = 'card',
+  Cash = 'cash',
+}
+
+export interface ReturnFeeReceipt {
+  method: ReturnFeePaymentMethod
+  reference: string
+  amount: number
+  currency: string
+}
+
+export interface HandoverEvent {
+  stage: HandoverStage
+  at: Date
+  operator: string
+  odometer?: number
+  fuelPercent?: number
+  condition?: string
+  contractVersion?: string
+  documentsVerified?: boolean
+  returnFeeReceipt?: ReturnFeeReceipt
+}
+
+export enum HandoverReminderKind {
+  Pickup = 'pickup',
+  Return = 'return',
+  Overdue = 'overdue',
+}
+
+export type HandoverReminderLog = Partial<Record<HandoverReminderKind, {
+  status: 'sending' | 'sent' | 'failed'
+  at: Date
+}>>
+
+export interface BookingHandover {
+  scheduledReminders?: HandoverReminderLog
+  events: HandoverEvent[]
+  fees?: ChinaFeeBreakdown
+  currency?: string
+  nextStage?: HandoverStage
+}
+
+export interface BookingInvoice {
+  title: string
+  taxId?: string
+  requestedAt: Date
+  issuedAt?: Date
+  reference?: string
+}
+
+export interface BookingInvoiceView {
+  canRequest: boolean
+  invoice?: BookingInvoice
+}
+
 export interface Booking {
   _id?: string
   supplier: string | User

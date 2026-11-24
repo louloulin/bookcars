@@ -866,6 +866,36 @@ export const getLocalHour = (date: Date, timezone: string = DEFAULT_CHINA_TIMEZO
   }
 }
 
+/** Check a daily opening window in the store's local time. Unstructured hours are informational. */
+export const isWithinBusinessHours = (date: Date, hours?: string, timezone = DEFAULT_CHINA_TIMEZONE): boolean => {
+  const window = hours?.match(/^\s*(\d{1,2}):([0-5]\d)\s*[-–—]\s*(\d{1,2}):([0-5]\d)\s*$/)
+  if (!window) {
+    return true
+  }
+
+  const [, openHour, openMinute, closeHour, closeMinute] = window.map(Number)
+  const opening = openHour * 60 + openMinute
+  const closing = closeHour * 60 + closeMinute
+  if (opening >= 1440 || closing > 1440) {
+    return true
+  }
+
+  const options = { hour: '2-digit', minute: '2-digit', hourCycle: 'h23' } as const
+  let formatter: Intl.DateTimeFormat
+  try {
+    formatter = new Intl.DateTimeFormat('en-GB', { ...options, timeZone: timezone })
+  } catch {
+    formatter = new Intl.DateTimeFormat('en-GB', { ...options, timeZone: DEFAULT_CHINA_TIMEZONE })
+  }
+  const parts = formatter.formatToParts(date)
+  const localMinute = Number(parts.find((part) => part.type === 'hour')?.value) * 60
+    + Number(parts.find((part) => part.type === 'minute')?.value)
+
+  return opening <= closing
+    ? localMinute >= opening && localMinute < closing
+    : localMinute >= opening || localMinute < closing
+}
+
 /**
  * Check that an hour belongs to the night service window.
  *
