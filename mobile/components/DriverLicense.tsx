@@ -1,15 +1,14 @@
 import React, { useState } from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Pressable } from 'react-native-gesture-handler'
-import * as Linking from 'expo-linking'
+import { File, Paths } from 'expo-file-system'
 import * as DocumentPicker from 'expo-document-picker'
 import { MaterialIcons } from '@expo/vector-icons'
 import * as bookcarsTypes from ':bookcars-types'
-import * as bookcarsHelper from ':bookcars-helper'
+import axiosInstance from '@/services/axiosInstance'
 import i18n from '@/lang/i18n'
 import * as UserService from '@/services/UserService'
 import * as helper from '@/utils/helper'
-import * as env from '@/config/env.config'
 import { colors, radii } from '@/theme'
 
 interface DriverLicenseProps {
@@ -31,6 +30,28 @@ const DriverLicense = ({
   onDelete,
 }: DriverLicenseProps) => {
   const [license, setLicense] = useState(user?.license || null)
+  const [selectedUri, setSelectedUri] = useState<string>()
+
+  const preview = async () => {
+    try {
+      if (!user) {
+        if (selectedUri) {
+          await new File(selectedUri).preview()
+        }
+        return
+      }
+
+      const response = await axiosInstance.get<ArrayBuffer>(`/api/download-license/${encodeURIComponent(user._id!)}`, {
+        headers: await UserService.authHeader(), responseType: 'arraybuffer',
+      })
+      const extension = license?.match(/\.(pdf|jpe?g|png|webp|gif|bmp|tiff)$/i)?.[0] ?? '.pdf'
+      const file = new File(Paths.cache, `bookcars-license-preview-${Date.now()}${extension}`)
+      await file.write(response.data)
+      await file.preview()
+    } catch (error) {
+      helper.error(error)
+    }
+  }
 
   const handleUpload = async () => {
     try {
@@ -70,6 +91,7 @@ const DriverLicense = ({
       }
 
       setLicense(filename)
+      setSelectedUri(filename && !user ? uri : undefined)
     } catch (err) {
       helper.error(err)
     }
@@ -147,10 +169,7 @@ const DriverLicense = ({
             <Pressable
               style={styles.action}
               hitSlop={15}
-              onPress={() => {
-                const url = `${bookcarsHelper.trimEnd(user ? env.CDN_LICENSES : env.CDN_TEMP_LICENSES, '/')}/${license}`
-                Linking.openURL(url)
-              }}
+              onPress={preview}
             >
               <MaterialIcons name="visibility" size={iconSize} color={iconColor} />
             </Pressable>
@@ -168,6 +187,7 @@ const DriverLicense = ({
 
                   if (status === 200) {
                     setLicense(null)
+                    setSelectedUri(undefined)
 
                     if (onDelete) {
                       onDelete()
